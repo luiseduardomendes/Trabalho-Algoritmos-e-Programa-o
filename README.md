@@ -1,1 +1,1 @@
-# Trabalho-Algoritmos-e-Programa-o
+Trabalho Algoritmos e Programação - UFRGS - Engenharia de Computação
