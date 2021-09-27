@@ -3,9 +3,9 @@
 #include <time.h>
 #include <stdbool.h>
 
-struct position{
+typedef struct position{
     int x, y;
-};
+}typePos;
 
 // Procedure to control the movement of the enemies
 void npcMovement(struct position npcPos, struct position playerPos, bool silentMove, int rangeViewMob) {
