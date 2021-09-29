@@ -6,19 +6,23 @@
 
 void showDisplay (int mapUsed, typePos playerPos){
     int i, j;
-    char pixel;
-    int mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    
+    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
+
     FILE *map;
-    map = fopen("maps.bin", "w");
-    fread(&mapMatrix, SIZEMAP_X * SIZEMAP_Y * sizeof(int), 1, map);
-    
+    map = fopen("E:\\files\\maps.bin", "rb");
+    if (map != NULL)
+        printf("Arquivo aberto com sucesso!\n");
+    else
+        printf("Erro na abertura do arquivo!\n");
+
+    rewind(map);
+    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
     // não é necessário abrir o arquivo todas as vezes
     // implementar a abertura do arquivo a cada nova fase
 
-    for (i = playerPos.y + 15; i < playerPos.y - 15; i --)  {
-        
-        for (j = playerPos.x - 10; j > playerPos.x + 10; j ++) {
+    for (i = 0; i < SIZEMAP_Y ; i ++)  {
+
+        for (j = 0; j < SIZEMAP_X; j ++) {
             printf("%c", mapMatrix[i][j]);
         }
         printf("\n");
