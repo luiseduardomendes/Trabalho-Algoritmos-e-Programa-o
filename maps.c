@@ -14,10 +14,12 @@ void showDisplay (int mapUsed, typePos playerPos){
     fread(&mapMatrix, SIZEMAP_X * SIZEMAP_Y * sizeof(int), 1, map);
     
     // não é necessário abrir o arquivo todas as vezes
+    // implementar a abertura do arquivo a cada nova fase
 
-    for (i = playerPos.x +10; i > playerPos.x - 10; i ++) {
-        for (j = playerPos.y - 15; j < playerPos.y + 15; j ++) {
-            printf("%c", mapMatrix[j][i]);
+    for (i = playerPos.y + 15; i < playerPos.y - 15; i --)  {
+        
+        for (j = playerPos.x - 10; j > playerPos.x + 10; j ++) {
+            printf("%c", mapMatrix[i][j]);
         }
         printf("\n");
     }
