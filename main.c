@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <locale.h>
+FILE *map;
 #include "moveMob.c"
 #include "maps.c"
 
