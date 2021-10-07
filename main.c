@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <locale.h>
+typedef struct position{
+    int x, y;
+}typePos;
 FILE *map;
 #include "moveMob.c"
 #include "maps.c"
+
+
 
 void sleep_ms(int milliseconds);
 

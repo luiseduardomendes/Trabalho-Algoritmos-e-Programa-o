@@ -14,9 +14,6 @@
 
 bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob);
-typedef struct position{
-    int x, y;
-}typePos;
 
 // Procedure to control the movement of the enemies
 void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
@@ -30,7 +27,7 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
 
     printf("%d\n", flagMov);
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("maps.bin", "rb");
+    map = fopen("arquivos/maps.bin", "rb");
     if (map != NULL)
         printf("Arquivo aberto com sucesso!\n");
     else
@@ -68,7 +65,7 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
                 break;
             case 2:
                 if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix))
-                    mobPos.y ++;
+                    mobPos.y --;
                 break;
             case 3:
                 if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix))
@@ -76,7 +73,7 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
                 break;
             case 4:
                 if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix))
-                    mobPos.y --;
+                    mobPos.y ++;
                 break;
         }
     }

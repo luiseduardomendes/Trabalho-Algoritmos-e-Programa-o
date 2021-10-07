@@ -2,17 +2,17 @@
 #include <stdio.h>
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
-
+void showDisplay (int mapUsed, typePos playerPos, typePos npcPos);
 
 void showDisplay (int mapUsed, typePos playerPos, typePos npcPos){
     int i, j;
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("maps.bin", "rb");
+    map = fopen("arquivos/maps.bin", "rb");
     if (map != NULL)
         printf("Arquivo aberto com sucesso!\n");
     else
         printf("Erro na abertura do arquivo!\n");
-    system("cls");
+    system("clear");
 
     rewind(map);
     fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
