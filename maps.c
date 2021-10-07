@@ -3,7 +3,6 @@
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
 
-FILE *map;
 
 void showDisplay (int mapUsed, typePos playerPos){
     int i, j;

@@ -1,7 +1,9 @@
 #include <stdio.h>
+FILE *map;
 #include "moveMob.c"
 #include "maps.c"
-*FILE map;
+
+
 
 int main() {
     printf("Hello world!\n");
