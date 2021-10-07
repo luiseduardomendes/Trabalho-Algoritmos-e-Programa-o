@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#define TOUP 'W'
+#define TOLEFT 'A'
+#define TODOWN 'S'
+#define TORIGHT 'D'
+#define WALL '#'
+#define SIZEMAP_X 60
+#define SIZEMAP_Y 23
+
+int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 
 typedef struct position{
     int x, y;
@@ -17,6 +26,7 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
     if (fabs(playerPos.x - mobPos.x) < rangeViewMob && 
                 fabs(playerPos.y - mobPos.y) < rangeViewMob){
         if (playerPos.x > mobPos.x){
+            if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, map))
             mobPos.x ++;
         }
         else {
@@ -48,6 +58,30 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
     }
     npcPos->x = mobPos.x;
     npcPos->y = mobPos.y;
+}
+
+int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]) {
+    int validPosition;
+    validPosition = 1;
+
+    switch (direction) {
+        case TOUP:
+            if( map[y + 1] == WALL )
+                validPosition = 0;
+            break;
+        case TOLEFT:
+            if ( map[x - 1] == WALL )
+                validPosition = 0;
+        case TODOWN:
+            if( map[y - 1] == WALL )
+                validPosition = 0;
+            break;
+        case TORIGHT:
+            if ( map[x + 1] == WALL )
+                 validPosition = 0;
+            break;
+    }
+    return validPosition;
 }
 
 /*  code to test if movement is working
