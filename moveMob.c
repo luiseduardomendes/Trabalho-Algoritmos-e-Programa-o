@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 #define TOUP 'W'
 #define TOLEFT 'A'
 #define TODOWN 'S'
@@ -10,7 +12,7 @@
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
 
-int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
+bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 
 typedef struct position{
     int x, y;
@@ -27,16 +29,19 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
                 fabs(playerPos.y - mobPos.y) < rangeViewMob){
         if (playerPos.x > mobPos.x){
             if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, map))
-            mobPos.x ++;
+                mobPos.x ++;
         }
         else {
-            mobPos.x --;        
+            if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, map))
+                mobPos.x --;
         }
         if (playerPos.y > mobPos.y){
-            mobPos.y ++;        
+            if (verifyPosition(mobPos.x, mobPos.y, TOUP, map))
+                mobPos.y ++;
         }    
         else {
-            mobPos.y --;        
+            if (verifyPosition(mobPos.x, mobPos.y, TODOWN, map))
+                mobPos.y --;
         }
     }
     else{
@@ -60,25 +65,26 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
     npcPos->y = mobPos.y;
 }
 
-int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]) {
+bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]) {
     int validPosition;
-    validPosition = 1;
+    validPosition = true;
 
     switch (direction) {
         case TOUP:
-            if( map[y + 1] == WALL )
-                validPosition = 0;
+            if ( map[y + 1][x] == WALL )
+                validPosition = false;
             break;
         case TOLEFT:
-            if ( map[x - 1] == WALL )
-                validPosition = 0;
+            if ( map[y][x - 1] == WALL )
+                validPosition = false;
+            break;
         case TODOWN:
-            if( map[y - 1] == WALL )
-                validPosition = 0;
+            if ( map[y - 1][x] == WALL )
+                validPosition = false;
             break;
         case TORIGHT:
-            if ( map[x + 1] == WALL )
-                 validPosition = 0;
+            if ( map[y][x + 1] == WALL )
+                 validPosition = false;
             break;
     }
     return validPosition;
