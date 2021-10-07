@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#define TOUP 'W'
+#define TOLEFT 'A'
+#define TODOWN 'S'
+#define TORIGHT 'D'
+#define WALL '#'
+#define SIZEMAP_X 60
+#define SIZEMAP_Y 23
+
+bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 
 typedef struct position{
     int x, y;
@@ -17,16 +28,20 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
     if (fabs(playerPos.x - mobPos.x) < rangeViewMob && 
                 fabs(playerPos.y - mobPos.y) < rangeViewMob){
         if (playerPos.x > mobPos.x){
-            mobPos.x ++;
+            if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, map))
+                mobPos.x ++;
         }
         else {
-            mobPos.x --;        
+            if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, map))
+                mobPos.x --;
         }
         if (playerPos.y > mobPos.y){
-            mobPos.y ++;        
+            if (verifyPosition(mobPos.x, mobPos.y, TOUP, map))
+                mobPos.y ++;
         }    
         else {
-            mobPos.y --;        
+            if (verifyPosition(mobPos.x, mobPos.y, TODOWN, map))
+                mobPos.y --;
         }
     }
     else{
@@ -48,6 +63,31 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
     }
     npcPos->x = mobPos.x;
     npcPos->y = mobPos.y;
+}
+
+bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]) {
+    int validPosition;
+    validPosition = true;
+
+    switch (direction) {
+        case TOUP:
+            if ( map[y + 1][x] == WALL )
+                validPosition = false;
+            break;
+        case TOLEFT:
+            if ( map[y][x - 1] == WALL )
+                validPosition = false;
+            break;
+        case TODOWN:
+            if ( map[y - 1][x] == WALL )
+                validPosition = false;
+            break;
+        case TORIGHT:
+            if ( map[y][x + 1] == WALL )
+                 validPosition = false;
+            break;
+    }
+    return validPosition;
 }
 
 /*  code to test if movement is working
