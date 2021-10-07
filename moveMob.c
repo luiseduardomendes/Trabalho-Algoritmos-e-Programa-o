@@ -13,7 +13,7 @@
 #define SIZEMAP_Y 23
 
 bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
-
+void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob);
 typedef struct position{
     int x, y;
 }typePos;
