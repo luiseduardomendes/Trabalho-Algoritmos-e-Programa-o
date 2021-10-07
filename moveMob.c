@@ -22,42 +22,61 @@ typedef struct position{
 void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
     int flagMov;
     typePos mobPos = *npcPos;
+    int mapUsed = 0;
 
     srand(time(NULL));
 
-    if (fabs(playerPos.x - mobPos.x) < rangeViewMob && 
-                fabs(playerPos.y - mobPos.y) < rangeViewMob){
+    flagMov = (1 + ((float)rand() / RAND_MAX) * (4 - 1));
+
+    printf("%d\n", flagMov);
+    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
+    map = fopen("maps.bin", "rb");
+    if (map != NULL)
+        printf("Arquivo aberto com sucesso!\n");
+    else
+        printf("Erro na abertura do arquivo!\n");
+
+    rewind(map);
+    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
+    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
+
+    if (fabs(playerPos.x - mobPos.x) < rangeViewMob &&
+    fabs(playerPos.y - mobPos.y) < rangeViewMob){
         if (playerPos.x > mobPos.x){
-            if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, map))
+            if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix))
                 mobPos.x ++;
         }
         else {
-            if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, map))
+            if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix))
                 mobPos.x --;
         }
         if (playerPos.y > mobPos.y){
-            if (verifyPosition(mobPos.x, mobPos.y, TOUP, map))
+            if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix))
                 mobPos.y ++;
-        }    
+        }
         else {
-            if (verifyPosition(mobPos.x, mobPos.y, TODOWN, map))
+            if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix))
                 mobPos.y --;
         }
     }
     else{
-        flagMov = 1 + ((float) rand() / RAND_MAX) * 3;
+
         switch (flagMov) {
             case 1:
-                mobPos.x ++;            
+                if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix))
+                    mobPos.x ++;
                 break;
             case 2:
-                mobPos.y ++;            
+                if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix))
+                    mobPos.y ++;
                 break;
             case 3:
-                mobPos.x --;            
+                if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix))
+                    mobPos.x --;
                 break;
             case 4:
-                mobPos.y --;            
+                if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix))
+                    mobPos.y --;
                 break;
         }
     }
@@ -65,26 +84,26 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
     npcPos->y = mobPos.y;
 }
 
-bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]) {
+bool verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int validPosition;
     validPosition = true;
 
     switch (direction) {
         case TOUP:
-            if ( map[y + 1][x] == WALL )
+            if ( mapMatrix[y - 1][x] == WALL )
                 validPosition = false;
             break;
         case TOLEFT:
-            if ( map[y][x - 1] == WALL )
-                validPosition = false;
+            if ( mapMatrix[y][x - 1] == WALL )
+                    validPosition = false;
             break;
         case TODOWN:
-            if ( map[y - 1][x] == WALL )
+            if ( mapMatrix[y + 1][x] == WALL )
                 validPosition = false;
             break;
         case TORIGHT:
-            if ( map[y][x + 1] == WALL )
-                 validPosition = false;
+            if ( mapMatrix[y][x + 1] == WALL )
+                validPosition = false;
             break;
     }
     return validPosition;
