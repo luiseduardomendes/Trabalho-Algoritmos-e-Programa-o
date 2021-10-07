@@ -12,13 +12,10 @@
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
 
-bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
-void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob);
 
 // Procedure to control the movement of the enemies
-void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
+typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
     int flagMov;
-    typePos mobPos = *npcPos;
     int mapUsed = 0;
 
     srand(time(NULL));
@@ -77,8 +74,7 @@ void npcMovement(typePos *npcPos, typePos playerPos, int rangeViewMob) {
                 break;
         }
     }
-    npcPos->x = mobPos.x;
-    npcPos->y = mobPos.y;
+    return mobPos;
 }
 
 bool verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {

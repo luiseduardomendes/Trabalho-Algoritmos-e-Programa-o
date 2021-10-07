@@ -2,7 +2,6 @@
 #include <stdio.h>
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
-void showDisplay (int mapUsed, typePos playerPos, typePos npcPos);
 
 void showDisplay (int mapUsed, typePos playerPos, typePos npcPos){
     int i, j;

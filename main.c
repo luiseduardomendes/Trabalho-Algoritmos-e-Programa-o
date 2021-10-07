@@ -1,15 +1,10 @@
-#include <stdio.h>
 #include <locale.h>
-typedef struct position{
-    int x, y;
-}typePos;
-FILE *map;
+#include "headers.h"
 #include "moveMob.c"
 #include "maps.c"
 
 
 
-void sleep_ms(int milliseconds);
 
 int main() {
     setlocale(LC_ALL, "");
@@ -17,13 +12,13 @@ int main() {
     typePos playerPos, npcPos;
     playerPos.x = 10;
     playerPos.y = 10;
-    npcPos.x = 2;
+    npcPos.x = 20;
     npcPos.y = 3;
-    npcMovement(&npcPos, playerPos, 5);
+    npcMovement(npcPos, playerPos, 5);
     printf("Posição do NPC: %d, %d\n", npcPos.x, npcPos.y);
     printf("Posição do Player: %d, %d\n", playerPos.x, playerPos.y);
     do{
-        npcMovement(&npcPos, playerPos, 5);
+        npcPos = npcMovement(npcPos, playerPos, 5);
         showDisplay(0, playerPos, npcPos);
         sleep_ms(250);
     } while (true);
