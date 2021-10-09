@@ -6,8 +6,10 @@
 #include <stdlib.h>
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
+enum directions {w, a, s, d};
 typedef struct position{
     int x, y;
+    int direction;
 }typePos;
 FILE *map;
 void sleep_ms(int milliseconds);
