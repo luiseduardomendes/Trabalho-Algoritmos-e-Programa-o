@@ -1,23 +1,22 @@
-#include "headers.h"
-
-int throwShuriken(clock_t timeCurrent, clock_t timeBegin, typePos shuriken, typePos enemy){
+int throwShuriken(clock_t timeCurrent, clock_t timeBegin, typePos *shuriken, typePos enemy){
     int throwing = 1;
     if ((double)(timeCurrent - timeBegin) / CLOCKS_PER_SEC > 0.15){
-        printf("%d %d\n", shuriken.x, shuriken.y);
         timeBegin = clock();
-        switch (shuriken.direction) {
-            case w: shuriken.y ++;
+        switch (shuriken->direction) {
+            case TOUP: shuriken->y ++;
                 break;
-            case a: shuriken.x --;
+            case TOLEFT: shuriken->x --;
                 break;
-            case s: shuriken.y --;
+            case TORIGHT: shuriken->y --;
                 break;
-            case d: shuriken.x ++;
+            case TODOWN: shuriken->x ++;
                 break;
         }
-        if (shuriken.x == enemy.x && shuriken.y == enemy.y) {
+        /*if (shuriken->x == enemy.x && shuriken->y == enemy.y) {
             throwing = 0;
         }
+        if (shuriken->x > 50 || shuriken->x < 0 || shuriken->y > 50 || shuriken->y < 0)
+            throwing = 0;*/
     }
     timeCurrent = clock();
     return throwing;

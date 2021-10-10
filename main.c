@@ -1,31 +1,44 @@
 #include <locale.h>
 #include "headers.h"
+#include "attacks.c"
 #include "moveMob.c"
 #include "maps.c"
-
-
-
 
 int main() {
     setlocale(LC_ALL, "");
     clock_t timeCurrent;
-    clock_t timeBegin;
-    typePos playerPos, npcPos;
+    clock_t timeBeginMovement;
+    clock_t timeBeginShuriken;
+    typePos playerPos, npcPos, shuriken;
+    int throwing = 0;
     printf("Hello world!\n");
     playerPos.x = 10;
     playerPos.y = 10;
     npcPos.x = 20;
     npcPos.y = 3;
+    npcPos.direction = TOLEFT;
     npcMovement(npcPos, playerPos, 5);
     printf("Posição do NPC: %d, %d\n", npcPos.x, npcPos.y);
     printf("Posição do Player: %d, %d\n", playerPos.x, playerPos.y);
-    timeBegin = clock();
+    timeBeginMovement = clock();
+    timeBeginShuriken = clock();
+            
     do{
         timeCurrent = clock();
-        if ((double)(timeCurrent - timeBegin) / CLOCKS_PER_SEC > 0.250){
+        if (!(throwing)){
+            shuriken.x = npcPos.x;
+            shuriken.y = npcPos.y;
+            shuriken.direction = npcPos.direction;
+            throwing = 1;
+            timeBeginShuriken = clock();
+        }
+        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
             npcPos = npcMovement(npcPos, playerPos, 5);
-            showDisplay(0, playerPos, npcPos);
-            timeBegin = clock();
+            showDisplay(0, playerPos, npcPos, shuriken);
+            timeBeginMovement = clock();
+        }
+        if (throwing){
+            throwing = throwShuriken(timeCurrent, timeBeginShuriken, &shuriken, playerPos);
         }
     } while (true);
     return 0;

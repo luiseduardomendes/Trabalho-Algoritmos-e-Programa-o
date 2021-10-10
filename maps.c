@@ -1,9 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-#define SIZEMAP_X 60
-#define SIZEMAP_Y 23
 
-void showDisplay (int mapUsed, typePos playerPos, typePos npcPos){
+void showDisplay (int mapUsed, typePos playerPos, typePos npcPos, typePos shuriken){
     int i, j;
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     map = fopen("arquivos/maps.bin", "rb");
@@ -24,6 +20,8 @@ void showDisplay (int mapUsed, typePos playerPos, typePos npcPos){
         for (j = 0; j < SIZEMAP_X; j ++) {
             if (playerPos.y == i && playerPos.x == j)
                 printf("P");
+            else if (shuriken.y == i && shuriken.x == j)
+                printf("*");
             else if (npcPos.y == i && npcPos.x == j)
                 printf("M");
             else

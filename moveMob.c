@@ -1,17 +1,3 @@
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#define TOUP 'W'
-#define TOLEFT 'A'
-#define TODOWN 'S'
-#define TORIGHT 'D'
-#define WALL '#'
-#define SIZEMAP_X 60
-#define SIZEMAP_Y 23
-
 
 // Procedure to control the movement of the enemies
 typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
@@ -37,20 +23,28 @@ typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
     if (fabs(playerPos.x - mobPos.x) < rangeViewMob &&
     fabs(playerPos.y - mobPos.y) < rangeViewMob){
         if (playerPos.x > mobPos.x){
-            if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix))
+            if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix)) {
                 mobPos.x ++;
+                mobPos.direction = TORIGHT;
+            }
         }
         else {
-            if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix))
+            if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix)) {
                 mobPos.x --;
+                mobPos.direction = TOLEFT;
+            }
         }
         if (playerPos.y > mobPos.y){
-            if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix))
+            if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix)) {
                 mobPos.y ++;
+                mobPos.direction = TOUP;
+            }
         }
         else {
-            if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix))
+            if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix)) {
                 mobPos.y --;
+                mobPos.direction = TODOWN;
+            }
         }
     }
     else{
