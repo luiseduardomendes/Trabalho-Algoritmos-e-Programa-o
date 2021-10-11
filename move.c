@@ -6,7 +6,7 @@ typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
 
     srand(time(NULL));
 
-    flagMov = (1 + ((float)rand() / RAND_MAX) * (4 ));
+    flagMov = (1 + (rand() % 4));
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     map = fopen("arquivos/maps.bin", "rb");
