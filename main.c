@@ -12,6 +12,8 @@ int main() {
     clock_t timeCurrent;
     clock_t timeBeginMovement;
     clock_t timeBeginShuriken;
+    clock_t timeBeginFrame;
+    float frameRate = 0.05;
     typePos playerPos, npcPos, shuriken;
     int throwing = 0;
     printf("Hello world!\n");
@@ -21,10 +23,9 @@ int main() {
     npcPos.y = 3;
     npcPos.direction = TOLEFT;
     npcMovement(npcPos, playerPos, 5);
-    printf("Posição do NPC: %d, %d\n", npcPos.x, npcPos.y);
-    printf("Posição do Player: %d, %d\n", playerPos.x, playerPos.y);
     timeBeginMovement = clock();
     timeBeginShuriken = clock();
+    timeBeginFrame = clock();
             
     do{
         timeCurrent = clock();
@@ -42,8 +43,12 @@ int main() {
         if (throwing){
             throwing = throwShuriken(timeCurrent, timeBeginShuriken, &shuriken, playerPos);
         }
-        clearscreen();
-        showDisplay(0, playerPos, npcPos, shuriken);
+        if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.05){
+            clearscreen();
+            showDisplay(0, playerPos, npcPos, shuriken);
+            timeBeginFrame = clock();
+        }
+        
     } while (true);
     return 0;
 }
@@ -64,7 +69,7 @@ void sleep_ms(int milliseconds) {
 void clearscreen(){
   #ifdef WIN32
     system("cls");
-  #elif POSIX_C_SOURCE >= 19309L
-    SYSTEM("clear");
+  #else
+    system("clear");
   #endif
 }

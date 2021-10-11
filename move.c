@@ -8,13 +8,8 @@ typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
 
     flagMov = (1 + ((float)rand() / RAND_MAX) * (4 ));
 
-    printf("%d\n", flagMov);
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     map = fopen("arquivos/maps.bin", "rb");
-    if (map != NULL)
-        printf("Arquivo aberto com sucesso!\n");
-    else
-        printf("Erro na abertura do arquivo!\n");
 
     rewind(map);
     fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
