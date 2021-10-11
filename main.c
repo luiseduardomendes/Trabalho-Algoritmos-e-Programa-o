@@ -1,9 +1,11 @@
 #include <locale.h>
+#include <stdlib.h>
 #include "headers.h"
 #include "attacks.c"
 #include "move.c"
 #include "maps.c"
 
+void clearscreen();
 
 int main() {
     setlocale(LC_ALL, "");
@@ -35,12 +37,13 @@ int main() {
         }
         if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
             npcPos = npcMovement(npcPos, playerPos, 5);
-            showDisplay(0, playerPos, npcPos, shuriken);
             timeBeginMovement = clock();
         }
         if (throwing){
             throwing = throwShuriken(timeCurrent, timeBeginShuriken, &shuriken, playerPos);
         }
+        clearscreen();
+        showDisplay(0, playerPos, npcPos, shuriken);
     } while (true);
     return 0;
 }
@@ -56,4 +59,12 @@ void sleep_ms(int milliseconds) {
     #else
         usleep(milliseconds * 1000);
     #endif
+}
+
+void clearscreen(){
+  #ifdef WIN32
+    system("cls");
+  #elif POSIX_C_SOURCE >= 19309L
+    SYSTEM("clear");
+  #endif
 }
