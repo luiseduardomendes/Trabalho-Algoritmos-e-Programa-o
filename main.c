@@ -1,8 +1,9 @@
 #include <locale.h>
 #include "headers.h"
 #include "attacks.c"
-#include "moveMob.c"
+#include "move.c"
 #include "maps.c"
+
 
 int main() {
     setlocale(LC_ALL, "");
@@ -14,7 +15,7 @@ int main() {
     printf("Hello world!\n");
     playerPos.x = 10;
     playerPos.y = 10;
-    npcPos.x = 20;
+    npcPos.x = 10;
     npcPos.y = 3;
     npcPos.direction = TOLEFT;
     npcMovement(npcPos, playerPos, 5);
