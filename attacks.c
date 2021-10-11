@@ -3,11 +3,11 @@ int throwShuriken(clock_t timeCurrent, clock_t timeBegin, typePos *shuriken, typ
     if ((double)(timeCurrent - timeBegin) / CLOCKS_PER_SEC > 0.15){
         timeBegin = clock();
         switch (shuriken->direction) {
-            case TOUP: shuriken->y ++;
+            case TOUP: shuriken->y --;
                 break;
             case TOLEFT: shuriken->x --;
                 break;
-            case TORIGHT: shuriken->y --;
+            case TORIGHT: shuriken->y ++;
                 break;
             case TODOWN: shuriken->x ++;
                 break;
