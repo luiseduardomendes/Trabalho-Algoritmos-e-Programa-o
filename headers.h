@@ -4,6 +4,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <windows.h>
 #define TOUP 'W'
 #define TOLEFT 'A'
 #define TODOWN 'S'

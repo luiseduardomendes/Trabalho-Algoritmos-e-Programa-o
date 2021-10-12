@@ -42,6 +42,7 @@ int main() {
     npcPos[3].y = 5;
     npcPos[2].direction = TOLEFT;
     npcPos[3].direction = TOLEFT;
+    timeBeginMovementPlayer = clock();
     timeBeginShuriken = clock();
     timeBeginMovement = clock();
     timeBeginFrame = clock();
@@ -64,6 +65,11 @@ int main() {
             break;
         } 
         timeCurrent = clock();
+
+        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
+            playerMovement(playerPos);
+            timeBeginMovementPlayer = clock();
+        }
 
         for(i = 0; i < NUM_MOBS; i ++){
             if (shuriken[i].throwing  == 0 && 
@@ -160,3 +166,18 @@ int kbhit(void) {
     return c ;
 }
 
+int _getch(void)
+{
+  HANDLE hConsole;
+  DWORD cm, n;
+  char buffer[4];
+
+  hConsole = GetStdHandle(STD_INPUT_HANDLE);
+  GetConsoleMode(hConsole, &cm);
+  SetConsoleMode(hConsole, cm &
+             ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT));
+  ReadConsole(hConsole, buffer, 1, &n, NULL);
+  SetConsoleMode(hConsole, cm);
+
+  return buffer[0];
+}

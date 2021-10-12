@@ -66,6 +66,36 @@ void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
     }
 }
 
+void playerMovement(typePos playerPos){
+    do{
+        switch (_getch) {
+            case 'd':
+                if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix))
+                    playerPos.x ++;
+                    playerPos.direction = TORIGHT;
+                break;
+            case 'w':
+                if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix))
+                    playerPos.y --;
+                    playerPos.direction = TOUP;
+                break;
+            case 'a':
+                if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix))
+                    playerPos.x --;
+                    playerPos.direction = TOLEFT;
+                break;
+            case 's':
+                if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix))
+                    playerPos.y ++;
+                    playerPos.direction = TODOWN;
+                break;
+            case 'z':
+                throwing = 1;
+                break;
+        }
+    }while(true)
+}
+
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int validPosition;
     validPosition = true;
