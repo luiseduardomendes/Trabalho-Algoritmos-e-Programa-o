@@ -5,11 +5,15 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <ctype.h>
-#ifdef win32
+#ifdef _win32
     #include <windows.h>
 #else
     #include <unistd.h>
     #include <termios.h>
+    void init_attr(void) ;
+    void close_attr(void) ;
+    int kbhit(void) ;
+    struct termios old_attr, new_attr;
 #endif
 #define TOUP 'W'
 #define TOLEFT 'A'

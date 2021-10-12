@@ -8,11 +8,6 @@
 
 void clearscreen();
 
-void init_attr(void) ;
-void close_attr(void) ;
-int kbhit(void) ;
-struct termios old_attr, new_attr;
-
 int main() {
     setlocale(LC_ALL, "");
     clock_t timeCurrent;
