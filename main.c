@@ -26,6 +26,7 @@ int main() {
     timeBeginMovement = clock();
     timeBeginShuriken = clock();
     timeBeginFrame = clock();
+
             
     do{
         timeCurrent = clock();
@@ -35,13 +36,17 @@ int main() {
             shuriken.direction = npcPos.direction;
             throwing = 1;
             timeBeginShuriken = clock();
+            
         }
-        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
+        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.50){
             npcPos = npcMovement(npcPos, playerPos, 5);
             timeBeginMovement = clock();
         }
-        if (throwing){
-            throwing = throwShuriken(timeCurrent, timeBeginShuriken, &shuriken, playerPos);
+        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.1){
+            if (throwing){
+                throwing = throwShuriken(&shuriken, playerPos);
+                timeBeginShuriken = clock();
+            }
         }
         if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.05){
             clearscreen();

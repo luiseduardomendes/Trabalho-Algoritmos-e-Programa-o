@@ -46,20 +46,28 @@ typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
 
         switch (flagMov) {
             case 1:
-                if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix))
+                if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix)){
                     mobPos.x ++;
+                    mobPos.direction = TORIGHT;
+                }
                 break;
             case 2:
-                if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix))
+                if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix)){
                     mobPos.y --;
+                    mobPos.direction = TOUP;
+                }
                 break;
             case 3:
-                if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix))
+                if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix)){
                     mobPos.x --;
+                    mobPos.direction = TOLEFT;
+                }
                 break;
             case 4:
-                if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix))
+                if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix)){
                     mobPos.y ++;
+                    mobPos.direction = TODOWN;
+                }
                 break;
         }
     }

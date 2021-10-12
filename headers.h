@@ -20,4 +20,4 @@ void sleep_ms(int milliseconds);
 void showDisplay (int mapUsed, typePos playerPos, typePos npcPos, typePos shuriken);
 bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 typePos npcMovement(typePos npcPos, typePos playerPos, int rangeViewMob);
-int throwShuriken(clock_t timeCurrent, clock_t timeBegin, typePos *shuriken, typePos enemy);
+int throwShuriken(typePos *shuriken, typePos enemy);
