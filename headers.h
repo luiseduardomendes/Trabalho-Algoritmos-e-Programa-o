@@ -16,9 +16,16 @@ typedef struct position{
     int x, y;
     char direction;
 }typePos;
+typedef struct shuriken
+{
+    int x, y;
+    int throwing;
+    char direction;
+}typeShur;
+
 FILE *map;
 void sleep_ms(int milliseconds);
-void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typePos shuriken);
-bool verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
-typePos npcMovement(typePos npcPos[], typePos playerPos, int rangeViewMob);
-int throwShuriken(clock_t timeCurrent, clock_t timeBegin, typePos *shuriken, typePos enemy);
+void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
+typePos npcMovement(typePos npcPos, typePos playerPos, int rangeViewMob);
+int throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);

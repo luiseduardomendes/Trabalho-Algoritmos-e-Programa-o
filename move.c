@@ -1,6 +1,6 @@
 
 // Procedure to control the movement of the enemies
-typePos npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
+typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
     int flagMov;
     int mapUsed = 0;
 
@@ -66,7 +66,7 @@ typePos npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
     return mobPos;
 }
 
-bool verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int validPosition;
     validPosition = true;
 
