@@ -159,11 +159,11 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
 }
 
 /*  code to test if movement is working
-    typePos playerPos, npcPos;
+    typePos playerPos, infMob;
     playerPos.x = 10;
     playerPos.y = 10;
-    npcPos.x = 13;
-    npcPos.y = 13;
-    npcMovement(&npcPos, playerPos, 5);
-    printf("Posição do NPC: %d, %d\n", npcPos.x, npcPos.y);
+    infMob.x = 13;
+    infMob.y = 13;
+    npcMovement(&infMob, playerPos, 5);
+    printf("Posição do NPC: %d, %d\n", infMob.x, infMob.y);
     printf("Posição do Player: %d, %d\n", playerPos.x, playerPos.y);*/
