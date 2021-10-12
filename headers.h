@@ -28,4 +28,4 @@ void sleep_ms(int milliseconds);
 void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 typePos npcMovement(typePos npcPos, typePos playerPos, int rangeViewMob);
-int throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
