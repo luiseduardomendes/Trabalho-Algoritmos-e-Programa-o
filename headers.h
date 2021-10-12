@@ -11,7 +11,7 @@
 #define WALL '#'
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
-#define NUM_MOBS 2
+#define NUM_MOBS 4
 typedef struct position{
     int x, y;
     char direction;
@@ -28,4 +28,4 @@ void sleep_ms(int milliseconds);
 void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 void npcMovement(typePos infMob[], typePos playerPos, int rangeViewMob);
-void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void throwShuriken(typeShur shuriken[], typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);

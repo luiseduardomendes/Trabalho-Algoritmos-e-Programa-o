@@ -10,8 +10,8 @@ void clearscreen();
 int main() {
     setlocale(LC_ALL, "");
     clock_t timeCurrent;
-    clock_t timeBeginMovement[NUM_MOBS];
-    clock_t timeBeginShuriken[NUM_MOBS];
+    clock_t timeBeginMovement;
+    clock_t timeBeginShuriken;
     clock_t timeBeginFrame;
     float frameRate = 0.05;
     int i;
@@ -26,13 +26,19 @@ int main() {
     npcPos[1].y = 5;
     npcPos[0].direction = TOLEFT;
     npcPos[1].direction = TOLEFT;
-    timeBeginShuriken[0] = clock();
-    timeBeginShuriken[1] = clock();
-    timeBeginMovement[0] = clock();
-    timeBeginMovement[1] = clock();
+    npcPos[2].x = 15;
+    npcPos[2].y = 3;
+    npcPos[3].x = 17;
+    npcPos[3].y = 5;
+    npcPos[2].direction = TOLEFT;
+    npcPos[3].direction = TOLEFT;
+    timeBeginShuriken = clock();
+    timeBeginMovement = clock();
     timeBeginFrame = clock();
     shuriken[0].throwing = 0;
     shuriken[1].throwing = 0;
+    shuriken[2].throwing = 0;
+    shuriken[3].throwing = 0;
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     npcMovement(npcPos, playerPos, 5);
     map = fopen("arquivos/maps.bin", "rb");
@@ -44,27 +50,25 @@ int main() {
     do{
         timeCurrent = clock();
         for(i = 0; i < NUM_MOBS; i ++){
-            if ((shuriken[i].throwing  == 0 && (double)(timeCurrent - timeBeginShuriken[i]) / CLOCKS_PER_SEC < 5)){
+            if (shuriken[i].throwing  == 0 && 
+                    (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC < 5){
                 shuriken[i].x = npcPos[i].x;
                 shuriken[i].y = npcPos[i].y;
                 shuriken[i].direction = npcPos[i].direction;
                 shuriken[i].throwing = 1;
-                timeBeginShuriken[i] = clock();
+                timeBeginShuriken = clock();
             }
         }
         
-        if ((double)(timeCurrent - timeBeginMovement[i]) / CLOCKS_PER_SEC > 0.250){
+        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
             npcMovement(npcPos, playerPos, 5);
-            timeBeginMovement[i] = clock();
+            timeBeginMovement = clock();
         }
-        if (shuriken[i].throwing == 1) {
-            for(i = 0; i < NUM_MOBS; i ++) {
-                if ((double)(timeCurrent - timeBeginShuriken[i]) / CLOCKS_PER_SEC > 0.1){
-                    throwShuriken(&shuriken[i], playerPos, mapMatrix);
-                }
-            }
+        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.25){
+            throwShuriken(shuriken, playerPos, mapMatrix);
         }
-        if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.05){
+
+        if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.25){
             clearscreen();
             showDisplay(0, playerPos, npcPos, shuriken, mapMatrix);
             timeBeginFrame = clock();

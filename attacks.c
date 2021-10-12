@@ -1,20 +1,22 @@
-void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void throwShuriken(typeShur shuriken[], typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int throwing = 1;
-    
-    switch (shuriken->direction) {
-        case TOUP: shuriken->y --;
-            break;
-        case TOLEFT: shuriken->x --;
-            break;
-        case TORIGHT: shuriken->x ++;
-            break;
-        case TODOWN: shuriken->y ++;
-            break;
+    int i;
+    for (i = 0; i < NUM_MOBS; i ++){
+        switch (shuriken[i].direction) {
+            case TOUP: shuriken[i].y --;
+                break;
+            case TOLEFT: shuriken[i].x --;
+                break;
+            case TORIGHT: shuriken[i].x ++;
+                break;
+            case TODOWN: shuriken[i].y ++;
+                break;
+        }
+        if (shuriken[i].x == enemy.x && shuriken[i].y == enemy.y)
+            shuriken[i].throwing = 0;
+        if (shuriken[i].x > 50 || shuriken[i].x < 0 || shuriken[i].y > 50 || shuriken[i].y < 0)
+            shuriken[i].throwing = 0;
+        if (mapMatrix[shuriken[i].y][shuriken[i].x] == WALL)
+            shuriken[i].throwing = 0; 
     }
-    if (shuriken->x == enemy.x && shuriken->y == enemy.y)
-        shuriken->throwing = 0;
-    if (shuriken->x > 50 || shuriken->x < 0 || shuriken->y > 50 || shuriken->y < 0)
-        shuriken->throwing = 0;
-    if (mapMatrix[shuriken->y][shuriken->x] == WALL)
-        shuriken->throwing = 0; 
 }

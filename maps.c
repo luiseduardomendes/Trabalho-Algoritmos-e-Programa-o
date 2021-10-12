@@ -1,7 +1,6 @@
 
 void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int i, j, k;
-    ;
     
     // não é necessário abrir o arquivo todas as vezes
     // implementar a abertura do arquivo a cada nova fase
@@ -15,10 +14,19 @@ void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shu
                 printf("M");
             else if (npcPos[1].y == i && npcPos[1].x == j)
                 printf("M");
+            else if (npcPos[2].y == i && npcPos[2].x == j)
+                printf("M");
+            else if (npcPos[3].y == i && npcPos[3].x == j)
+                printf("M");
             else if (shuriken[0].y == i && shuriken[0].x == j)
                 printf("Z");
             else if (shuriken[1].y == i && shuriken[1].x == j)
                 printf("Z");            
+            else if (shuriken[2].y == i && shuriken[2].x == j)
+                printf("Z");
+            else if (shuriken[3].y == i && shuriken[3].x == j)
+                printf("Z");            
+            
             else
                 printf("%c", mapMatrix[i][j]);
         }
