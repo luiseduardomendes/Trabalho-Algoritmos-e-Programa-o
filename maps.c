@@ -1,34 +1,22 @@
 
-void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
-    int i, j, k;
+void showDisplay (int mapUsed, typePos playerPos, typePos infMob[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+    int i, j, k, mobFound = 0;
     
     // não é necessário abrir o arquivo todas as vezes
     // implementar a abertura do arquivo a cada nova fase
 
-    for (i = 0; i < SIZEMAP_Y ; i ++)  {
-
-        for (j = 0; j < SIZEMAP_X; j ++) {
-            if (playerPos.y == i && playerPos.x == j)
-                printf("P");
-            else if (npcPos[0].y == i && npcPos[0].x == j)
-                printf("M");
-            else if (npcPos[1].y == i && npcPos[1].x == j)
-                printf("M");
-            else if (npcPos[2].y == i && npcPos[2].x == j)
-                printf("M");
-            else if (npcPos[3].y == i && npcPos[3].x == j)
-                printf("M");
-            else if (shuriken[0].y == i && shuriken[0].x == j)
-                printf("Z");
-            else if (shuriken[1].y == i && shuriken[1].x == j)
-                printf("Z");            
-            else if (shuriken[2].y == i && shuriken[2].x == j)
-                printf("Z");
-            else if (shuriken[3].y == i && shuriken[3].x == j)
-                printf("Z");            
-            
-            else
-                printf("%c", mapMatrix[i][j]);
+    for(i = 0; i < SIZEMAP_Y; i++){
+        for(j = 0; j < SIZEMAP_X; j++){
+            mobFound = 0;
+            for(k = 0; k < NUM_MOBS; k++){
+                if((infMob[k].x == j) && (infMob[k].y == i)){
+                    printf("M");
+                    mobFound = 1;
+                }
+            }
+            if(mobFound == 0){
+                printf("%c", mapMatrix[i][j]);;
+            }
         }
         printf("\n");
     }

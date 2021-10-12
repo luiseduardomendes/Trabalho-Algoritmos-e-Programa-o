@@ -22,7 +22,7 @@ int main() {
     clock_t timeBeginFrame;
     float frameRate = 0.05;
     int i;
-    typePos playerPos, npcPos[NUM_MOBS];
+    typePos playerPos, infMob[NUM_MOBS];
     typeShur shuriken[NUM_MOBS];
     int flag_ler_nome = 0;
     char nome [20];
@@ -30,18 +30,18 @@ int main() {
     
     playerPos.x = 10;
     playerPos.y = 10;
-    npcPos[0].x = 10;
-    npcPos[0].y = 3;
-    npcPos[1].x = 12;
-    npcPos[1].y = 5;
-    npcPos[0].direction = TOLEFT;
-    npcPos[1].direction = TOLEFT;
-    npcPos[2].x = 15;
-    npcPos[2].y = 3;
-    npcPos[3].x = 17;
-    npcPos[3].y = 5;
-    npcPos[2].direction = TOLEFT;
-    npcPos[3].direction = TOLEFT;
+    infMob[0].x = 10;
+    infMob[0].y = 3;
+    infMob[1].x = 12;
+    infMob[1].y = 5;
+    infMob[0].direction = TOLEFT;
+    infMob[1].direction = TOLEFT;
+    infMob[2].x = 15;
+    infMob[2].y = 3;
+    infMob[3].x = 17;
+    infMob[3].y = 5;
+    infMob[2].direction = TOLEFT;
+    infMob[3].direction = TOLEFT;
     timeBeginShuriken = clock();
     timeBeginMovement = clock();
     timeBeginFrame = clock();
@@ -50,7 +50,7 @@ int main() {
     shuriken[2].throwing = 0;
     shuriken[3].throwing = 0;
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    npcMovement(npcPos, playerPos, 5);
+    npcMovement(infMob, playerPos, 5);
     map = fopen("arquivos/maps.bin", "rb");
     rewind(map);
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
@@ -68,16 +68,16 @@ int main() {
         for(i = 0; i < NUM_MOBS; i ++){
             if (shuriken[i].throwing  == 0 && 
                     (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC < 5){
-                shuriken[i].x = npcPos[i].x;
-                shuriken[i].y = npcPos[i].y;
-                shuriken[i].direction = npcPos[i].direction;
+                shuriken[i].x = infMob[i].x;
+                shuriken[i].y = infMob[i].y;
+                shuriken[i].direction = infMob[i].direction;
                 shuriken[i].throwing = 1;
                 timeBeginShuriken = clock();
             }
         }
         
         if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
-            npcMovement(npcPos, playerPos, 5);
+            npcMovement(infMob, playerPos, 5);
             timeBeginMovement = clock();
         }
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.25){
@@ -86,7 +86,7 @@ int main() {
 
         if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.25){
             clearscreen();
-            showDisplay(0, playerPos, npcPos, shuriken, mapMatrix);
+            showDisplay(0, playerPos, infMob, shuriken, mapMatrix);
             timeBeginFrame = clock();
         }
         

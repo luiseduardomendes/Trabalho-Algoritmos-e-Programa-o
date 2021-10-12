@@ -25,7 +25,7 @@ typedef struct shuriken
 
 FILE *map;
 void sleep_ms(int milliseconds);
-void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void showDisplay (int mapUsed, typePos playerPos, typePos infMob[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
 void npcMovement(typePos infMob[], typePos playerPos, int rangeViewMob);
 void throwShuriken(typeShur shuriken[], typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
