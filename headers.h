@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <ctype.h>
-#ifdef _win32
+#ifdef WIN32
     #include <windows.h>
 #else
     #include <unistd.h>

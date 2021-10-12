@@ -52,7 +52,9 @@ int main() {
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
     printf("Hello world!\n");
+    #ifndef WIN32
     init_attr();
+    #endif
     do{
         
         timeCurrent = clock();
@@ -89,13 +91,15 @@ int main() {
         }
         
     } while (true);
+    #ifndef WIN32
     close_attr();
+    #endif
     return 0;
 }
 
 void sleep_ms(int milliseconds) {
     #ifdef WIN32
-        _sleep(milliseconds);
+        Sleep(milliseconds);
     #elif _POSIX_C_SOURCE >= 199309L
         struct timespec ts;
         ts.tv_sec = milliseconds / 1000;
@@ -115,7 +119,7 @@ void clearscreen(){
 }
 
 
-#ifdef win32
+#ifdef WIN32
     int _getch(void)
     {
     HANDLE hConsole;
