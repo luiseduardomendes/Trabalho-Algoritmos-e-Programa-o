@@ -17,7 +17,7 @@ void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shu
                 printf("M");
             else if (shuriken[0].y == i && shuriken[0].x == j)
                 printf("Z");
-            else if (shuriken[0].y == i && shuriken[0].x == j)
+            else if (shuriken[0].y == i && shuriken[1].x == j)
                 printf("Z");            
             else
                 printf("%c", mapMatrix[i][j]);

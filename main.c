@@ -17,7 +17,7 @@ int main() {
     int i;
     typePos playerPos, npcPos[NUM_MOBS];
     typeShur shuriken[NUM_MOBS];
-    printf("Hello world!\n");
+    
     playerPos.x = 10;
     playerPos.y = 10;
     npcPos[0].x = 10;
@@ -26,6 +26,8 @@ int main() {
     npcPos[1].y = 5;
     npcPos[0].direction = TOLEFT;
     npcPos[1].direction = TOLEFT;
+    shuriken[0].throwing = 0;
+    shuriken[1].throwing = 0;
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     npcMovement(npcPos[0], playerPos, 5);
     timeBeginMovement = clock();
@@ -36,11 +38,12 @@ int main() {
     rewind(map);
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
+    printf("Hello world!\n");
             
     do{
         timeCurrent = clock();
         for(i = 0; i < NUM_MOBS; i ++){
-            if (!(shuriken[i].throwing)){
+            if ((shuriken[i].throwing) == 0){
                 shuriken[i].x = npcPos[i].x;
                 shuriken[i].y = npcPos[i].y;
                 shuriken[i].direction = npcPos[i].direction;
@@ -53,7 +56,7 @@ int main() {
             timeBeginMovement = clock();
         }
         for(i = 0; i < NUM_MOBS; i ++){
-            if (shuriken[i].throwing){
+            if (shuriken[i].throwing && (double)(timeCurrent - timeBeginShuriken[i]) / CLOCKS_PER_SEC > 0.1){
                 shuriken[i].throwing = throwShuriken(&shuriken[i], playerPos, mapMatrix);
             }
         }
