@@ -1,4 +1,4 @@
-int throwShuriken(typePos *shuriken, typePos enemy){
+int throwShuriken(typePos *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int throwing = 1;
     
     switch (shuriken->direction) {
@@ -16,6 +16,7 @@ int throwShuriken(typePos *shuriken, typePos enemy){
     }
     if (shuriken->x > 50 || shuriken->x < 0 || shuriken->y > 50 || shuriken->y < 0)
         throwing = 0;
-    
+    if (mapMatrix[shuriken->y][shuriken->x] == WALL)
+        throwing = 0; 
     return throwing;
 }

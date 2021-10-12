@@ -15,10 +15,10 @@ void showDisplay (int mapUsed, typePos playerPos, typePos npcPos, typePos shurik
         for (j = 0; j < SIZEMAP_X; j ++) {
             if (playerPos.y == i && playerPos.x == j)
                 printf("P");
-            else if (shuriken.y == i && shuriken.x == j)
-                printf("Z");
             else if (npcPos.y == i && npcPos.x == j)
                 printf("M");
+            else if (shuriken.y == i && shuriken.x == j)
+                printf("Z");
             else
                 printf("%c", mapMatrix[i][j]);
         }

@@ -26,6 +26,11 @@ int main() {
     timeBeginMovement = clock();
     timeBeginShuriken = clock();
     timeBeginFrame = clock();
+    map = fopen("arquivos/maps.bin", "rb");
+    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
+    rewind(map);
+    fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
+    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
 
             
     do{
@@ -44,7 +49,7 @@ int main() {
         }
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.1){
             if (throwing){
-                throwing = throwShuriken(&shuriken, playerPos);
+                throwing = throwShuriken(&shuriken, playerPos, mapMatrix);
                 timeBeginShuriken = clock();
             }
         }
