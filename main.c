@@ -4,8 +4,15 @@
 #include "attacks.c"
 #include "move.c"
 #include "maps.c"
+#include <unistd.h>
+#include <termios.h>
 
 void clearscreen();
+
+void init_attr(void) ;
+void close_attr(void) ;
+int kbhit(void) ;
+struct termios old_attr, new_attr;
 
 int main() {
     setlocale(LC_ALL, "");
@@ -17,6 +24,9 @@ int main() {
     int i;
     typePos playerPos, npcPos[NUM_MOBS];
     typeShur shuriken[NUM_MOBS];
+    int flag_ler_nome = 0;
+    char nome [20];
+    
     
     playerPos.x = 10;
     playerPos.y = 10;
@@ -46,9 +56,15 @@ int main() {
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
     printf("Hello world!\n");
-            
+    init_attr();
     do{
+        flag_ler_nome = kbhit() ;
+
+        if(flag_ler_nome == 'k') {
+            break;
+        } 
         timeCurrent = clock();
+
         for(i = 0; i < NUM_MOBS; i ++){
             if (shuriken[i].throwing  == 0 && 
                     (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC < 5){
@@ -75,6 +91,7 @@ int main() {
         }
         
     } while (true);
+    close_attr();
     return 0;
 }
 
@@ -98,3 +115,48 @@ void clearscreen(){
     system("clear");
   #endif
 }
+
+/*
+ * [dkbhit.c]
+ * Simula a função kbhit().
+ *
+ * [Autor]
+ * Daemonio (Marcos Paulo Ferreira)
+ * undefinido at gmail com
+ * https://daemoniolabs.wordpress.com
+ *
+ * Versão 1.0, by daemonio @ Thu Dec 27 20:40:22 BRST 2012
+ */
+
+
+
+void init_attr(void) {
+    /* Obtém as configurações atuais. */
+    tcgetattr(0,&old_attr);
+    new_attr=old_attr;
+
+    /* Desliga modo canônico. */
+    new_attr.c_lflag &=~ICANON ;
+
+    /* Desliga ecoamento. */
+    new_attr.c_lflag &= ~ECHO;
+
+    new_attr.c_cc[VTIME]=0 ;
+    new_attr.c_cc[VMIN]=0 ;
+}
+
+/* Retorna configurações antigas. */
+void close_attr(void) {
+    tcsetattr(STDIN_FILENO,TCSANOW,&old_attr);
+}
+
+int kbhit(void) {
+    int c ;
+
+    tcsetattr(STDIN_FILENO,TCSANOW,&new_attr);
+    c = getchar() ; /* retorna EOF se nada foi pressionado */
+    tcsetattr(STDIN_FILENO,TCSANOW,&old_attr);
+
+    return c ;
+}
+
