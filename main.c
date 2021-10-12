@@ -4,8 +4,7 @@
 #include "attacks.c"
 #include "move.c"
 #include "maps.c"
-#include <unistd.h>
-#include <termios.h>
+
 
 void clearscreen();
 
@@ -18,6 +17,7 @@ int main() {
     setlocale(LC_ALL, "");
     clock_t timeCurrent;
     clock_t timeBeginMovement;
+    clock_t timeBeginMovementPlayer;
     clock_t timeBeginShuriken;
     clock_t timeBeginFrame;
     float frameRate = 0.05;
@@ -59,15 +59,11 @@ int main() {
     printf("Hello world!\n");
     init_attr();
     do{
-        flag_ler_nome = kbhit() ;
-
-        if(flag_ler_nome == 'k') {
-            break;
-        } 
+        
         timeCurrent = clock();
 
-        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
-            playerMovement(playerPos);
+        if ((double)(timeCurrent - timeBeginMovementPlayer) / CLOCKS_PER_SEC > 0.250){
+            playerMovement(playerPos, mapMatrix);
             timeBeginMovementPlayer = clock();
         }
 
@@ -88,6 +84,7 @@ int main() {
         }
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.25){
             throwShuriken(shuriken, playerPos, mapMatrix);
+            timeBeginShuriken = clock();
         }
 
         if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.25){
@@ -122,62 +119,65 @@ void clearscreen(){
   #endif
 }
 
-/*
- * [dkbhit.c]
- * Simula a função kbhit().
- *
- * [Autor]
- * Daemonio (Marcos Paulo Ferreira)
- * undefinido at gmail com
- * https://daemoniolabs.wordpress.com
- *
- * Versão 1.0, by daemonio @ Thu Dec 27 20:40:22 BRST 2012
- */
+
+#ifdef win32
+    int _getch(void)
+    {
+    HANDLE hConsole;
+    DWORD cm, n;
+    char buffer[4];
+
+    hConsole = GetStdHandle(STD_INPUT_HANDLE);
+    GetConsoleMode(hConsole, &cm);
+    SetConsoleMode(hConsole, cm &
+                ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT));
+    ReadConsole(hConsole, buffer, 1, &n, NULL);
+    SetConsoleMode(hConsole, cm);
+
+    return buffer[0];
+    }
+#else
+    /*
+    * [dkbhit.c]
+    * Simula a função kbhit().
+    *
+    * [Autor]
+    * Daemonio (Marcos Paulo Ferreira)
+    * undefinido at gmail com
+    * https://daemoniolabs.wordpress.com
+    *
+    * Versão 1.0, by daemonio @ Thu Dec 27 20:40:22 BRST 2012
+    */
 
 
 
-void init_attr(void) {
-    /* Obtém as configurações atuais. */
-    tcgetattr(0,&old_attr);
-    new_attr=old_attr;
+    void init_attr(void) {
+        /* Obtém as configurações atuais. */
+        tcgetattr(0,&old_attr);
+        new_attr=old_attr;
 
-    /* Desliga modo canônico. */
-    new_attr.c_lflag &=~ICANON ;
+        /* Desliga modo canônico. */
+        new_attr.c_lflag &=~ICANON ;
 
-    /* Desliga ecoamento. */
-    new_attr.c_lflag &= ~ECHO;
+        /* Desliga ecoamento. */
+        new_attr.c_lflag &= ~ECHO;
 
-    new_attr.c_cc[VTIME]=0 ;
-    new_attr.c_cc[VMIN]=0 ;
-}
+        new_attr.c_cc[VTIME]=0 ;
+        new_attr.c_cc[VMIN]=0 ;
+    }
 
-/* Retorna configurações antigas. */
-void close_attr(void) {
-    tcsetattr(STDIN_FILENO,TCSANOW,&old_attr);
-}
+    /* Retorna configurações antigas. */
+    void close_attr(void) {
+        tcsetattr(STDIN_FILENO,TCSANOW,&old_attr);
+    }
 
-int kbhit(void) {
-    int c ;
+    int kbhit(void) {
+        int c ;
 
-    tcsetattr(STDIN_FILENO,TCSANOW,&new_attr);
-    c = getchar() ; /* retorna EOF se nada foi pressionado */
-    tcsetattr(STDIN_FILENO,TCSANOW,&old_attr);
+        tcsetattr(STDIN_FILENO,TCSANOW,&new_attr);
+        c = getchar() ; /* retorna EOF se nada foi pressionado */
+        tcsetattr(STDIN_FILENO,TCSANOW,&old_attr);
 
-    return c ;
-}
-
-int _getch(void)
-{
-  HANDLE hConsole;
-  DWORD cm, n;
-  char buffer[4];
-
-  hConsole = GetStdHandle(STD_INPUT_HANDLE);
-  GetConsoleMode(hConsole, &cm);
-  SetConsoleMode(hConsole, cm &
-             ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT));
-  ReadConsole(hConsole, buffer, 1, &n, NULL);
-  SetConsoleMode(hConsole, cm);
-
-  return buffer[0];
-}
+        return c ;
+    }
+#endif

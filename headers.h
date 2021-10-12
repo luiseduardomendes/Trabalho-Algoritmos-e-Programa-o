@@ -4,7 +4,13 @@
 #include <time.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <windows.h>
+#include <ctype.h>
+#ifdef win32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+    #include <termios.h>
+#endif
 #define TOUP 'W'
 #define TOLEFT 'A'
 #define TODOWN 'S'
