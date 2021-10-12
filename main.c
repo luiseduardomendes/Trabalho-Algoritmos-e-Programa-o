@@ -14,47 +14,40 @@ int main() {
     clock_t timeBeginShuriken;
     clock_t timeBeginFrame;
     float frameRate = 0.05;
-    typePos playerPos, npcPos, shuriken;
+    typePos playerPos, npcPos[NUM_MOBS], shuriken;
     int throwing = 0;
     printf("Hello world!\n");
     playerPos.x = 10;
     playerPos.y = 10;
-    npcPos.x = 10;
-    npcPos.y = 3;
+    npcPos[0].x = 10;
+    npcPos[0].y = 3;
+    npcPos[1].x = 12;
+    npcPos[1].y = 5;
     npcPos.direction = TOLEFT;
+    npcMovement(npcPos, playerPos, 5);
     timeBeginMovement = clock();
     timeBeginShuriken = clock();
     timeBeginFrame = clock();
-    map = fopen("arquivos/maps.bin", "rb");
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    rewind(map);
-    fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-    npcMovement(npcPos, playerPos, 5, mapMatrix);
             
     do{
         timeCurrent = clock();
-        if (!(throwing) && (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
+        if (!(throwing)){
             shuriken.x = npcPos.x;
             shuriken.y = npcPos.y;
             shuriken.direction = npcPos.direction;
             throwing = 1;
             timeBeginShuriken = clock();
-            
         }
-        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.50){
-            npcPos = npcMovement(npcPos, playerPos, 5, mapMatrix);
+        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
+            npcPos = npcMovement(npcPos[], playerPos, 5);
             timeBeginMovement = clock();
         }
-        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.1){
-            if (throwing){
-                throwing = throwShuriken(&shuriken, playerPos, mapMatrix);
-                timeBeginShuriken = clock();
-            }
+        if (throwing){
+            throwing = throwShuriken(timeCurrent, timeBeginShuriken, &shuriken, playerPos);
         }
         if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.05){
             clearscreen();
-            showDisplay(0, playerPos, npcPos, shuriken, mapMatrix);
+            showDisplay(0, playerPos, npcPos[], shuriken);
             timeBeginFrame = clock();
         }
         

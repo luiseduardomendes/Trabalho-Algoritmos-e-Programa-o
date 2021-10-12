@@ -1,12 +1,19 @@
 
 // Procedure to control the movement of the enemies
-typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+typePos npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
     int flagMov;
     int mapUsed = 0;
 
     srand(time(NULL));
 
     flagMov = (1 + (rand() % 4));
+
+    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
+    map = fopen("arquivos/maps.bin", "rb");
+
+    rewind(map);
+    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
+    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
 
     if (fabs(playerPos.x - mobPos.x) < rangeViewMob &&
     fabs(playerPos.y - mobPos.y) < rangeViewMob){
@@ -39,28 +46,20 @@ typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob, char ma
 
         switch (flagMov) {
             case 1:
-                if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix)){
+                if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix))
                     mobPos.x ++;
-                    mobPos.direction = TORIGHT;
-                }
                 break;
             case 2:
-                if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix)){
+                if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix))
                     mobPos.y --;
-                    mobPos.direction = TOUP;
-                }
                 break;
             case 3:
-                if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix)){
+                if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix))
                     mobPos.x --;
-                    mobPos.direction = TOLEFT;
-                }
                 break;
             case 4:
-                if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix)){
+                if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix))
                     mobPos.y ++;
-                    mobPos.direction = TODOWN;
-                }
                 break;
         }
     }
