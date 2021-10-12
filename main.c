@@ -34,7 +34,7 @@ int main() {
     shuriken[0].throwing = 0;
     shuriken[1].throwing = 0;
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    npcMovement(npcPos[0], playerPos, 5);
+    npcMovement(npcPos, playerPos, 5);
     map = fopen("arquivos/maps.bin", "rb");
     rewind(map);
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
@@ -52,11 +52,10 @@ int main() {
                 timeBeginShuriken[i] = clock();
             }
         }
-        for (i = 0; i < NUM_MOBS; i ++) {
-            if ((double)(timeCurrent - timeBeginMovement[i]) / CLOCKS_PER_SEC > 0.250){
-                npcPos[i] = npcMovement(npcPos[i], playerPos, 5);
-                timeBeginMovement[i] = clock();
-            }
+        
+        if ((double)(timeCurrent - timeBeginMovement[i]) / CLOCKS_PER_SEC > 0.250){
+            npcMovement(npcPos, playerPos, 5);
+            timeBeginMovement[i] = clock();
         }
         if (shuriken[i].throwing == 1) {
             for(i = 0; i < NUM_MOBS; i ++) {

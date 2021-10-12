@@ -1,12 +1,11 @@
 
 // Procedure to control the movement of the enemies
-typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
+void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
     int flagMov;
     int mapUsed = 0;
+    int i;
 
     srand(time(NULL));
-
-    flagMov = (1 + (rand() % 4));
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     map = fopen("arquivos/maps.bin", "rb");
@@ -14,56 +13,57 @@ typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
     rewind(map);
     fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
+    for (i = 0; i < NUM_MOBS; i ++){
+        flagMov = (1 + (rand() % 4));
+        if (fabs(playerPos.x - mobPos[i].x) < rangeViewMob &&
+        fabs(playerPos.y - mobPos[i].y) < rangeViewMob){
+            if (playerPos.x > mobPos[i].x){
+                if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)) {
+                    mobPos[i].x ++;
+                    mobPos[i].direction = TORIGHT;
+                }
+            }
+            else {
+                if (verifyPosition(mobPos[i].x, mobPos[i].y, TOLEFT, mapMatrix)) {
+                    mobPos[i].x --;
+                    mobPos[i].direction = TOLEFT;
+                }
+            }
+            if (playerPos.y > mobPos[i].y){
+                if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)) {
+                    mobPos[i].y ++;
+                    mobPos[i].direction = TOUP;
+                }
+            }
+            else {
+                if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)) {
+                    mobPos[i].y --;
+                    mobPos[i].direction = TODOWN;
+                }
+            }
+        }
+        else{
 
-    if (fabs(playerPos.x - mobPos.x) < rangeViewMob &&
-    fabs(playerPos.y - mobPos.y) < rangeViewMob){
-        if (playerPos.x > mobPos.x){
-            if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix)) {
-                mobPos.x ++;
-                mobPos.direction = TORIGHT;
-            }
-        }
-        else {
-            if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix)) {
-                mobPos.x --;
-                mobPos.direction = TOLEFT;
-            }
-        }
-        if (playerPos.y > mobPos.y){
-            if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix)) {
-                mobPos.y ++;
-                mobPos.direction = TOUP;
-            }
-        }
-        else {
-            if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix)) {
-                mobPos.y --;
-                mobPos.direction = TODOWN;
+            switch (flagMov) {
+                case 1:
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix))
+                        mobPos[i].x ++;
+                    break;
+                case 2:
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix))
+                        mobPos[i].y --;
+                    break;
+                case 3:
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TOLEFT, mapMatrix))
+                        mobPos[i].x --;
+                    break;
+                case 4:
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix))
+                        mobPos[i].y ++;
+                    break;
             }
         }
     }
-    else{
-
-        switch (flagMov) {
-            case 1:
-                if (verifyPosition(mobPos.x, mobPos.y, TORIGHT, mapMatrix))
-                    mobPos.x ++;
-                break;
-            case 2:
-                if (verifyPosition(mobPos.x, mobPos.y, TOUP, mapMatrix))
-                    mobPos.y --;
-                break;
-            case 3:
-                if (verifyPosition(mobPos.x, mobPos.y, TOLEFT, mapMatrix))
-                    mobPos.x --;
-                break;
-            case 4:
-                if (verifyPosition(mobPos.x, mobPos.y, TODOWN, mapMatrix))
-                    mobPos.y ++;
-                break;
-        }
-    }
-    return mobPos;
 }
 
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
