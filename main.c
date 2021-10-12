@@ -22,7 +22,6 @@ int main() {
     npcPos.x = 10;
     npcPos.y = 3;
     npcPos.direction = TOLEFT;
-    npcMovement(npcPos, playerPos, 5);
     timeBeginMovement = clock();
     timeBeginShuriken = clock();
     timeBeginFrame = clock();
@@ -31,11 +30,11 @@ int main() {
     rewind(map);
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-
+    npcMovement(npcPos, playerPos, 5, mapMatrix);
             
     do{
         timeCurrent = clock();
-        if (!(throwing)){
+        if (!(throwing) && (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
             shuriken.x = npcPos.x;
             shuriken.y = npcPos.y;
             shuriken.direction = npcPos.direction;
@@ -44,7 +43,7 @@ int main() {
             
         }
         if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.50){
-            npcPos = npcMovement(npcPos, playerPos, 5);
+            npcPos = npcMovement(npcPos, playerPos, 5, mapMatrix);
             timeBeginMovement = clock();
         }
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.1){
@@ -55,7 +54,7 @@ int main() {
         }
         if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.05){
             clearscreen();
-            showDisplay(0, playerPos, npcPos, shuriken);
+            showDisplay(0, playerPos, npcPos, shuriken, mapMatrix);
             timeBeginFrame = clock();
         }
         

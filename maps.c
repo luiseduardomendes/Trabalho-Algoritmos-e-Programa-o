@@ -1,14 +1,6 @@
 
-void showDisplay (int mapUsed, typePos playerPos, typePos npcPos, typePos shuriken){
+void showDisplay (int mapUsed, typePos playerPos, typePos npcPos, typePos shuriken, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int i, j;
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/maps.bin", "rb");
-
-    rewind(map);
-    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-    // não é necessário abrir o arquivo todas as vezes
-    // implementar a abertura do arquivo a cada nova fase
 
     for (i = 0; i < SIZEMAP_Y ; i ++)  {
 

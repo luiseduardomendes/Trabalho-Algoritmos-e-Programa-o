@@ -1,19 +1,12 @@
 
 // Procedure to control the movement of the enemies
-typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob) {
+typePos npcMovement(typePos mobPos, typePos playerPos, int rangeViewMob, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int flagMov;
     int mapUsed = 0;
 
     srand(time(NULL));
 
     flagMov = (1 + (rand() % 4));
-
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/maps.bin", "rb");
-
-    rewind(map);
-    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
 
     if (fabs(playerPos.x - mobPos.x) < rangeViewMob &&
     fabs(playerPos.y - mobPos.y) < rangeViewMob){
