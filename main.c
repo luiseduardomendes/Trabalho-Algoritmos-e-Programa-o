@@ -32,14 +32,14 @@ int main() {
     do{
         timeCurrent = clock();
         if (!(throwing)){
-            shuriken.x = npcPos.x;
-            shuriken.y = npcPos.y;
-            shuriken.direction = npcPos.direction;
+            shuriken.x = npcPos[0].x;
+            shuriken.y = npcPos[0].y;
+            shuriken.direction = npcPos[0].direction;
             throwing = 1;
             timeBeginShuriken = clock();
         }
         if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.250){
-            npcPos = npcMovement(npcPos[], playerPos, 5);
+            npcPos[0] = npcMovement(npcPos[], playerPos, 5);
             timeBeginMovement = clock();
         }
         if (throwing){
