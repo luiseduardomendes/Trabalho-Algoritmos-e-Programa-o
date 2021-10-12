@@ -1,4 +1,4 @@
-int throwShuriken(typePos *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+int throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int throwing = 1;
     
     switch (shuriken->direction) {

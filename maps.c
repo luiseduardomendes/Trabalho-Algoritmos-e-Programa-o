@@ -1,12 +1,8 @@
 
-void showDisplay (int mapUsed, typePos playerPos, typePos npcPos, typePos shuriken){
+void showDisplay (int mapUsed, typePos playerPos, typePos npcPos[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int i, j, k;
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/maps.bin", "rb");
-
-    rewind(map);
-    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
+    ;
+    
     // não é necessário abrir o arquivo todas as vezes
     // implementar a abertura do arquivo a cada nova fase
 
@@ -15,10 +11,14 @@ void showDisplay (int mapUsed, typePos playerPos, typePos npcPos, typePos shurik
         for (j = 0; j < SIZEMAP_X; j ++) {
             if (playerPos.y == i && playerPos.x == j)
                 printf("P");
-            else if (shuriken.y == i && shuriken.x == j)
-                printf("Z");
-            else if (npcPos.y == i && npcPos.x == j)
+            else if (npcPos[0].y == i && npcPos[0].x == j)
                 printf("M");
+            else if (npcPos[1].y == i && npcPos[1].x == j)
+                printf("M");
+            else if (shuriken[0].y == i && shuriken[0].x == j)
+                printf("Z");
+            else if (shuriken[0].y == i && shuriken[0].x == j)
+                printf("Z");            
             else
                 printf("%c", mapMatrix[i][j]);
         }
