@@ -31,15 +31,15 @@ void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
                 }
             }
             if (playerPos.y > mobPos[i].y){
-                if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)) {
+                if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)) {
                     mobPos[i].y ++;
-                    mobPos[i].direction = TOUP;
+                    mobPos[i].direction = TODOWN;
                 }
             }
             else {
-                if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)) {
+                if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)) {
                     mobPos[i].y --;
-                    mobPos[i].direction = TODOWN;
+                    mobPos[i].direction = TOUP;
                 }
             }
         }
@@ -67,13 +67,6 @@ void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
     }
 }
 
-void playerMovement(typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
-    int flag;
-    do{
-
-    }while(true);
-}
-
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int validPosition;
     validPosition = true;
@@ -98,13 +91,3 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     }
     return validPosition;
 }
-
-/*  code to test if movement is working
-    typePos playerPos, infMob;
-    playerPos.x = 10;
-    playerPos.y = 10;
-    infMob.x = 13;
-    infMob.y = 13;
-    npcMovement(&infMob, playerPos, 5);
-    printf("Posição do NPC: %d, %d\n", infMob.x, infMob.y);
-    printf("Posição do Player: %d, %d\n", playerPos.x, playerPos.y);*/

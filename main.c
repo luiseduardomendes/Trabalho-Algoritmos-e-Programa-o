@@ -1,37 +1,37 @@
 #include "headers.h"
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_native_dialog.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-
-void clearscreen();
 
 int main() {
     setlocale(LC_ALL, "");
-    int contador = 0;
+    srand(time(NULL));
+
+    /*_____________________________________________________________*/
+    //variaveis de temporizador
 
     clock_t timeCurrent;
     clock_t timeBeginMovement;
     clock_t timeBeginMovementPlayer;
     clock_t timeBeginShuriken;
     clock_t timeBeginFrame;
+    clock_t timeThrowShuriken;
+    /*_____________________________________________________________*/
 
-    ALLEGRO_TIMER *timer;
 
 
 
+    /*_____________________________________________________________*/
     float frameRate = 60;
     int i, j, k;
+    int contador = 0;
     int mobFound, shurikenFound, playerFound;
     typePos playerPos, npcPos[NUM_MOBS];
-    typeShur shuriken[NUM_MOBS];
+    /*_____________________________________________________________*/
 
 
-    srand(time(NULL));
+
 
     /*_____________________________________________________________*/
     //inicializacao das posicoes
+
     playerPos.x = 10;
     playerPos.y = 10;
     for (i = 0; i < NUM_MOBS; i++){
@@ -50,37 +50,10 @@ int main() {
     timeBeginShuriken = clock();
     timeBeginMovement = clock();
     timeBeginFrame = clock();
-    shuriken[0].throwing = 0;
-    shuriken[1].throwing = 0;
-    shuriken[2].throwing = 0;
-    shuriken[3].throwing = 0;
-    /*_____________________________________________________________*/
-
-
-
-
-    /*_____________________________________________________________*/
-    //declaraçao do mapa
-
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/maps.txt", "r");
-    rewind(map);
-    fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-    const int MAPSCALE = 32;
-    /*_____________________________________________________________*/
-
-
-
-
-    /*_____________________________________________________________*/
-    //variaveis para allegro
-
-    const int width = 60*MAPSCALE; //largura
-    const int height = 23*MAPSCALE; //algura
-    bool endOfGame;
-    ALLEGRO_EVENT_QUEUE *events_queue;
-    ALLEGRO_DISPLAY *display = NULL;
+    timeThrowShuriken = clock();
+    for (i = 0; i < NUM_MOBS; i ++){
+        npcPos[i].shuriken.throwing = 0;
+    }
     /*_____________________________________________________________*/
 
 
@@ -97,24 +70,6 @@ int main() {
 
 
 
-    /*_____________________________________________________________*/
-    //display
-
-    display = al_create_display(width, height);
-    if (!display){
-        al_show_native_message_box(NULL, "AVISO!", "Erro de execução!", "O display não pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return -1;
-    }
-    /*_____________________________________________________________*/
-
-
-    /*_____________________________________________________________*/
-    // controle de tempo
-
-    timer = al_create_timer(1.0 / frameRate);
-
-    /*_____________________________________________________________*/
-
 
     /*_____________________________________________________________*/
     //formas primitivas
@@ -130,9 +85,8 @@ int main() {
 
     al_init_font_addon();
     al_init_ttf_addon();
-    ALLEGRO_FONT* font100 = al_load_ttf_font("fonte.ttf", 100, 0);
+    ALLEGRO_FONT* font48 = al_load_ttf_font("fonte.ttf", 48, 0);
     /*_____________________________________________________________*/
-
 
 
 
@@ -141,6 +95,56 @@ int main() {
     //teclado
 
     al_install_keyboard();
+    /*_____________________________________________________________*/
+
+
+
+
+    /*_____________________________________________________________*/
+    //declaraçao do mapa
+
+    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
+    map = fopen("arquivos/maps.txt", "r");
+    rewind(map);
+    fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
+    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
+    const int MAPSCALE = 24;
+    /*_____________________________________________________________*/
+
+
+
+
+    /*_____________________________________________________________*/
+    //variaveis para allegro
+
+    const int width = 60*MAPSCALE; //largura
+    const int height = 23*MAPSCALE; //algura
+    bool endOfGame;
+    ALLEGRO_EVENT_QUEUE *events_queue = NULL;
+    ALLEGRO_DISPLAY *display = NULL;
+    /*_____________________________________________________________*/
+
+
+
+    /*_____________________________________________________________*/
+    //display
+
+    display = al_create_display(width, height);
+    if (!display){
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execução!", "O display não pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+    }
+    /*_____________________________________________________________*/
+
+
+
+
+    /*_____________________________________________________________*/
+    // controle de tempo
+
+    ALLEGRO_TIMER *timer;
+    timer = al_create_timer(1.0/frameRate);
+    al_start_timer(timer);
     /*_____________________________________________________________*/
 
 
@@ -156,7 +160,7 @@ int main() {
     /*_____________________________________________________________*/
 
 
-    al_start_timer(timer);
+
 
     do {
 
@@ -164,19 +168,36 @@ int main() {
         al_wait_for_event(events_queue, &ev);
 
 
-
         timeCurrent = clock();
 
 
         for(i = 0; i < NUM_MOBS; i ++){
-            if (shuriken[i].throwing == 0 && (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
-                shuriken[i].x = npcPos[i].x;
-                shuriken[i].y = npcPos[i].y;
-                shuriken[i].direction = npcPos[i].direction;
-                shuriken[i].throwing = 1;
+            if (npcPos[i].shuriken.throwing == 0 && (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 1) {
+                npcPos[i].shuriken.x = npcPos[i].x;
+                npcPos[i].shuriken.y = npcPos[i].y;
+                switch (npcPos[i].direction) {
+                    case UP:
+                        npcPos[i].shuriken.movex = 0;
+                        npcPos[i].shuriken.movey = -1;
+                        break;
+                    case DOWN:
+                        npcPos[i].shuriken.movex = 0;
+                        npcPos[i].shuriken.movey = 1;
+                        break;
+                    case LEFT:
+                        npcPos[i].shuriken.movex = -1;
+                        npcPos[i].shuriken.movey = 0;
+                        break;
+                    case RIGHT:
+                        npcPos[i].shuriken.movex = 1;
+                        npcPos[i].shuriken.movey = 0;
+                        break;
+                }
+                npcPos[i].shuriken.throwing = true;
                 timeBeginShuriken = clock();
             }
         }
+
         for(i = 0; i < SIZEMAP_Y; i++){
             for(j = 0; j < SIZEMAP_X; j++){
                 mobFound = 0;
@@ -190,8 +211,8 @@ int main() {
                 }
                 if(mobFound == 0){
                     for(k = 0; k < NUM_MOBS; k++){
-                        if((shuriken[k].x == j) && (shuriken[k].y == i)){
-                            al_draw_filled_rectangle(shuriken[k].x*MAPSCALE, shuriken[k].y*MAPSCALE, (shuriken[k].x*MAPSCALE)+MAPSCALE, (shuriken[i].y*MAPSCALE)+MAPSCALE,al_map_rgb(128,128,128));
+                        if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i)){
+                            al_draw_filled_rectangle(npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, (npcPos[k].shuriken.x*MAPSCALE)+MAPSCALE, (npcPos[k].shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(150,150,150));
                             shurikenFound = 1;
                         }
                     }
@@ -206,8 +227,11 @@ int main() {
                 }
             }
         }
+
         // desenha jogador
         al_draw_filled_rounded_rectangle((playerPos.x*MAPSCALE), (playerPos.y*MAPSCALE), (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE, MAPSCALE/3, MAPSCALE/3, al_map_rgb(255,255,0));
+        al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2+36, 1, "Quadros: %d   Segundos: %d", contador++, contador/60);
+        al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2-36, 1, "Tempo atual: %d    Tempo shuriken: %d", timeCurrent / CLOCKS_PER_SEC, timeBeginShuriken/ CLOCKS_PER_SEC);
 
 
         if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.5){
@@ -215,16 +239,19 @@ int main() {
             timeBeginMovement = clock();
         }
 
-        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 0.1){
-            throwShuriken(shuriken, playerPos, mapMatrix);
-            timeBeginShuriken = clock();
-        }
+
+        if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.1){
+            for (i = 0; i < NUM_MOBS; i ++) {
+                throwShuriken(&npcPos->shuriken, playerPos, mapMatrix);
+            }
+            timeThrowShuriken = clock();
+        }/*
 
         if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.1){
             clearscreen();
             showDisplay(0, playerPos, npcPos, shuriken, mapMatrix);
             timeBeginFrame = clock();
-        }
+        }*/
 
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){
@@ -254,6 +281,7 @@ int main() {
             }
         }
 
+
         al_flip_display();
         al_clear_to_color(al_map_rgb(0,0,0));
     } while (!endOfGame);
@@ -264,35 +292,4 @@ int main() {
     al_destroy_event_queue(events_queue);
     printf("Hello world!\n");
     return 0;
-
-
-    do{
-
-
-    } while (true);
-
-    return 0;
 }
-
-void sleep_ms(int milliseconds) {
-    #ifdef WIN32
-        _sleep(milliseconds);
-    #elif _POSIX_C_SOURCE >= 199309L
-        struct timespec ts;
-        ts.tv_sec = milliseconds / 1000;
-        ts.tv_nsec = (milliseconds % 1000) * 1000000;
-        nanosleep(&ts, NULL);
-    #else
-        usleep(milliseconds * 1000);
-    #endif
-}
-
-void clearscreen(){
-  #ifdef WIN32
-    system("cls");
-  #else
-    system("clear");
-  #endif
-}
-
-
