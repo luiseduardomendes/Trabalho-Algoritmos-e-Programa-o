@@ -1,10 +1,10 @@
-
+#include "headers.h"
 // Procedure to control the movement of the enemies
 void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
     int flagMov;
     int mapUsed = 0;
     int i;
-    
+
 
     srand(time(NULL));
 
@@ -70,39 +70,7 @@ void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
 void playerMovement(typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int flag;
     do{
-        #ifdef WIN32
-        flag = _getch();
-            switch (flag) {
-                case 'd':
-                case 'D':
-                    if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)){
-                        playerPos.x ++;
-                        playerPos.direction = TORIGHT;
-                    }
-                    break;
-                case 'w':
-                case 'W':
-                    if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)){
-                        playerPos.y --;
-                        playerPos.direction = TOUP;
-                    }
-                    break;
-                case 'a':
-                case 'A':
-                    if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)){
-                        playerPos.x --;
-                        playerPos.direction = TOLEFT;
-                    }
-                    break;
-                case 's':
-                case 'S':
-                    if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)){
-                        playerPos.y ++;
-                        playerPos.direction = TODOWN;
-                    }
-                    break;
-            }
-        #endif
+
     }while(true);
 }
 

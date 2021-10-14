@@ -1,3 +1,4 @@
+#include "headers.h"
 void throwShuriken(typeShur shuriken[], typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int i;
     for (i = 0; i < NUM_MOBS; i ++){
@@ -14,7 +15,7 @@ void throwShuriken(typeShur shuriken[], typePos enemy, char mapMatrix[SIZEMAP_Y]
             }
             if (shuriken[i].x == enemy.x && shuriken[i].y == enemy.y)
                 shuriken[i].throwing = 0;
-            if (shuriken[i].x > 50 || shuriken[i].x < 0 || shuriken[i].y > 50 || shuriken[i].y < 0)
+            if (shuriken[i].x > 60 || shuriken[i].x < 0 || shuriken[i].y > 23 || shuriken[i].y < 0)
                 shuriken[i].throwing = 0;
             if (mapMatrix[shuriken[i].y][shuriken[i].x] == WALL)
                 shuriken[i].throwing = 0;

@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <time.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <ctype.h>
-#ifdef WIN32
+#ifdef wi32
     #include <windows.h>
 #endif
 #define TOUP 'W'
