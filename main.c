@@ -10,6 +10,7 @@ int main() {
     clock_t timeCurrent;
     clock_t timeBeginMovement;
     clock_t timeBeginMovementPlayer;
+    clock_t timeThrowShurikenPlayer;
     clock_t timeBeginShuriken;
     clock_t timeBeginFrame;
     clock_t timeThrowShuriken;
@@ -47,6 +48,7 @@ int main() {
     npcPos[3].x = 25;
     npcPos[3].y = 15;
     timeBeginMovementPlayer = clock();
+    timeThrowShurikenPlayer = clock();
     timeBeginShuriken = clock();
     timeBeginMovement = clock();
     timeBeginFrame = clock();
@@ -54,6 +56,7 @@ int main() {
     for (i = 0; i < NUM_MOBS; i ++){
         npcPos[i].shuriken.throwing = 0;
     }
+    playerPos.shuriken.throwing = 0;
     /*_____________________________________________________________*/
 
 
@@ -210,18 +213,23 @@ int main() {
                     }
                 }
                 if(mobFound == 0){
-                    for(k = 0; k < NUM_MOBS; k++){
-                        if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i)){
-                            al_draw_filled_rectangle(npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, (npcPos[k].shuriken.x*MAPSCALE)+MAPSCALE, (npcPos[k].shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(150,150,150));
-                            shurikenFound = 1;
-                        }
+                    if (playerPos.shuriken.x == j && playerPos.shuriken.y == i && playerPos.shuriken.throwing){
+                        al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(0,0,200));
                     }
-                    if(!shurikenFound){
-                        if(mapMatrix[i][j] == WALL){
-                            al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
+                    else{
+                        for(k = 0; k < NUM_MOBS; k++){
+                            if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i) && npcPos[i].shuriken.throwing){
+                                al_draw_filled_rectangle(npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, (npcPos[k].shuriken.x*MAPSCALE)+MAPSCALE, (npcPos[k].shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(150,150,150));
+                                shurikenFound = 1;
+                            }
                         }
-                        else if(mapMatrix[i][j] == 'X'){
-                            al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
+                        if(!shurikenFound){
+                            if(mapMatrix[i][j] == WALL){
+                                al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
+                            }
+                            else if(mapMatrix[i][j] == 'X'){
+                                al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
+                            }
                         }
                     }
                 }
@@ -257,28 +265,65 @@ int main() {
             switch (ev.keyboard.keycode){
                 case ALLEGRO_KEY_UP:
                 case ALLEGRO_KEY_W:
-                    if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix))
+                    if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
                         playerPos.y --;
+                        playerPos.direction = UP;
+                    }
                     break;
                 case ALLEGRO_KEY_DOWN:
                 case ALLEGRO_KEY_S:
-                    if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix))
+                    if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
                         playerPos.y ++;
+                        playerPos.direction = DOWN;
+                    }
                     break;
                 case ALLEGRO_KEY_LEFT:
                 case ALLEGRO_KEY_A:
-                    if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix))
+                    if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
                         playerPos.x --;
+                        playerPos.direction = LEFT;
+                    }
                     break;
                 case ALLEGRO_KEY_RIGHT:
                 case ALLEGRO_KEY_D:
-                    if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix))
+                    if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)){
                         playerPos.x ++;
+                        playerPos.direction = RIGHT;
+                    }
                     break;
                 case ALLEGRO_KEY_ESCAPE:
                     endOfGame = true;
                     break;
+                case ALLEGRO_KEY_K:
+                    playerPos.shuriken.throwing = true;
+                    playerPos.shuriken.x = playerPos.x;
+                    playerPos.shuriken.y = playerPos.y;
+                    switch (playerPos.direction) {
+                        case UP:
+                            playerPos.shuriken.movex = 0;
+                            playerPos.shuriken.movey = -1;
+                            break;
+                        case DOWN:
+                            playerPos.shuriken.movex = 0;
+                            playerPos.shuriken.movey = 1;
+                            break;
+                        case LEFT:
+                            playerPos.shuriken.movex = -1;
+                            playerPos.shuriken.movey = 0;
+                            break;
+                        case RIGHT:
+                            playerPos.shuriken.movex = 1;
+                            playerPos.shuriken.movey = 0;
+                            break;
+                    }
+                    timeThrowShurikenPlayer = clock();
+                    break;
             }
+        }
+        if ((double)(timeCurrent - timeThrowShurikenPlayer) / CLOCKS_PER_SEC > 0.1){
+
+            throwShuriken(&playerPos.shuriken, npcPos[0], mapMatrix);
+            timeThrowShurikenPlayer = clock();
         }
 
 
