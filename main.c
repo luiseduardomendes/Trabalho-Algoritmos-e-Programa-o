@@ -172,7 +172,7 @@ int main() {
 
 
         for(i = 0; i < NUM_MOBS; i ++){
-            if (npcPos[i].shuriken.throwing == 0 && (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 1) {
+            if (npcPos[i].shuriken.throwing == 0 && (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 3) {
                 npcPos[i].shuriken.x = npcPos[i].x;
                 npcPos[i].shuriken.y = npcPos[i].y;
                 switch (npcPos[i].direction) {
@@ -240,7 +240,7 @@ int main() {
         }
 
 
-        if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.1){
+        if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.25){
             for (i = 0; i < NUM_MOBS; i ++) {
                 throwShuriken(&npcPos->shuriken, playerPos, mapMatrix);
             }
