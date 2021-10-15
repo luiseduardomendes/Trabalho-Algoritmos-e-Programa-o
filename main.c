@@ -20,7 +20,7 @@ int main() {
 
 
     /*_____________________________________________________________*/
-    float frameRate = 60;
+    float frameRate = 120;
     int i, j, k;
     int contador = 0;
     int mobFound, shurikenFound, playerFound;
@@ -55,6 +55,10 @@ int main() {
     timeThrowShuriken = clock();
     for (i = 0; i < NUM_MOBS; i ++){
         npcPos[i].shuriken.throwing = 0;
+        npcPos[i].shuriken.movex = 0;
+        npcPos[i].shuriken.movey = 0;
+        npcPos[i].shuriken.x = 0;
+        npcPos[i].shuriken.y = 0;
     }
     playerPos.shuriken.throwing = 0;
     /*_____________________________________________________________*/
@@ -174,30 +178,39 @@ int main() {
         timeCurrent = clock();
 
 
-        for(i = 0; i < NUM_MOBS; i ++){
-            if (npcPos[i].shuriken.throwing == 0 && (double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 3) {
-                npcPos[i].shuriken.x = npcPos[i].x;
-                npcPos[i].shuriken.y = npcPos[i].y;
-                switch (npcPos[i].direction) {
-                    case UP:
-                        npcPos[i].shuriken.movex = 0;
-                        npcPos[i].shuriken.movey = -1;
-                        break;
-                    case DOWN:
-                        npcPos[i].shuriken.movex = 0;
-                        npcPos[i].shuriken.movey = 1;
-                        break;
-                    case LEFT:
-                        npcPos[i].shuriken.movex = -1;
-                        npcPos[i].shuriken.movey = 0;
-                        break;
-                    case RIGHT:
-                        npcPos[i].shuriken.movex = 1;
-                        npcPos[i].shuriken.movey = 0;
-                        break;
+        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
+            for(i = 0; i < NUM_MOBS; i ++){
+                printf("NPC %d\n", i);
+                printf("x: %d\ty: %d\tdireção: %d\n", npcPos[i].x,npcPos[i].y,npcPos[i].direction);
+                printf("x: %d\ty: %d\tdireção: x: %d\ty: %d\n", npcPos[i].shuriken.x, npcPos[i].shuriken.y, npcPos[i].shuriken.movex, npcPos[i].shuriken.movey);
+                if (!npcPos[i].shuriken.throwing) {
+                    npcPos[i].shuriken.x = npcPos[i].x;
+                    npcPos[i].shuriken.y = npcPos[i].y;
+                    switch (npcPos[i].direction) {
+                        case UP:
+                            npcPos[i].shuriken.movex = 0;
+                            npcPos[i].shuriken.movey = -1;
+                            break;
+                        case DOWN:
+                            npcPos[i].shuriken.movex = 0;
+                            npcPos[i].shuriken.movey = 1;
+                            break;
+                        case LEFT:
+                            npcPos[i].shuriken.movex = -1;
+                            npcPos[i].shuriken.movey = 0;
+                            break;
+                        case RIGHT:
+                            npcPos[i].shuriken.movex = 1;
+                            npcPos[i].shuriken.movey = 0;
+                            break;
+                        default:
+                            npcPos[i].shuriken.movex = 0;
+                            npcPos[i].shuriken.movey = 0;
+                            break;
+                    }
+                    npcPos[i].shuriken.throwing = true;
+                    timeBeginShuriken = clock();
                 }
-                npcPos[i].shuriken.throwing = true;
-                timeBeginShuriken = clock();
             }
         }
 
@@ -238,8 +251,8 @@ int main() {
 
         // desenha jogador
         al_draw_filled_rounded_rectangle((playerPos.x*MAPSCALE), (playerPos.y*MAPSCALE), (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE, MAPSCALE/3, MAPSCALE/3, al_map_rgb(255,255,0));
-        al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2+36, 1, "Quadros: %d   Segundos: %d", contador++, contador/60);
-        al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2-36, 1, "Tempo atual: %d    Tempo shuriken: %d", timeCurrent / CLOCKS_PER_SEC, timeBeginShuriken/ CLOCKS_PER_SEC);
+        //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2+28, 1, "Quadros: %d   Segundos: %d", contador++, contador/60);
+        //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2-28, 1, "Tempo atual: %d    Tempo shuriken: %d", timeCurrent / CLOCKS_PER_SEC, timeBeginShuriken/ CLOCKS_PER_SEC);
 
 
         if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.5){
@@ -250,16 +263,10 @@ int main() {
 
         if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.25){
             for (i = 0; i < NUM_MOBS; i ++) {
-                throwShuriken(&npcPos->shuriken, playerPos, mapMatrix);
+                throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
             }
             timeThrowShuriken = clock();
-        }/*
-
-        if ((double)(timeCurrent - timeBeginFrame)/ CLOCKS_PER_SEC > 0.1){
-            clearscreen();
-            showDisplay(0, playerPos, npcPos, shuriken, mapMatrix);
-            timeBeginFrame = clock();
-        }*/
+        }
 
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){
