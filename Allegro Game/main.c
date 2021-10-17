@@ -181,6 +181,67 @@ int main() {
         timeCurrent = clock();
 
 
+
+        for(i = 0; i < SIZEMAP_Y; i++){
+            for(j = 0; j < SIZEMAP_X; j++){
+
+                if(mapMatrix[i][j] == WALL){
+                    al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
+                    }
+                else if(mapMatrix[i][j] == 'X'){
+                    al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
+                }
+            }
+        }
+        for(i = 0; i < SIZEMAP_Y; i++){
+            for(j = 0; j < SIZEMAP_X; j++){
+                mobFound = 0;
+                playerFound = 0;
+                shurikenFound = 0;
+                for(k = 0; k < NUM_MOBS; k++){
+                    if((npcPos[k].x == j) && (npcPos[k].y == i)){
+                        al_draw_filled_rectangle(npcPos[k].x*MAPSCALE, npcPos[k].y*MAPSCALE, (npcPos[k].x*MAPSCALE)+MAPSCALE, (npcPos[k].y*MAPSCALE)+MAPSCALE,al_map_rgb(200,0,0));
+                        mobFound = 1;
+                    }
+                }
+                if(mobFound == 0){
+                    if (playerPos.shuriken.x == j && playerPos.shuriken.y == i && playerPos.shuriken.throwing){
+                        al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);
+                        //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(0,0,200));
+                    }
+                    else{
+                        for(k = 0; k < NUM_MOBS; k++){
+                            if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i) && npcPos[i].shuriken.throwing == 1){
+                                al_draw_bitmap(shurikenDraw, npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, 0);
+                                //al_draw_filled_rectangle(npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, (npcPos[k].shuriken.x*MAPSCALE)+MAPSCALE, (npcPos[k].shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(150,150,150));
+                                shurikenFound = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // desenha jogador
+        //al_draw_filled_rounded_rectangle((playerPos.x*MAPSCALE), (playerPos.y*MAPSCALE), (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE, MAPSCALE/3, MAPSCALE/3, al_map_rgb(255,255,0));
+        al_draw_bitmap(naruto,(playerPos.x*MAPSCALE), (playerPos.y*MAPSCALE), 0);
+        //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2+28, 1, "Quadros: %d   Segundos: %d", contador++, contador/60);
+        //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2-28, 1, "Tempo atual: %d    Tempo shuriken: %d", timeCurrent / CLOCKS_PER_SEC, timeBeginShuriken/ CLOCKS_PER_SEC);
+
+
+        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.5){
+            npcMovement(npcPos, playerPos, 5, mapMatrix);
+            timeBeginMovement = clock();
+        }
+
+
+        if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.25){
+            for (i = 0; i < NUM_MOBS; i ++) {
+                throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
+            }
+            timeThrowShuriken = clock();
+        }
+
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
             for(i = 0; i < NUM_MOBS; i ++){
                 printf("NPC %d\n", i);
@@ -215,65 +276,6 @@ int main() {
                     timeBeginShuriken = clock();
                 }
             }
-        }
-        for(i = 0; i < SIZEMAP_Y; i++){
-            for(j = 0; j < SIZEMAP_X; j++){
-
-                if(mapMatrix[i][j] == WALL){
-                    al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
-                    }
-                else if(mapMatrix[i][j] == 'X'){
-                    al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
-                }
-            }
-        }
-        for(i = 0; i < SIZEMAP_Y; i++){
-            for(j = 0; j < SIZEMAP_X; j++){
-                mobFound = 0;
-                playerFound = 0;
-                shurikenFound = 0;
-                for(k = 0; k < NUM_MOBS; k++){
-                    if((npcPos[k].x == j) && (npcPos[k].y == i)){
-                        al_draw_filled_rectangle(npcPos[k].x*MAPSCALE, npcPos[k].y*MAPSCALE, (npcPos[k].x*MAPSCALE)+MAPSCALE, (npcPos[k].y*MAPSCALE)+MAPSCALE,al_map_rgb(200,0,0));
-                        mobFound = 1;
-                    }
-                }
-                if(mobFound == 0){
-                    if (playerPos.shuriken.x == j && playerPos.shuriken.y == i && playerPos.shuriken.throwing){
-                        al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);
-                        //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(0,0,200));
-                    }
-                    else{
-                        for(k = 0; k < NUM_MOBS; k++){
-                            if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i) && npcPos[i].shuriken.throwing){
-                                al_draw_bitmap(shurikenDraw, npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, 0);
-                                //al_draw_filled_rectangle(npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, (npcPos[k].shuriken.x*MAPSCALE)+MAPSCALE, (npcPos[k].shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(150,150,150));
-                                shurikenFound = 1;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // desenha jogador
-        //al_draw_filled_rounded_rectangle((playerPos.x*MAPSCALE), (playerPos.y*MAPSCALE), (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE, MAPSCALE/3, MAPSCALE/3, al_map_rgb(255,255,0));
-        al_draw_bitmap(naruto,(playerPos.x*MAPSCALE), (playerPos.y*MAPSCALE), 0);
-        //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2+28, 1, "Quadros: %d   Segundos: %d", contador++, contador/60);
-        //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2-28, 1, "Tempo atual: %d    Tempo shuriken: %d", timeCurrent / CLOCKS_PER_SEC, timeBeginShuriken/ CLOCKS_PER_SEC);
-
-
-        if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.5){
-            npcMovement(npcPos, playerPos, 5, mapMatrix);
-            timeBeginMovement = clock();
-        }
-
-
-        if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.25){
-            for (i = 0; i < NUM_MOBS; i ++) {
-                throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
-            }
-            timeThrowShuriken = clock();
         }
 
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
