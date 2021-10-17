@@ -47,5 +47,5 @@ typedef struct position{
 FILE *map;
 void showDisplay (int mapUsed, typePos playerPos, typePos infMob[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 int verifyPosition(int x, int y, char direction, char map[SIZEMAP_Y][SIZEMAP_X]);
-void npcMovement(typePos infMob[], typePos playerPos, int rangeViewMob);
+void npcMovement(typePos infMob[], typePos playerPos, int rangeViewMob, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);

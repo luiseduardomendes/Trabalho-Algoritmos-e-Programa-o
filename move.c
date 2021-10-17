@@ -1,19 +1,13 @@
 #include "headers.h"
 // Procedure to control the movement of the enemies
-void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob) {
+void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int flagMov;
-    int mapUsed = 0;
     int i;
 
 
     srand(time(NULL));
 
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/maps.bin", "rb");
 
-    rewind(map);
-    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
     for (i = 0; i < NUM_MOBS; i ++){
         flagMov = (1 + (rand() % 4));
         if (fabs(playerPos.x - mobPos[i].x) < rangeViewMob &&
