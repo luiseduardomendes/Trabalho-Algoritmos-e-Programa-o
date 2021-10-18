@@ -1,5 +1,6 @@
 #include "headers.h"
 #include <allegro5/allegro_image.h>
+
 int main() {
     setlocale(LC_ALL, "");
     srand(time(NULL));
@@ -102,6 +103,7 @@ int main() {
     //teclado
 
     al_install_keyboard();
+    al_install_joystick();
     al_init_image_addon();
     /*_____________________________________________________________*/
 
@@ -150,6 +152,17 @@ int main() {
 
 
     /*_____________________________________________________________*/
+    // Joystick
+
+    ALLEGRO_JOYSTICK *joy = al_get_joystick(0);
+    ALLEGRO_JOYSTICK_STATE joyState;
+
+    /*_____________________________________________________________*/
+
+
+
+
+    /*_____________________________________________________________*/
     // controle de tempo
 
     ALLEGRO_TIMER *timer;
@@ -167,6 +180,7 @@ int main() {
     al_register_event_source(events_queue, al_get_keyboard_event_source());
     al_register_event_source(events_queue, al_get_display_event_source(display));
     al_register_event_source(events_queue, al_get_timer_event_source(timer));
+    al_register_event_source(events_queue, al_get_joystick_event_source());
     /*_____________________________________________________________*/
 
 
@@ -176,6 +190,7 @@ int main() {
 
         ALLEGRO_EVENT ev;
         al_wait_for_event(events_queue, &ev);
+        al_get_joystick_state(joy, &joyState);
 
 
         timeCurrent = clock();
@@ -244,9 +259,9 @@ int main() {
 
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
             for(i = 0; i < NUM_MOBS; i ++){
-                printf("NPC %d\n", i);
-                printf("x: %d\ty: %d\tdireção: %d\n", npcPos[i].x,npcPos[i].y,npcPos[i].direction);
-                printf("x: %d\ty: %d\tdireção: x: %d\ty: %d\n", npcPos[i].shuriken.x, npcPos[i].shuriken.y, npcPos[i].shuriken.movex, npcPos[i].shuriken.movey);
+                //printf("NPC %d\n", i);
+                //printf("x: %d\ty: %d\tdireção: %d\n", npcPos[i].x,npcPos[i].y,npcPos[i].direction);
+                //printf("x: %d\ty: %d\tdireção: x: %d\ty: %d\n", npcPos[i].shuriken.x, npcPos[i].shuriken.y, npcPos[i].shuriken.movex, npcPos[i].shuriken.movey);
                 if (!npcPos[i].shuriken.throwing) {
                     npcPos[i].shuriken.x = npcPos[i].x;
                     npcPos[i].shuriken.y = npcPos[i].y;
@@ -337,6 +352,86 @@ int main() {
                     break;
             }
         }
+
+        // TESTE BOTAO
+
+        if (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
+            //printf("Botao pressionado: %d\n", ev.joystick.button);
+            switch (ev.joystick.button){
+                case 0:
+                    printf("botao A\n");
+                    break;
+                case 1:
+                    printf("botao X\n");
+                    playerPos.shuriken.throwing = true;
+                    playerPos.shuriken.x = playerPos.x;
+                    playerPos.shuriken.y = playerPos.y;
+                    switch (playerPos.direction) {
+                        case UP:
+                            playerPos.shuriken.movex = 0;
+                            playerPos.shuriken.movey = -1;
+                            break;
+                        case DOWN:
+                            playerPos.shuriken.movex = 0;
+                            playerPos.shuriken.movey = 1;
+                            break;
+                        case LEFT:
+                            playerPos.shuriken.movex = -1;
+                            playerPos.shuriken.movey = 0;
+                            break;
+                        case RIGHT:
+                            playerPos.shuriken.movex = 1;
+                            playerPos.shuriken.movey = 0;
+                            break;
+                    }
+                    timeThrowShurikenPlayer = clock();
+                    break;
+                case 2:
+                    printf("botao B\n");
+                    break;
+                case 3:
+                    printf("botao Y\n");
+                    break;
+                case 4:
+                    printf("botao LB\n");
+                    break;
+                case 5:
+                    printf("botao RB\n");
+                    break;
+                case 6:
+                    printf("botao options\n");
+                    break;
+                case 7:
+                    printf("botao start\n");
+                    break;
+                case 8:
+                    printf("botao L3\n");
+                    break;
+                case 9:
+                    printf("botao R3\n");
+                    break;
+            }
+        }
+
+        if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
+            printf("Joystick state: %d %d\n", (int)joyState.stick[0].axis[0], (int)joyState.stick[0].axis[1]);
+            if((int)joyState.stick[0].axis[0] == 1){
+                if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
+                    playerPos.y --;
+                    playerPos.direction = UP;
+                }
+            }
+            else if((int)joyState.stick[0].axis[0] == -1){
+                if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
+                    playerPos.y ++;
+                    playerPos.direction = DOWN;
+                }
+            }
+        }
+
+
+
+
         if ((double)(timeCurrent - timeThrowShurikenPlayer) / CLOCKS_PER_SEC > 0.1){
 
             throwShuriken(&playerPos.shuriken, npcPos[0], mapMatrix);
