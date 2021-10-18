@@ -15,6 +15,7 @@ int main() {
     clock_t timeBeginShuriken;
     clock_t timeBeginFrame;
     clock_t timeThrowShuriken;
+    clock_t timeMovement;
     /*_____________________________________________________________*/
 
 
@@ -54,6 +55,7 @@ int main() {
     timeBeginMovement = clock();
     timeBeginFrame = clock();
     timeThrowShuriken = clock();
+    timeMovement = clock();
     for (i = 0; i < NUM_MOBS; i ++){
         npcPos[i].shuriken.throwing = 0;
         npcPos[i].shuriken.movex = 0;
@@ -413,20 +415,41 @@ int main() {
             }
         }
 
-        if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
-            printf("Joystick state: %d %d\n", (int)joyState.stick[0].axis[0], (int)joyState.stick[0].axis[1]);
-            if((int)joyState.stick[0].axis[0] == 1){
-                if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
-                    playerPos.y --;
-                    playerPos.direction = UP;
+        if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.05) {
+            if(ev.joystick.axis == 0){
+
+                switch((int)round(ev.joystick.pos)){
+                    case 1:
+                        if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)) {
+                            playerPos.x ++;
+                            playerPos.direction = RIGHT;
+                        }
+                    break;
+                    case -1:
+                        if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
+                            playerPos.x --;
+                            playerPos.direction = LEFT;
+                        }
+                    break;
                 }
             }
-            else if((int)joyState.stick[0].axis[0] == -1){
-                if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
-                    playerPos.y ++;
-                    playerPos.direction = DOWN;
+            else if(ev.joystick.axis == 1){
+                switch((int)round(ev.joystick.pos)){
+                    case 1:
+                        if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
+                            playerPos.y ++;
+                            playerPos.direction = DOWN;
+                        }
+                    break;
+                    case -1:
+                        if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
+                            playerPos.y --;
+                            playerPos.direction = UP;
+                        }
+                    break;
                 }
             }
+            timeMovement = clock();
         }
 
 
