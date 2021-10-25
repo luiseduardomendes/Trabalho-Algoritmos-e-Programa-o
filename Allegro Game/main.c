@@ -254,12 +254,12 @@ int main() {
         for (k = 0; k < NUM_MOBS; k ++)
             al_draw_filled_rectangle(npcPos[k].x*MAPSCALE, npcPos[k].y*MAPSCALE,(npcPos[k].x*MAPSCALE)+MAPSCALE, (npcPos[k].y*MAPSCALE)+MAPSCALE,al_map_rgb(200,0,0));
 
-        if (playerPos.shuriken.x == j && playerPos.shuriken.y == i && playerPos.shuriken.throwing)
+        if (playerPos.shuriken.throwing)
             al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);
 
 
         for(k = 0; k < NUM_MOBS; k++)
-            if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i) && npcPos[k].shuriken.throwing == 1)
+            if (npcPos[k].shuriken.throwing)
                 al_draw_bitmap(shurikenDraw, npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, 0);
 
         // desenha jogador
