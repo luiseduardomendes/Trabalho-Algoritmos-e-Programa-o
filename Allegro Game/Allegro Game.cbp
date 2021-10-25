@@ -46,6 +46,9 @@
 		<Unit filename="maps.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="menuPause.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="move.c">
 			<Option compilerVar="CC" />
 		</Unit>
