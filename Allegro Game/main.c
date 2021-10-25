@@ -16,6 +16,7 @@ int main() {
     clock_t timeBeginFrame;
     clock_t timeThrowShuriken;
     clock_t timeMovement;
+    clock_t timeSave;
     /*_____________________________________________________________*/
 
 
@@ -25,8 +26,10 @@ int main() {
     float frameRate = 120;
     int i, j, k;
     int contador = 0;
+    int mapUsed = 0;
     int mobFound, shurikenFound, playerFound;
     typePos playerPos, npcPos[NUM_MOBS];
+    typeSave save;
     /*_____________________________________________________________*/
 
 
@@ -56,6 +59,7 @@ int main() {
     timeBeginFrame = clock();
     timeThrowShuriken = clock();
     timeMovement = clock();
+    timeSave = clock();
     for (i = 0; i < NUM_MOBS; i ++){
         npcPos[i].shuriken.throwing = 0;
         npcPos[i].shuriken.movex = 0;
@@ -131,7 +135,7 @@ int main() {
 
     const int width = 60*MAPSCALE; //largura
     const int height = 23*MAPSCALE; //algura
-    bool endOfGame;
+    bool endOfGame = false, openMenu = false;
     ALLEGRO_EVENT_QUEUE *events_queue = NULL;
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
@@ -188,6 +192,43 @@ int main() {
 
 
 
+    saveFile = fopen("save.sav", "rb");
+    if (saveFile != NULL){
+        fread(&save, sizeof(save), 1, saveFile);
+        mapUsed = save.mapUsed;
+        for(k = 0; k < NUM_MOBS; k ++) {
+            npcPos[k].direction = save.npc[k].direction;
+            npcPos[k].shuriken.movex = save.npc[k].shuriken.movex;
+            npcPos[k].shuriken.movey = save.npc[k].shuriken.movey;
+            npcPos[k].shuriken.throwing = save.npc[k].shuriken.throwing;
+            npcPos[k].shuriken.x = save.npc[k].shuriken.x;
+            npcPos[k].shuriken.y = save.npc[k].shuriken.y;
+            npcPos[k].x = save.npc[k].x;
+            npcPos[k].y = save.npc[k].y;
+        }
+        playerPos.direction = save.player.direction;
+        playerPos.shuriken.movex = save.player.shuriken.movex;
+        playerPos.shuriken.movey = save.player.shuriken.movey;
+        playerPos.shuriken.throwing = save.player.shuriken.throwing;
+        playerPos.shuriken.x = save.player.shuriken.x;
+        playerPos.shuriken.y = save.player.shuriken.y;
+        playerPos.x = save.player.x;
+        playerPos.y = save.player.y;
+
+        fclose(saveFile);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     do {
 
         ALLEGRO_EVENT ev;
@@ -228,7 +269,7 @@ int main() {
                     }
                     else{
                         for(k = 0; k < NUM_MOBS; k++){
-                            if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i) && npcPos[i].shuriken.throwing == 1){
+                            if((npcPos[k].shuriken.x == j) && (npcPos[k].shuriken.y == i) && npcPos[k].shuriken.throwing == 1){
                                 al_draw_bitmap(shurikenDraw, npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, 0);
                                 //al_draw_filled_rectangle(npcPos[k].shuriken.x*MAPSCALE,npcPos[k].shuriken.y*MAPSCALE, (npcPos[k].shuriken.x*MAPSCALE)+MAPSCALE, (npcPos[k].shuriken.y*MAPSCALE)+MAPSCALE,al_map_rgb(150,150,150));
                                 shurikenFound = 1;
@@ -245,7 +286,6 @@ int main() {
         //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2+28, 1, "Quadros: %d   Segundos: %d", contador++, contador/60);
         //al_draw_textf(font48, al_map_rgb(255,255,255), width/2, height/2-28, 1, "Tempo atual: %d    Tempo shuriken: %d", timeCurrent / CLOCKS_PER_SEC, timeBeginShuriken/ CLOCKS_PER_SEC);
 
-
         if ((double)(timeCurrent - timeBeginMovement) / CLOCKS_PER_SEC > 0.5){
             npcMovement(npcPos, playerPos, 5, mapMatrix);
             timeBeginMovement = clock();
@@ -253,15 +293,18 @@ int main() {
 
 
         if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.25){
-            throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
+            for (i = 0; i < NUM_MOBS; i ++) {
+                throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
+            }
             timeThrowShuriken = clock();
         }
 
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
             for(i = 0; i < NUM_MOBS; i ++){
-                //printf("NPC %d\n", i);
+                /*printf("NPC %d\n", i);
                 //printf("x: %d\ty: %d\tdireção: %d\n", npcPos[i].x,npcPos[i].y,npcPos[i].direction);
                 //printf("x: %d\ty: %d\tdireção: x: %d\ty: %d\n", npcPos[i].shuriken.x, npcPos[i].shuriken.y, npcPos[i].shuriken.movex, npcPos[i].shuriken.movey);
+                */
                 if (!npcPos[i].shuriken.throwing) {
                     npcPos[i].shuriken.x = npcPos[i].x;
                     npcPos[i].shuriken.y = npcPos[i].y;
@@ -338,7 +381,8 @@ int main() {
                     }
                     break;
                 case ALLEGRO_KEY_ESCAPE:
-                    endOfGame = true;
+                    openMenu = true;
+                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
                     break;
                 case ALLEGRO_KEY_K:
                     playerPos.shuriken.throwing = true;
@@ -414,6 +458,8 @@ int main() {
                     break;
                 case 6:
                     printf("botao options\n");
+                    openMenu = true;
+                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
                     break;
                 case 7:
                     printf("botao start\n");
@@ -473,6 +519,11 @@ int main() {
             timeThrowShurikenPlayer = clock();
         }
 
+        if ((double)(timeCurrent - timeSave) / CLOCKS_PER_SEC > 30) {
+            saveFunction(npcPos, playerPos, mapUsed);
+            al_draw_text(font48, al_map_rgb(255,255,255), height - 2*MAPSCALE, width - 5*MAPSCALE, NULL, "Salvando...");
+            timeSave = clock();
+        }
 
         al_flip_display();
         al_clear_to_color(al_map_rgb(0,0,0));

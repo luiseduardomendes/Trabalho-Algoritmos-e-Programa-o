@@ -25,6 +25,7 @@
 #define WALL '#'
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
+#define SIZENAMEMAPS 101
 #define NUM_MOBS 4
 #define MAPSCALE 24
 /*_____________________________________________________________*/
@@ -43,10 +44,19 @@ typedef struct position{
     int direction;
     typeShur shuriken;
 }typePos;
+typedef struct save{
+    typePos player;
+    typePos npc[NUM_MOBS];
+    int mapUsed;
+}typeSave;
 /*_____________________________________________________________*/
 
 FILE *map;
+FILE *saveFile;
 void showDisplay (int mapUsed, typePos playerPos, typePos infMob[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 void npcMovement(typePos infMob[], typePos playerPos, int rangeViewMob, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
+              ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], typePos playerPos, int mapUsed);
+int saveFunction (typePos npcPos[], typePos playerPos, int mapUsed);
