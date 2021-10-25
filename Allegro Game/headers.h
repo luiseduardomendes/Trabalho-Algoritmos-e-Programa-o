@@ -26,6 +26,7 @@
 #define SIZEMAP_X 60
 #define SIZEMAP_Y 23
 #define NUM_MOBS 4
+#define MAPSCALE 24
 /*_____________________________________________________________*/
 
 enum directions{UP, DOWN, LEFT, RIGHT};

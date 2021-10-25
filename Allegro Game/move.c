@@ -93,3 +93,69 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     }
     return validPosition;
 }
+
+/* VERIFICA AS FUTURAS POSIÇÕES DA SHURIKEN. CASO O MOB ESTEJA NA MESMA LINHA DE UM PLAYER, E NÃO TIVER NENHUMA PAREDE ENTRE ELES, ELE IRÁ ATIRAR.
+int verifyShuriken(typePos *shuriken, typePos npcPos, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
+{
+    int validPosition;
+    int i;
+    validPosition = false;
+    clock_t timeBeginShuriken;
+
+    if(npcPos.x == playerPos.x)
+    {
+        if(npcPos.y >= playerPos.y)
+        {
+            for(i = npcPos.y; i < playerPos.y; i--)
+            {
+                if (mapMatrix[i][npcPos.x] != WALL)
+                {
+                    validPosition = true;
+                    npcPos.shuriken.movex = 0;
+                    npcPos.shuriken.movey = -1;
+                }
+            }
+        }
+        else
+        {
+            for(i = playerPos.y; i < npcPos.y; i++)
+            {
+                if(mapMatrix[i][playerPos.x] != WALL)
+                {
+                    validPosition = true;
+                    npcPos.shuriken.movex = 0;
+                    npcPos.shuriken.movey = 1;
+                }
+            }
+        }
+    }
+    else if(npcPos.y == playerPos.y)
+    {
+        if(npcPos.x >= playerPos.x)
+        {
+            for(i = npcPos.x; i < playerPos.x; i--)
+            {
+                if (mapMatrix[npcPos.y][i] != WALL)
+                {
+                    validPosition = true;
+                    npcPos.shuriken.movex = -1;
+                    npcPos.shuriken.movey = 0;
+                }
+            }
+        }
+        else
+        {
+            for(i = playerPos.x; i < npcPos.x; i++)
+            {
+                if(mapMatrix[playerPos.y][i] != WALL)
+                {
+                    validPosition = true;
+                    npcPos.shuriken.movex = 1;
+                    npcPos.shuriken.movey = 0;
+                }
+            }
+        }
+    }
+    return validPosition;
+}
+*/

@@ -266,3 +266,33 @@
 1634431305 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\move.c
 	"headers.h"
 
+1635122615 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
+	"headers.h"
+
+1634941926 d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<locale.h>
+	<time.h>
+	<stdbool.h>
+	<ctype.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_native_dialog.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+
+1635123237 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\main.c
+	"headers.h"
+	<allegro5/allegro_image.h>
+
+1634515825 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\maps.c
+	"headers.h"
+
+1635123237 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\move.c
+	"headers.h"
+
+1635123237 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\teste.c
+	"headers.h"
+

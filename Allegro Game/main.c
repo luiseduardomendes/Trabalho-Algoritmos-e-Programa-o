@@ -116,7 +116,7 @@ int main() {
     rewind(map);
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-    const int MAPSCALE = 24;
+    //const int MAPSCALE = 24;
     /*_____________________________________________________________*/
 
 
@@ -236,9 +236,7 @@ int main() {
 
 
         if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.25){
-            for (i = 0; i < NUM_MOBS; i ++) {
-                throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
-            }
+            throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
             timeThrowShuriken = clock();
         }
 
@@ -277,6 +275,20 @@ int main() {
                 }
             }
         }
+
+/* SUBSTITUIRIA A FUNÇÃO ACIMA
+        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
+            for(i = 0; i < NUM_MOBS; i ++){
+                    if (!npcPos[i].shuriken.throwing) {
+                    npcPos[i].shuriken.x = npcPos[i].x;
+                    npcPos[i].shuriken.y = npcPos[i].y;
+                    verifyShuriken(&npcPos[i].shuriken, npcPos[i], playerPos, mapMatrix);
+                    npcPos[i].shuriken.throwing = true;
+                    timeBeginShuriken = clock();
+                }
+            }
+        }
+*/
 
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){

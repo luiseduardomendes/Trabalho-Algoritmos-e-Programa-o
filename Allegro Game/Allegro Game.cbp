@@ -49,6 +49,9 @@
 		<Unit filename="move.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="teste.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
