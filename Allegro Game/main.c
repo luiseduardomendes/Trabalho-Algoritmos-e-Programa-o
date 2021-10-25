@@ -21,15 +21,19 @@ int main() {
 
 
 
-
     /*_____________________________________________________________*/
+    //variaveis para allegro
+
     float frameRate = 120;
     int i, j, k;
     int contador = 0;
     int mapUsed = 0;
-    int mobFound, shurikenFound, playerFound;
+    int joystickFound = 1;
     typePos playerPos, npcPos[NUM_MOBS];
     typeSave save;
+    const int width = 60*MAPSCALE; //largura
+    const int height = 23*MAPSCALE; //algura
+    bool endOfGame = false, openMenu = false;
     /*_____________________________________________________________*/
 
 
@@ -88,18 +92,22 @@ int main() {
     /*_____________________________________________________________*/
     //formas primitivas
 
+
+    /*_____________________________________________________________*/
+
+
+
+
+    /*_____________________________________________________________*/
+    //fontes && bitmaps && formas primitivas
+
     al_init_primitives_addon();
-    /*_____________________________________________________________*/
-
-
-
-
-    /*_____________________________________________________________*/
-    //fontes
-
+    al_init_image_addon();
     al_init_font_addon();
     al_init_ttf_addon();
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonte.ttf", 48, 0);
+    ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
+    ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     /*_____________________________________________________________*/
 
 
@@ -109,8 +117,7 @@ int main() {
     //teclado
 
     al_install_keyboard();
-    al_install_joystick();
-    al_init_image_addon();
+
     /*_____________________________________________________________*/
 
 
@@ -131,22 +138,9 @@ int main() {
 
 
     /*_____________________________________________________________*/
-    //variaveis para allegro
-
-    const int width = 60*MAPSCALE; //largura
-    const int height = 23*MAPSCALE; //algura
-    bool endOfGame = false, openMenu = false;
-    ALLEGRO_EVENT_QUEUE *events_queue = NULL;
-    ALLEGRO_DISPLAY *display = NULL;
-    ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
-    ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
-    /*_____________________________________________________________*/
-
-
-
-    /*_____________________________________________________________*/
     //display
 
+    ALLEGRO_DISPLAY *display = NULL;
     display = al_create_display(width, height);
     if (!display){
         al_show_native_message_box(NULL, "AVISO!", "Erro de execução!", "O display não pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -160,9 +154,11 @@ int main() {
     /*_____________________________________________________________*/
     // Joystick
 
+    al_install_joystick();
     ALLEGRO_JOYSTICK *joy = al_get_joystick(0);
     ALLEGRO_JOYSTICK_STATE joyState;
-
+    if (joy == NULL)
+        joystickFound = 0;
     /*_____________________________________________________________*/
 
 
@@ -182,6 +178,7 @@ int main() {
     /*_____________________________________________________________*/
     //fila de eventos
 
+    ALLEGRO_EVENT_QUEUE *events_queue = NULL;
     events_queue = al_create_event_queue();
     al_register_event_source(events_queue, al_get_keyboard_event_source());
     al_register_event_source(events_queue, al_get_display_event_source(display));
@@ -233,8 +230,9 @@ int main() {
 
         ALLEGRO_EVENT ev;
         al_wait_for_event(events_queue, &ev);
-        al_get_joystick_state(joy, &joyState);
 
+        if(joystickFound)
+            al_get_joystick_state(joy, &joyState);
 
         timeCurrent = clock();
 
@@ -326,159 +324,162 @@ int main() {
         }
 */
 
-        if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-            switch (ev.keyboard.keycode){
-                case ALLEGRO_KEY_UP:
-                case ALLEGRO_KEY_W:
-                    if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
-                        playerPos.y --;
-                        playerPos.direction = UP;
-                    }
-                    break;
-                case ALLEGRO_KEY_DOWN:
-                case ALLEGRO_KEY_S:
-                    if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
-                        playerPos.y ++;
-                        playerPos.direction = DOWN;
-                    }
-                    break;
-                case ALLEGRO_KEY_LEFT:
-                case ALLEGRO_KEY_A:
-                    if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
-                        playerPos.x --;
-                        playerPos.direction = LEFT;
-                    }
-                    break;
-                case ALLEGRO_KEY_RIGHT:
-                case ALLEGRO_KEY_D:
-                    if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)){
-                        playerPos.x ++;
-                        playerPos.direction = RIGHT;
-                    }
-                    break;
-                case ALLEGRO_KEY_ESCAPE:
-                    openMenu = true;
-                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
-                    break;
-                case ALLEGRO_KEY_K:
-                    playerPos.shuriken.throwing = true;
-                    playerPos.shuriken.x = playerPos.x;
-                    playerPos.shuriken.y = playerPos.y;
-                    switch (playerPos.direction) {
-                        case UP:
-                            playerPos.shuriken.movex = 0;
-                            playerPos.shuriken.movey = -1;
-                            break;
-                        case DOWN:
-                            playerPos.shuriken.movex = 0;
-                            playerPos.shuriken.movey = 1;
-                            break;
-                        case LEFT:
-                            playerPos.shuriken.movex = -1;
-                            playerPos.shuriken.movey = 0;
-                            break;
-                        case RIGHT:
-                            playerPos.shuriken.movex = 1;
-                            playerPos.shuriken.movey = 0;
-                            break;
-                    }
-                    timeThrowShurikenPlayer = clock();
-                    break;
-            }
-        }
-
-        // TESTE BOTAO
-
-        if (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
-            //printf("Botao pressionado: %d\n", ev.joystick.button);
-            switch (ev.joystick.button){
-                case CONTROL_BUTTON_A:
-                    break;
-                case CONTROL_BUTTON_B:
-                    break;
-                case CONTROL_BUTTON_X:
-                    //printf("botao X\n");
-                    playerPos.shuriken.throwing = true;
-                    playerPos.shuriken.x = playerPos.x;
-                    playerPos.shuriken.y = playerPos.y;
-                    switch (playerPos.direction) {
-                        case UP:
-                            playerPos.shuriken.movex = 0;
-                            playerPos.shuriken.movey = -1;
-                            break;
-                        case DOWN:
-                            playerPos.shuriken.movex = 0;
-                            playerPos.shuriken.movey = 1;
-                            break;
-                        case LEFT:
-                            playerPos.shuriken.movex = -1;
-                            playerPos.shuriken.movey = 0;
-                            break;
-                        case RIGHT:
-                            playerPos.shuriken.movex = 1;
-                            playerPos.shuriken.movey = 0;
-                            break;
-                    }
-                    timeThrowShurikenPlayer = clock();
-                    break;
-                case CONTROL_BUTTON_Y:
-                    break;
-                case CONTROL_BUTTON_LB:
-                    break;
-                case CONTROL_BUTTON_RB:
-                    break;
-                case CONTROL_BUTTON_OPTIONS:
-                    break;
-                case CONTROL_BUTTON_START:
-                    openMenu = true;
-                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
-                    break;
-                case CONTROL_BUTTON_L:
-                    //printf("botao L3\n");
-                    break;
-                case CONTROL_BUTTON_R:
-                    //printf("botao R3\n");
-                    break;
-            }
-        }
-
-        if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.05) {
-            if(ev.joystick.axis == 0){
-
-                switch((int)round(ev.joystick.pos)){
-                    case 1:
-                        if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)) {
-                            playerPos.x ++;
-                            playerPos.direction = RIGHT;
-                        }
-                    break;
-                    case -1:
-                        if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
-                            playerPos.x --;
-                            playerPos.direction = LEFT;
-                        }
-                    break;
-                }
-            }
-            else if(ev.joystick.axis == 1){
-                switch((int)round(ev.joystick.pos)){
-                    case 1:
-                        if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
-                            playerPos.y ++;
-                            playerPos.direction = DOWN;
-                        }
-                    break;
-                    case -1:
+            if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+                switch (ev.keyboard.keycode){
+                    case ALLEGRO_KEY_UP:
+                    case ALLEGRO_KEY_W:
                         if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
                             playerPos.y --;
                             playerPos.direction = UP;
                         }
-                    break;
+                        break;
+                    case ALLEGRO_KEY_DOWN:
+                    case ALLEGRO_KEY_S:
+                        if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
+                            playerPos.y ++;
+                            playerPos.direction = DOWN;
+                        }
+                        break;
+                    case ALLEGRO_KEY_LEFT:
+                    case ALLEGRO_KEY_A:
+                        if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
+                            playerPos.x --;
+                            playerPos.direction = LEFT;
+                        }
+                        break;
+                    case ALLEGRO_KEY_RIGHT:
+                    case ALLEGRO_KEY_D:
+                        if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)){
+                            playerPos.x ++;
+                            playerPos.direction = RIGHT;
+                        }
+                        break;
+                    case ALLEGRO_KEY_ESCAPE:
+                        openMenu = true;
+                        if (joystickFound)
+                            showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
+                        else
+                            showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, playerPos, mapUsed);
+                        break;
+                    case ALLEGRO_KEY_K:
+                        playerPos.shuriken.throwing = true;
+                        playerPos.shuriken.x = playerPos.x;
+                        playerPos.shuriken.y = playerPos.y;
+                        switch (playerPos.direction) {
+                            case UP:
+                                playerPos.shuriken.movex = 0;
+                                playerPos.shuriken.movey = -1;
+                                break;
+                            case DOWN:
+                                playerPos.shuriken.movex = 0;
+                                playerPos.shuriken.movey = 1;
+                                break;
+                            case LEFT:
+                                playerPos.shuriken.movex = -1;
+                                playerPos.shuriken.movey = 0;
+                                break;
+                            case RIGHT:
+                                playerPos.shuriken.movex = 1;
+                                playerPos.shuriken.movey = 0;
+                                break;
+                        }
+                        timeThrowShurikenPlayer = clock();
+                        break;
                 }
             }
-            timeMovement = clock();
-        }
 
+            // TESTE BOTAO
+            if(joystickFound) {
+            if (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
+                //printf("Botao pressionado: %d\n", ev.joystick.button);
+                switch (ev.joystick.button){
+                    case CONTROL_BUTTON_A:
+                        break;
+                    case CONTROL_BUTTON_B:
+                        break;
+                    case CONTROL_BUTTON_X:
+                        //printf("botao X\n");
+                        playerPos.shuriken.throwing = true;
+                        playerPos.shuriken.x = playerPos.x;
+                        playerPos.shuriken.y = playerPos.y;
+                        switch (playerPos.direction) {
+                            case UP:
+                                playerPos.shuriken.movex = 0;
+                                playerPos.shuriken.movey = -1;
+                                break;
+                            case DOWN:
+                                playerPos.shuriken.movex = 0;
+                                playerPos.shuriken.movey = 1;
+                                break;
+                            case LEFT:
+                                playerPos.shuriken.movex = -1;
+                                playerPos.shuriken.movey = 0;
+                                break;
+                            case RIGHT:
+                                playerPos.shuriken.movex = 1;
+                                playerPos.shuriken.movey = 0;
+                                break;
+                        }
+                        timeThrowShurikenPlayer = clock();
+                        break;
+                    case CONTROL_BUTTON_Y:
+                        break;
+                    case CONTROL_BUTTON_LB:
+                        break;
+                    case CONTROL_BUTTON_RB:
+                        break;
+                    case CONTROL_BUTTON_OPTIONS:
+                        break;
+                    case CONTROL_BUTTON_START:
+                        openMenu = true;
+                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
+                        break;
+                    case CONTROL_BUTTON_L:
+                        //printf("botao L3\n");
+                        break;
+                    case CONTROL_BUTTON_R:
+                        //printf("botao R3\n");
+                        break;
+                }
+            }
+
+            if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.05) {
+                if(ev.joystick.axis == 0){
+
+                    switch((int)round(ev.joystick.pos)){
+                        case 1:
+                            if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)) {
+                                playerPos.x ++;
+                                playerPos.direction = RIGHT;
+                            }
+                        break;
+                        case -1:
+                            if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
+                                playerPos.x --;
+                                playerPos.direction = LEFT;
+                            }
+                        break;
+                    }
+                }
+                else if(ev.joystick.axis == 1){
+                    switch((int)round(ev.joystick.pos)){
+                        case 1:
+                            if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
+                                playerPos.y ++;
+                                playerPos.direction = DOWN;
+                            }
+                        break;
+                        case -1:
+                            if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
+                                playerPos.y --;
+                                playerPos.direction = UP;
+                            }
+                        break;
+                    }
+                }
+                timeMovement = clock();
+            }
+        }
 
 
 

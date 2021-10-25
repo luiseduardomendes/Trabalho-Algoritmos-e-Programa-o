@@ -11,7 +11,8 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
     do{
         ALLEGRO_EVENT ev;
         al_wait_for_event(events_queue, &ev);
-        al_get_joystick_state(joy, &joyState);
+        if (joy != NULL)
+            al_get_joystick_state(joy, &joyState);
 
 
         al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
@@ -30,50 +31,50 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                     break;
             }
         }
-
-        if(ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN){
-            switch(ev.joystick.button){
-                case 6: // Xbox_options
-                case 1: // Xbox_B
-                    *openMenu = false;
-                    break;
-                case 0: //Xbox_A
-                    switch (selectioned){
-                        case resumeGame:
-                            *openMenu = false;
-                            break;
-                        case saveGame:
-                            saveFunction(npcPos, playerPos, mapUsed);
-                            break;
-                        case loadGame:
-                            //load game function not implemented
-                            break;
-                        case exitGame:
-                            *openMenu = false;
-                            *endOfGame = true;
-                            break;
-                    }
+        if (joy != NULL) {
+            if(ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN){
+                switch(ev.joystick.button){
+                    case 6: // Xbox_options
+                    case 1: // Xbox_B
+                        *openMenu = false;
+                        break;
+                    case 0: //Xbox_A
+                        switch (selectioned){
+                            case resumeGame:
+                                *openMenu = false;
+                                break;
+                            case saveGame:
+                                saveFunction(npcPos, playerPos, mapUsed);
+                                break;
+                            case loadGame:
+                                //load game function not implemented
+                                break;
+                            case exitGame:
+                                *openMenu = false;
+                                *endOfGame = true;
+                                break;
+                        }
+                }
             }
-        }
-        if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
-            if(ev.joystick.axis == 1){
-                switch((int)round(ev.joystick.pos)){
-                    case 1:
-                    if (selectioned + 1 <= 3)
-                        selectioned ++;
-                    else
-                        selectioned = 0;
-                    break;
-                    case -1:
-                    if (selectioned - 1 >= 0)
-                        selectioned --;
-                    else
-                        selectioned = 3;
-                    break;
+            if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
+                if(ev.joystick.axis == 1){
+                    switch((int)round(ev.joystick.pos)){
+                        case 1:
+                        if (selectioned + 1 <= 3)
+                            selectioned ++;
+                        else
+                            selectioned = 0;
+                        break;
+                        case -1:
+                        if (selectioned - 1 >= 0)
+                            selectioned --;
+                        else
+                            selectioned = 3;
+                        break;
+                    }
                 }
             }
         }
-
     } while (*openMenu);
 }
 
