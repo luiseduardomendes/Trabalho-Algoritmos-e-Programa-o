@@ -73,7 +73,6 @@ int main() {
     //inicializacao allegro
 
     if(!al_init()){
-
         al_show_native_message_box(NULL, "AVISO!", "Erro de execução!", "Allegro não inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }

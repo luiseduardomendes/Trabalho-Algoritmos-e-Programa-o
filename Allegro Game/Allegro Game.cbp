@@ -15,7 +15,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="C:/Users/dudup/Downloads/Português/Soc/allegro-5.0.10-mingw-4.7.0/lib/liballegro-5.0.10-monolith-mt-debug.a" />
+					<Add library="C:/allegro-5.0.10-mingw-4.7.0/lib/liballegro-5.0.10-monolith-mt-debug.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -28,13 +28,13 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="C:/Users/dudup/Downloads/Português/Soc/allegro-5.0.10-mingw-4.7.0/lib/liballegro-5.0.10-monolith-mt.a" />
+					<Add library="C:/allegro-5.0.10-mingw-4.7.0/lib/liballegro-5.0.10-monolith-mt.a" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:/Users/dudup/Downloads/Português/Soc/allegro-5.0.10-mingw-4.7.0/include" />
+			<Add directory="C:/allegro-5.0.10-mingw-4.7.0/include" />
 		</Compiler>
 		<Unit filename="attacks.c">
 			<Option compilerVar="CC" />
