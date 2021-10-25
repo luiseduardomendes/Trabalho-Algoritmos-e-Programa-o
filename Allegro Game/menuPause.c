@@ -6,7 +6,7 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
 
     al_init_font_addon();
     al_init_ttf_addon();
-    ALLEGRO_FONT* font20 = al_load_ttf_font("fonte.ttf", 20, 0);
+    ALLEGRO_FONT* font40 = al_load_ttf_font("fonte.ttf", 40, 0);
 
     do{
         ALLEGRO_EVENT ev;
