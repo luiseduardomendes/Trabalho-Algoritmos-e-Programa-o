@@ -1,4 +1,4 @@
-
+#include "headers.h"
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
               ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState) {
     int selectioned = 0;
