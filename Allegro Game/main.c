@@ -392,10 +392,11 @@ int main() {
         if (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
             //printf("Botao pressionado: %d\n", ev.joystick.button);
             switch (ev.joystick.button){
-                case 0:
-                    //printf("botao A\n");
+                case CONTROL_BUTTON_A:
                     break;
-                case 1:
+                case CONTROL_BUTTON_B:
+                    break;
+                case CONTROL_BUTTON_X:
                     //printf("botao X\n");
                     playerPos.shuriken.throwing = true;
                     playerPos.shuriken.x = playerPos.x;
@@ -420,30 +421,22 @@ int main() {
                     }
                     timeThrowShurikenPlayer = clock();
                     break;
-                case 2:
-                    //printf("botao B\n");
+                case CONTROL_BUTTON_Y:
                     break;
-                case 3:
-                    //printf("botao Y\n");
+                case CONTROL_BUTTON_LB:
                     break;
-                case 4:
-                    //printf("botao LB\n");
+                case CONTROL_BUTTON_RB:
                     break;
-                case 5:
-                    printf("botao RB\n");
+                case CONTROL_BUTTON_OPTIONS:
                     break;
-                case 6:
-                    //printf("botao options\n");
+                case CONTROL_BUTTON_START:
                     openMenu = true;
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
                     break;
-                case 7:
-                    //printf("botao start\n");
-                    break;
-                case 8:
+                case CONTROL_BUTTON_L:
                     //printf("botao L3\n");
                     break;
-                case 9:
+                case CONTROL_BUTTON_R:
                     //printf("botao R3\n");
                     break;
             }
