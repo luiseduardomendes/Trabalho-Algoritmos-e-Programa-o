@@ -226,7 +226,7 @@ int main() {
             timeThrowShuriken = clock();
         }
 
-        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 10){
+        /*if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 10){
             for(i = 0; i < NUM_MOBS; i ++){
                 if (!npcPos[i].shuriken.throwing) {
                     npcPos[i].shuriken.x = npcPos[i].x;
@@ -257,7 +257,7 @@ int main() {
                     timeBeginShuriken = clock();
                 }
             }
-        }
+        }*/
 
 /* SUBSTITUIRIA A FUNÇÃO ACIMA
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
@@ -311,28 +311,30 @@ int main() {
                             showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &playerPos, &mapUsed);
                         break;
                     case ALLEGRO_KEY_K:
-                        playerPos.shuriken.throwing = true;
-                        playerPos.shuriken.x = playerPos.x;
-                        playerPos.shuriken.y = playerPos.y;
-                        switch (playerPos.direction) {
-                            case UP:
-                                playerPos.shuriken.movex = 0;
-                                playerPos.shuriken.movey = -1;
-                                break;
-                            case DOWN:
-                                playerPos.shuriken.movex = 0;
-                                playerPos.shuriken.movey = 1;
-                                break;
-                            case LEFT:
-                                playerPos.shuriken.movex = -1;
-                                playerPos.shuriken.movey = 0;
-                                break;
-                            case RIGHT:
-                                playerPos.shuriken.movex = 1;
-                                playerPos.shuriken.movey = 0;
-                                break;
+                        if (!playerPos.shuriken.throwing){
+                            playerPos.shuriken.throwing = true;
+                            playerPos.shuriken.x = playerPos.x;
+                            playerPos.shuriken.y = playerPos.y;
+                            switch (playerPos.direction) {
+                                case UP:
+                                    playerPos.shuriken.movex = 0;
+                                    playerPos.shuriken.movey = -1;
+                                    break;
+                                case DOWN:
+                                    playerPos.shuriken.movex = 0;
+                                    playerPos.shuriken.movey = 1;
+                                    break;
+                                case LEFT:
+                                    playerPos.shuriken.movex = -1;
+                                    playerPos.shuriken.movey = 0;
+                                    break;
+                                case RIGHT:
+                                    playerPos.shuriken.movex = 1;
+                                    playerPos.shuriken.movey = 0;
+                                    break;
+                            }
+                            timeThrowShurikenPlayer = clock();
                         }
-                        timeThrowShurikenPlayer = clock();
                         break;
                 }
             }
@@ -348,28 +350,30 @@ int main() {
                         break;
                     case CONTROL_BUTTON_X:
                         //printf("botao X\n");
-                        playerPos.shuriken.throwing = true;
-                        playerPos.shuriken.x = playerPos.x;
-                        playerPos.shuriken.y = playerPos.y;
-                        switch (playerPos.direction) {
-                            case UP:
-                                playerPos.shuriken.movex = 0;
-                                playerPos.shuriken.movey = -1;
-                                break;
-                            case DOWN:
-                                playerPos.shuriken.movex = 0;
-                                playerPos.shuriken.movey = 1;
-                                break;
-                            case LEFT:
-                                playerPos.shuriken.movex = -1;
-                                playerPos.shuriken.movey = 0;
-                                break;
-                            case RIGHT:
-                                playerPos.shuriken.movex = 1;
-                                playerPos.shuriken.movey = 0;
-                                break;
+                        if (!playerPos.shuriken.throwing) {
+                            playerPos.shuriken.throwing = true;
+                            playerPos.shuriken.x = playerPos.x;
+                            playerPos.shuriken.y = playerPos.y;
+                            switch (playerPos.direction) {
+                                case UP:
+                                    playerPos.shuriken.movex = 0;
+                                    playerPos.shuriken.movey = -1;
+                                    break;
+                                case DOWN:
+                                    playerPos.shuriken.movex = 0;
+                                    playerPos.shuriken.movey = 1;
+                                    break;
+                                case LEFT:
+                                    playerPos.shuriken.movex = -1;
+                                    playerPos.shuriken.movey = 0;
+                                    break;
+                                case RIGHT:
+                                    playerPos.shuriken.movex = 1;
+                                    playerPos.shuriken.movey = 0;
+                                    break;
+                            }
+                            timeThrowShurikenPlayer = clock();
                         }
-                        timeThrowShurikenPlayer = clock();
                         break;
                     case CONTROL_BUTTON_Y:
                         break;
