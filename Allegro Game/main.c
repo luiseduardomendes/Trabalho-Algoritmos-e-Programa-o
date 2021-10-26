@@ -226,7 +226,7 @@ int main() {
             timeThrowShuriken = clock();
         }
 
-        /*if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 10){
+        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 10){
             for(i = 0; i < NUM_MOBS; i ++){
                 if (!npcPos[i].shuriken.throwing) {
                     npcPos[i].shuriken.x = npcPos[i].x;
@@ -257,7 +257,7 @@ int main() {
                     timeBeginShuriken = clock();
                 }
             }
-        }*/
+        }
 
 /* SUBSTITUIRIA A FUNÇÃO ACIMA
         if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
@@ -271,34 +271,34 @@ int main() {
                 }
             }
         }
-*/
+
 
             if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
                 switch (ev.keyboard.keycode){
                     case ALLEGRO_KEY_UP:
                     case ALLEGRO_KEY_W:
-                        if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
+                        if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix) && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.1) {
                             playerPos.y --;
                             playerPos.direction = UP;
                         }
                         break;
                     case ALLEGRO_KEY_DOWN:
                     case ALLEGRO_KEY_S:
-                        if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
+                        if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix) && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.1) {
                             playerPos.y ++;
                             playerPos.direction = DOWN;
                         }
                         break;
                     case ALLEGRO_KEY_LEFT:
                     case ALLEGRO_KEY_A:
-                        if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
+                        if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix) && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.1) {
                             playerPos.x --;
                             playerPos.direction = LEFT;
                         }
                         break;
                     case ALLEGRO_KEY_RIGHT:
                     case ALLEGRO_KEY_D:
-                        if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)){
+                        if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix) && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.1){
                             playerPos.x ++;
                             playerPos.direction = RIGHT;
                         }
@@ -337,7 +337,7 @@ int main() {
                         }
                         break;
                 }
-            }
+            }*/
 
             // TESTE BOTAO
         if(joystickFound) {
@@ -396,22 +396,23 @@ int main() {
                 }
             }
 
-            if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.05) {
+            if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS && (double) (timeCurrent - timeMovement)/CLOCKS_PER_SEC > 0.1) {
                 if(ev.joystick.axis == 0){
 
-                    switch((int)round(ev.joystick.pos)){
-                        case 1:
-                            if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)) {
-                                playerPos.x ++;
-                                playerPos.direction = RIGHT;
-                            }
-                        break;
-                        case -1:
+                    if (ev.joystick.pos > 0.25){
+
+                        if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)) {
+                            playerPos.x ++;
+                            playerPos.direction = RIGHT;
+                        }
+                    }
+
+                    else if (ev.joystick.pos < -0.25) {
                             if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
                                 playerPos.x --;
                                 playerPos.direction = LEFT;
                             }
-                        break;
+
                     }
                 }
                 else if(ev.joystick.axis == 1){
