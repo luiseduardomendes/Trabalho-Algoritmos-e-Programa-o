@@ -2,7 +2,7 @@
 1634431202 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
 	"headers.h"
 
-1635184651 e:\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
+1635216014 e:\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
 	<stdio.h>
 	<math.h>
 	<stdlib.h>
@@ -254,7 +254,7 @@
 	"allegro5/allegro.h"
 	"allegro5/allegro_font.h"
 
-1635187603 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\main.c
+1635216023 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\main.c
 	"headers.h"
 	<allegro5/allegro_image.h>
 
@@ -296,10 +296,10 @@
 1635123237 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\teste.c
 	"headers.h"
 
-1635123586 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\teste.c
+1635214831 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\teste.c
 	"headers.h"
 
-1635161274 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\menupause.c
+1635216187 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\menupause.c
 	"headers.h"
 
 1372628331 c:\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro.h

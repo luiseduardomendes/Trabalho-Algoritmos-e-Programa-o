@@ -1,7 +1,5 @@
 #include "headers.h"
 
-/*
-PASSANDO AS FUNÇÕES NA MAIN PARA CÁ AOS POUCOS, BEM LONGE DE ESTAR COMPLETO. FIZEMOS ANTES DA FESTA ENTÃO NÃO TIVEMOS MUITO TEMPO
 void drawMap(char mapMatrix[][SIZEMAP_X]){
     int i, j;
 
@@ -17,7 +15,7 @@ void drawMap(char mapMatrix[][SIZEMAP_X]){
         }
     }
 }
-
+/*
 void drawMove(typePos npcPos[], typePos playerPos, ALLEGRO_BITMAP *shurikenDraw){
     int i, j, k, mobFound, playerFound, shurikenFound;
 

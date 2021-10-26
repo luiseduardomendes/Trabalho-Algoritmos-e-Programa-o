@@ -186,46 +186,6 @@ int main() {
     al_register_event_source(events_queue, al_get_joystick_event_source());
     /*_____________________________________________________________*/
 
-
-
-
-    saveFile = fopen("save.sav", "rb");
-    if (saveFile != NULL){
-        fread(&save, sizeof(save), 1, saveFile);
-        mapUsed = save.mapUsed;
-        for(k = 0; k < NUM_MOBS; k ++) {
-            npcPos[k].direction = save.npc[k].direction;
-            npcPos[k].shuriken.movex = save.npc[k].shuriken.movex;
-            npcPos[k].shuriken.movey = save.npc[k].shuriken.movey;
-            npcPos[k].shuriken.throwing = save.npc[k].shuriken.throwing;
-            npcPos[k].shuriken.x = save.npc[k].shuriken.x;
-            npcPos[k].shuriken.y = save.npc[k].shuriken.y;
-            npcPos[k].x = save.npc[k].x;
-            npcPos[k].y = save.npc[k].y;
-        }
-        playerPos.direction = save.player.direction;
-        playerPos.shuriken.movex = save.player.shuriken.movex;
-        playerPos.shuriken.movey = save.player.shuriken.movey;
-        playerPos.shuriken.throwing = save.player.shuriken.throwing;
-        playerPos.shuriken.x = save.player.shuriken.x;
-        playerPos.shuriken.y = save.player.shuriken.y;
-        playerPos.x = save.player.x;
-        playerPos.y = save.player.y;
-
-        fclose(saveFile);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
     do {
 
         ALLEGRO_EVENT ev;
@@ -236,18 +196,7 @@ int main() {
 
         timeCurrent = clock();
 
-
-        for(i = 0; i < SIZEMAP_Y; i++){
-            for(j = 0; j < SIZEMAP_X; j++){
-
-                if(mapMatrix[i][j] == WALL){
-                    al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
-                    }
-                else if(mapMatrix[i][j] == 'X'){
-                    al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
-                }
-            }
-        }
+        drawMap(mapMatrix);
 
         for (k = 0; k < NUM_MOBS; k ++)
             al_draw_filled_rectangle(npcPos[k].x*MAPSCALE, npcPos[k].y*MAPSCALE,(npcPos[k].x*MAPSCALE)+MAPSCALE, (npcPos[k].y*MAPSCALE)+MAPSCALE,al_map_rgb(200,0,0));
@@ -270,14 +219,14 @@ int main() {
         }
 
 
-        if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.25){
+        if ((double)(timeCurrent - timeThrowShuriken) / CLOCKS_PER_SEC > 0.1){
             for (i = 0; i < NUM_MOBS; i ++) {
                 throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix);
             }
             timeThrowShuriken = clock();
         }
 
-        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 5){
+        if ((double)(timeCurrent - timeBeginShuriken) / CLOCKS_PER_SEC > 10){
             for(i = 0; i < NUM_MOBS; i ++){
                 if (!npcPos[i].shuriken.throwing) {
                     npcPos[i].shuriken.x = npcPos[i].x;
@@ -357,9 +306,9 @@ int main() {
                     case ALLEGRO_KEY_ESCAPE:
                         openMenu = true;
                         if (joystickFound)
-                            showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
+                            showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &playerPos, &mapUsed);
                         else
-                            showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, playerPos, mapUsed);
+                            showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &playerPos, &mapUsed);
                         break;
                     case ALLEGRO_KEY_K:
                         playerPos.shuriken.throwing = true;
@@ -389,7 +338,7 @@ int main() {
             }
 
             // TESTE BOTAO
-            if(joystickFound) {
+        if(joystickFound) {
             if (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
                 switch (ev.joystick.button){
@@ -432,7 +381,7 @@ int main() {
                         break;
                     case CONTROL_BUTTON_START:
                         openMenu = true;
-                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, playerPos, mapUsed);
+                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &playerPos, &mapUsed);
                         break;
                     case CONTROL_BUTTON_L:
                         //printf("botao L3\n");

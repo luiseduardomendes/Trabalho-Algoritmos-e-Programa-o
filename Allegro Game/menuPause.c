@@ -1,6 +1,6 @@
 #include "headers.h"
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-              ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], typePos playerPos, int mapUsed) {
+              ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], typePos *playerPos, int *mapUsed) {
     int selectioned = 0;
     enum options{resumeGame, saveGame, loadGame, exitGame};
 
@@ -29,6 +29,7 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                 case ALLEGRO_KEY_ESCAPE:
                     *openMenu = false;
                     break;
+                case ALLE
             }
         }
         if (joy != NULL) {
@@ -44,10 +45,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                                 *openMenu = false;
                                 break;
                             case saveGame:
-                                saveFunction(npcPos, playerPos, mapUsed);
+                                saveFunction(npcPos, *playerPos, mapUsed);
                                 break;
                             case loadGame:
-                                //load game function not implemented
+                                loadSave(npcPos, playerPos, &mapUsed);
                                 break;
                             case exitGame:
                                 *openMenu = false;
@@ -107,4 +108,34 @@ int saveFunction (typePos npcPos[], typePos playerPos, int mapUsed) {
     fwrite(&save, sizeof(save), 1, saveFile);
     fclose(saveFile);
     return flag;
+}
+
+int loadSave(typePos npcPos[], typePos *playerPos, int *mapUsed) {
+    typeSave save;
+    int k;
+    saveFile = fopen("save.sav", "rb");
+    if (saveFile != NULL){
+        fread(&save, sizeof(save), 1, saveFile);
+        mapUsed = save.mapUsed;
+        for(k = 0; k < NUM_MOBS; k ++) {
+            npcPos[k].direction = save.npc[k].direction;
+            npcPos[k].shuriken.movex = save.npc[k].shuriken.movex;
+            npcPos[k].shuriken.movey = save.npc[k].shuriken.movey;
+            npcPos[k].shuriken.throwing = save.npc[k].shuriken.throwing;
+            npcPos[k].shuriken.x = save.npc[k].shuriken.x;
+            npcPos[k].shuriken.y = save.npc[k].shuriken.y;
+            npcPos[k].x = save.npc[k].x;
+            npcPos[k].y = save.npc[k].y;
+        }
+        playerPos->direction = save.player.direction;
+        playerPos->shuriken.movex = save.player.shuriken.movex;
+        playerPos->shuriken.movey = save.player.shuriken.movey;
+        playerPos->shuriken.throwing = save.player.shuriken.throwing;
+        playerPos->shuriken.x = save.player.shuriken.x;
+        playerPos->shuriken.y = save.player.shuriken.y;
+        playerPos->x = save.player.x;
+        playerPos->y = save.player.y;
+
+        fclose(saveFile);
+    }
 }
