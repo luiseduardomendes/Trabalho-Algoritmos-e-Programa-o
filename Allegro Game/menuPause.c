@@ -29,32 +29,63 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                 case ALLEGRO_KEY_ESCAPE:
                     *openMenu = false;
                     break;
-                case ALLE
+                case ALLEGRO_KEY_UP:
+                case ALLEGRO_KEY_W:
+                    if (selectioned - 1 >= 0)
+                        selectioned --;
+                    else
+                        selectioned = 3;
+                    break;
+                case ALLEGRO_KEY_DOWN:
+                case ALLEGRO_KEY_S:
+                    if (selectioned + 1 <= 3)
+                        selectioned ++;
+                    else
+                        selectioned = 0;
+                    break;
+                case ALLEGRO_KEY_ENTER:
+                    switch (selectioned){
+                        case resumeGame:
+                            *openMenu = false;
+                            break;
+                        case saveGame:
+                            saveFunction(npcPos, *playerPos, mapUsed);
+                            break;
+                        case loadGame:
+                            loadSave(npcPos, playerPos, &mapUsed);
+                            break;
+                        case exitGame:
+                            *openMenu = false;
+                            *endOfGame = true;
+                            break;
+                        }
+                    break;
+
             }
         }
         if (joy != NULL) {
             if(ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN){
                 switch(ev.joystick.button){
-                    case 6: // Xbox_options
-                    case 1: // Xbox_B
+                case 6: // Xbox_options
+                case 1: // Xbox_B
+                    *openMenu = false;
+                    break;
+                case 0: //Xbox_A
+                    switch (selectioned){
+                    case resumeGame:
                         *openMenu = false;
                         break;
-                    case 0: //Xbox_A
-                        switch (selectioned){
-                            case resumeGame:
-                                *openMenu = false;
-                                break;
-                            case saveGame:
-                                saveFunction(npcPos, *playerPos, mapUsed);
-                                break;
-                            case loadGame:
-                                loadSave(npcPos, playerPos, &mapUsed);
-                                break;
-                            case exitGame:
-                                *openMenu = false;
-                                *endOfGame = true;
-                                break;
-                        }
+                    case saveGame:
+                        saveFunction(npcPos, *playerPos, mapUsed);
+                        break;
+                    case loadGame:
+                        loadSave(npcPos, playerPos, &mapUsed);
+                        break;
+                    case exitGame:
+                        *openMenu = false;
+                        *endOfGame = true;
+                        break;
+                    }
                 }
             }
             if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
