@@ -1,6 +1,6 @@
 #include "headers.h"
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-              ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], typePos *playerPos, int *mapUsed) {
+              ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed) {
     int selectioned = 0;
     enum options{resumeGame, saveGame, loadGame, exitGame};
 
@@ -49,10 +49,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, *playerPos, mapUsed);
+                            saveFunction(npcPos, numMobs, *playerPos, mapUsed);
                             break;
                         case loadGame:
-                            loadSave(npcPos, playerPos, &mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, &mapUsed);
                             break;
                         case exitGame:
                             *openMenu = false;
@@ -76,10 +76,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                         *openMenu = false;
                         break;
                     case saveGame:
-                        saveFunction(npcPos, *playerPos, mapUsed);
+                        saveFunction(npcPos, numMobs, *playerPos, mapUsed);
                         break;
                     case loadGame:
-                        loadSave(npcPos, playerPos, &mapUsed);
+                        loadSave(npcPos, numMobs, playerPos, &mapUsed);
                         break;
                     case exitGame:
                         *openMenu = false;
@@ -110,7 +110,7 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
     } while (*openMenu);
 }
 
-int saveFunction (typePos npcPos[], typePos playerPos, int mapUsed) {
+int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed) {
     int k, flag = 1;
     typeSave save;
     mapUsed = 0;
@@ -141,7 +141,7 @@ int saveFunction (typePos npcPos[], typePos playerPos, int mapUsed) {
     return flag;
 }
 
-int loadSave(typePos npcPos[], typePos *playerPos, int *mapUsed) {
+int loadSave(typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed) {
     typeSave save;
     int k;
     saveFile = fopen("save.sav", "rb");

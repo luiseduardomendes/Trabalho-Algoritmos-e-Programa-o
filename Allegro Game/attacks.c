@@ -1,5 +1,5 @@
 #include "headers.h"
-void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typePos npcPos[]){
+void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typePos npcPos[], int numMobs){
 
     shurikenDir(npcPos);
     if(shuriken->throwing){

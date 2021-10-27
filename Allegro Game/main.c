@@ -160,7 +160,7 @@ int main()
 
     al_start_timer(timer);
 
-    while(running)
+    while(running && !endOfGame)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
@@ -200,9 +200,9 @@ int main()
                 case ALLEGRO_KEY_ESCAPE:
                     openMenu = true;
                     if (joystickFound)
-                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &playerPos, &mapUsed);
+                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, mobRate, &playerPos, &mapUsed);
                     else
-                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &playerPos, &mapUsed);
+                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, mobRate, &playerPos, &mapUsed);
                     break;
                 case ALLEGRO_KEY_K:
                     if (!playerPos.shuriken.throwing){
@@ -231,6 +231,98 @@ int main()
                     break;
             }
         }
+        if(joystickFound) {
+            if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
+                //printf("Botao pressionado: %d\n", ev.joystick.button);
+                switch (event.joystick.button){
+                    case CONTROL_BUTTON_A:
+                        break;
+                    case CONTROL_BUTTON_B:
+                        break;
+                    case CONTROL_BUTTON_X:
+                        //printf("botao X\n");
+                        if (!playerPos.shuriken.throwing) {
+                            playerPos.shuriken.throwing = true;
+                            playerPos.shuriken.x = playerPos.x;
+                            playerPos.shuriken.y = playerPos.y;
+                            switch (playerPos.direction) {
+                                case UP:
+                                    playerPos.shuriken.movex = 0;
+                                    playerPos.shuriken.movey = -1;
+                                    break;
+                                case DOWN:
+                                    playerPos.shuriken.movex = 0;
+                                    playerPos.shuriken.movey = 1;
+                                    break;
+                                case LEFT:
+                                    playerPos.shuriken.movex = -1;
+                                    playerPos.shuriken.movey = 0;
+                                    break;
+                                case RIGHT:
+                                    playerPos.shuriken.movex = 1;
+                                    playerPos.shuriken.movey = 0;
+                                    break;
+                            }
+                        }
+                        break;
+                    case CONTROL_BUTTON_Y:
+                        break;
+                    case CONTROL_BUTTON_LB:
+                        break;
+                    case CONTROL_BUTTON_RB:
+                        break;
+                    case CONTROL_BUTTON_OPTIONS:
+                        break;
+                    case CONTROL_BUTTON_START:
+                        openMenu = true;
+                        showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, mobRate, &playerPos, &mapUsed);
+                        break;
+                    case CONTROL_BUTTON_L:
+                        //printf("botao L3\n");
+                        break;
+                    case CONTROL_BUTTON_R:
+                        //printf("botao R3\n");
+                        break;
+                }
+            }
+
+            if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
+                if(event.joystick.axis == 0){
+
+                    if (event.joystick.pos > 0.25){
+
+                        if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)) {
+                            playerPos.x ++;
+                            playerPos.direction = RIGHT;
+                        }
+                    }
+
+                    else if (event.joystick.pos < -0.25) {
+                            if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
+                                playerPos.x --;
+                                playerPos.direction = LEFT;
+                            }
+
+                    }
+                }
+                else if(event.joystick.axis == 1){
+                    switch((int)round(event.joystick.pos)){
+                        case 1:
+                            if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
+                                playerPos.y ++;
+                                playerPos.direction = DOWN;
+                            }
+                        break;
+                        case -1:
+                            if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)) {
+                                playerPos.y --;
+                                playerPos.direction = UP;
+                            }
+                        break;
+                    }
+                }
+            }
+        }
 
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || al_key_down(&keyState, ALLEGRO_KEY_BACKSPACE))
             running = 0;
@@ -238,16 +330,16 @@ int main()
         {
             if(event.timer.source == mobTimer)
                 {
-                    npcMovement(npcPos, playerPos, mapMatrix);
+                    npcMovement(npcPos, mobRate, playerPos, mapMatrix);
                     for (i = 0; i < NUM_MOBS; i ++)
-                        throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix, npcPos);
+                        throwShuriken(&npcPos[i].shuriken, playerPos, mapMatrix, npcPos, mobRate);
                 }
             if(event.timer.source == timer)
             {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 drawMap(mapMatrix);
                 drawMobs(npcPos);
-                drawMobShur(npcPos, shurikenDraw);
+                drawMobShur(npcPos, mobRate, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)

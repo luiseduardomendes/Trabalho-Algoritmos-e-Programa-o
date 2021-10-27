@@ -58,11 +58,19 @@ typedef struct save{
 FILE *map;
 FILE *saveFile;
 //void showDisplay (int mapUsed, typePos playerPos, typePos infMob[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
-void npcMovement(typePos infMob[], typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
-void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typePos npcPos[]);
-void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], typePos *playerPos, int *mapUsed);
-int saveFunction (typePos npcPos[], typePos playerPos, int mapUsed);
-int loadSave(typePos npcPos[], typePos *playerPos, int *mapUsed);
-void drawMobShur(typePos npcPos[], ALLEGRO_BITMAP *shurikenDraw);
+
+void npcMovement(typePos infMob[], int numMobs, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+
+void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typePos npcPos[], int numMobs);
+
+void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed);
+
+int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed);
+
+int loadSave(typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed);
+
+void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
+
 void playerMovement(typePos playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);

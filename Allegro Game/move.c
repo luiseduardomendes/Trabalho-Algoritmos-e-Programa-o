@@ -1,6 +1,6 @@
 #include "headers.h"
 // Procedure to control the movement of the enemies
-void npcMovement(typePos mobPos[], typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+void npcMovement(typePos mobPos[], int numMobs, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int flagMov;
     int i;
 

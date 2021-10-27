@@ -8,7 +8,7 @@ void drawMobs(typePos npcPos[])
         al_draw_filled_rectangle(npcPos[i].x*MAPSCALE, npcPos[i].y*MAPSCALE,(npcPos[i].x*MAPSCALE)+MAPSCALE, (npcPos[i].y*MAPSCALE)+MAPSCALE,al_map_rgb(200,0,0));
 }
 
-void drawMobShur(typePos npcPos[], ALLEGRO_BITMAP *shurikenDraw)
+void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw)
 {
     int i;
 
