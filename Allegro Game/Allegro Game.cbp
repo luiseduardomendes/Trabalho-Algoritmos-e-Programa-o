@@ -39,6 +39,9 @@
 		<Unit filename="attacks.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="headers.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

@@ -1,6 +1,6 @@
 #include "headers.h"
 // Procedure to control the movement of the enemies
-void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+void npcMovement(typePos mobPos[], typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int flagMov;
     int i;
 
@@ -9,9 +9,8 @@ void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob, char map
 
 
     for (i = 0; i < NUM_MOBS; i ++){
-        flagMov = (1 + (rand() % 4));
-        if (fabs(playerPos.x - mobPos[i].x) < rangeViewMob &&
-        fabs(playerPos.y - mobPos[i].y) < rangeViewMob){
+        flagMov = (rand() % 4);
+        if (fabs(playerPos.x - mobPos[i].x) < RANGEVIEWMOB && fabs(playerPos.y - mobPos[i].y) < RANGEVIEWMOB){
             if (playerPos.x > mobPos[i].x){
                 if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)) {
                     mobPos[i].x ++;
@@ -40,25 +39,25 @@ void npcMovement(typePos mobPos[], typePos playerPos, int rangeViewMob, char map
         else{
 
             switch (flagMov) {
-                case 1:
+                case 0:
                     if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)){
                         mobPos[i].x ++;
                         mobPos[i].direction = RIGHT;
                     }
                     break;
-                case 2:
+                case 1:
                     if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)){
                         mobPos[i].y --;
                         mobPos[i].direction = UP;
                     }
                     break;
-                case 3:
+                case 2:
                     if (verifyPosition(mobPos[i].x, mobPos[i].y, TOLEFT, mapMatrix)){
                         mobPos[i].x --;
                         mobPos[i].direction = LEFT;
                     }
                     break;
-                case 4:
+                case 3:
                     if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)){
                         mobPos[i].y ++;
                         mobPos[i].direction = DOWN;
@@ -93,6 +92,75 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     }
     return validPosition;
 }
+
+//void playerMovement(typePos *playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound)
+/*{
+    bool openMenu = false;
+
+    switch (event.keyboard.keycode){
+        case ALLEGRO_KEY_UP:
+        case ALLEGRO_KEY_W:
+            if (verifyPosition(playerPos.x, playerPos.y, TOUP, mapMatrix)){
+                playerPos.y --;
+                playerPos.direction = UP;
+            }
+            break;
+        case ALLEGRO_KEY_DOWN:
+        case ALLEGRO_KEY_S:
+            if (verifyPosition(playerPos.x, playerPos.y, TODOWN, mapMatrix)) {
+                playerPos.y ++;
+                playerPos.direction = DOWN;
+            }
+            break;
+        case ALLEGRO_KEY_LEFT:
+        case ALLEGRO_KEY_A:
+            if (verifyPosition(playerPos.x, playerPos.y, TOLEFT, mapMatrix)) {
+                playerPos.x --;
+                playerPos.direction = LEFT;
+            }
+            break;
+        case ALLEGRO_KEY_RIGHT:
+        case ALLEGRO_KEY_D:
+            if (verifyPosition(playerPos.x, playerPos.y, TORIGHT, mapMatrix)){
+                playerPos.x ++;
+                playerPos.direction = RIGHT;
+            }
+            break;
+        case ALLEGRO_KEY_ESCAPE:
+            openMenu = true;
+            if (joystickFound)
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &playerPos, &mapUsed);
+            else
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &playerPos, &mapUsed);
+            break;
+        case ALLEGRO_KEY_K:
+            if (!playerPos.shuriken.throwing){
+                playerPos.shuriken.throwing = true;
+                playerPos.shuriken.x = playerPos.x;
+                playerPos.shuriken.y = playerPos.y;
+                switch (playerPos.direction) {
+                    case UP:
+                        playerPos.shuriken.movex = 0;
+                        playerPos.shuriken.movey = -1;
+                        break;
+                    case DOWN:
+                        playerPos.shuriken.movex = 0;
+                        playerPos.shuriken.movey = 1;
+                        break;
+                    case LEFT:
+                        playerPos.shuriken.movex = -1;
+                        playerPos.shuriken.movey = 0;
+                        break;
+                    case RIGHT:
+                        playerPos.shuriken.movex = 1;
+                        playerPos.shuriken.movey = 0;
+                        break;
+                }
+            }
+            break;
+    }
+}*/
+
 
 /* VERIFICA AS FUTURAS POSIÇÕES DA SHURIKEN. CASO O MOB ESTEJA NA MESMA LINHA DE UM PLAYER, E NÃO TIVER NENHUMA PAREDE ENTRE ELES, ELE IRÁ ATIRAR.
 int verifyShuriken(typePos *shuriken, typePos npcPos, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X])

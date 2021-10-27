@@ -1,20 +1,5 @@
 #include "headers.h"
 
-void drawMap(char mapMatrix[][SIZEMAP_X]){
-    int i, j;
-
-    for(i = 0; i < SIZEMAP_Y; i++){
-        for(j = 0; j < SIZEMAP_X; j++){
-
-            if(mapMatrix[i][j] == WALL){
-                al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
-                }
-            else if(mapMatrix[i][j] == 'X'){
-                al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
-            }
-        }
-    }
-}
 /*
 void drawMove(typePos npcPos[], typePos playerPos, ALLEGRO_BITMAP *shurikenDraw){
     int i, j, k, mobFound, playerFound, shurikenFound;
