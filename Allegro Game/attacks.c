@@ -13,7 +13,7 @@ void updateShurikenPos(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP
     }
 }
 
-void shurikenDir(typeshur *npc)
+void shurikenDir(typePos *npc)
 {
     int i;
 
