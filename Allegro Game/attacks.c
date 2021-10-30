@@ -1,7 +1,6 @@
 #include "headers.h"
-void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typePos npcPos[], int numMobs){
+void updateShurikenPos(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
 
-    shurikenDir(npcPos);
     if(shuriken->throwing){
         shuriken->x += shuriken->movex;
         shuriken->y += shuriken->movey;
@@ -14,37 +13,37 @@ void throwShuriken(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][
     }
 }
 
-void shurikenDir(typePos npcPos[])
+void shurikenDir(typeshur *npc)
 {
     int i;
 
-    for(i = 0; i < NUM_MOBS; i ++){
-        if (!npcPos[i].shuriken.throwing) {
-            npcPos[i].shuriken.x = npcPos[i].x;
-            npcPos[i].shuriken.y = npcPos[i].y;
-            switch (npcPos[i].direction) {
-                case UP:
-                    npcPos[i].shuriken.movex = 0;
-                    npcPos[i].shuriken.movey = -1;
-                    break;
-                case DOWN:
-                    npcPos[i].shuriken.movex = 0;
-                    npcPos[i].shuriken.movey = 1;
-                    break;
-                case LEFT:
-                    npcPos[i].shuriken.movex = -1;
-                    npcPos[i].shuriken.movey = 0;
-                    break;
-                case RIGHT:
-                    npcPos[i].shuriken.movex = 1;
-                    npcPos[i].shuriken.movey = 0;
-                    break;
-                default:
-                    npcPos[i].shuriken.movex = 0;
-                    npcPos[i].shuriken.movey = 0;
-                    break;
-            }
-            npcPos[i].shuriken.throwing = true;
+
+    if (!npc->shuriken.throwing) {
+        npc->shuriken.x = npc->x;
+        npc->shuriken.y = npc->y;
+        switch (npc->direction) {
+            case UP:
+                npc->shuriken.movex = 0;
+                npc->shuriken.movey = -1;
+                break;
+            case DOWN:
+                npc->shuriken.movex = 0;
+                npc->shuriken.movey = 1;
+                break;
+            case LEFT:
+                npc->shuriken.movex = -1;
+                npc->shuriken.movey = 0;
+                break;
+            case RIGHT:
+                npc->shuriken.movex = 1;
+                npc->shuriken.movey = 0;
+                break;
+            default:
+                npc->shuriken.movex = 0;
+                npc->shuriken.movey = 0;
+                break;
         }
+        npc->shuriken.throwing = true;
+
     }
 }
