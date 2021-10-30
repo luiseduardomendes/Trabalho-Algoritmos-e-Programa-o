@@ -188,6 +188,7 @@ int main()
             if(event.timer.source == mobTimer)
                 {
                     npcMovement(npcPos, mobRate, playerPos, mapMatrix);
+                    updateShurikenPos(&playerPos.shuriken, npcPos[0], mapMatrix);
                     for (i = 0; i < NUM_MOBS; i ++){
                         if (npcPos[i].shuriken.throwing)
                             updateShurikenPos(&npcPos[i].shuriken, playerPos, mapMatrix);
