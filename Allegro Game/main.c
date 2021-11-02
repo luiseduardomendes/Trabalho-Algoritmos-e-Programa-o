@@ -14,8 +14,8 @@ int main()
     int joystickFound = 1;
     typePos playerPos, npcPos[NUM_MOBS];
     typeSave save;
-    const int width = 60*MAPSCALE; //largura
-    const int height = 23*MAPSCALE; //algura
+    const int width = 64*MAPSCALE; //largura
+    const int height = 36*MAPSCALE; //algura
     bool endOfGame = false, openMenu = false;
     /*_____________________________________________________________*/
 
@@ -77,6 +77,7 @@ int main()
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/espinhos.png");
     ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
+    ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/enemy.png");
 
     /*_____________________________________________________________*/
 
@@ -90,14 +91,24 @@ int main()
 
     /*_____________________________________________________________*/
 
+    /*_____________________________________________________________*/
+    //Audio
 
-
+    /*ALLEGRO_SAMPLE *throwShur = NULL;
+    ALLEGRO_SAMPLE_INSTANCE *throwShurInst = NULL;
+    al_reserve_samples(true);
+    al_install_audio();
+    al_init_acodec_addon();
+    throwShur = al_load_sample("throwShur.wav");
+    throwShurInst = al_create_sample_instance(throwShur);
+    al_attach_sample_instance_to_mixer(throwShurInst, al_get_default_mixer());*/
+    /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
     //declaraçao do mapa
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/maps.txt", "r");
+    map = fopen("arquivos/map64x36.txt", "r");
     rewind(map);
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
@@ -201,7 +212,7 @@ int main()
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
-        al_get_keyboard_state(&keyState);
+        //al_get_keyboard_state(&keyState);
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
@@ -239,7 +250,7 @@ int main()
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 //drawMap(mapMatrix, spikes, keys);
                 al_draw_bitmap(background, 0, 0, 0);
-                drawMobs(npcPos);
+                drawMobs(npcPos, enemy);
                 drawMobShur(npcPos, NUM_MOBS, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
@@ -314,6 +325,7 @@ void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu){
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
             if (!playerPos->shuriken.throwing) {
+                //al_play_sample_instance(throwShurInst);
                 playerPos->shuriken.throwing = true;
                 playerPos->shuriken.x = playerPos->x;
                 playerPos->shuriken.y = playerPos->y;
