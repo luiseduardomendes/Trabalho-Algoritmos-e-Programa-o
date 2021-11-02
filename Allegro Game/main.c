@@ -75,10 +75,11 @@ int main()
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonte.ttf", 48, 0);
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/Naruto2.png");
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
-    ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/espinhos.png");
+    ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/spikes.png");
     ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
     ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/enemy.png");
     ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
+    ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
 
     /*_____________________________________________________________*/
 
@@ -162,6 +163,9 @@ int main()
             if(mapMatrix[i][j] == WALL){
                 al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
                 }
+            else if(mapMatrix[i][j] == ' '){
+                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
+            }
             else if(mapMatrix[i][j] == 'X'){
                 al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
