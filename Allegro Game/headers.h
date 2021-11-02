@@ -28,7 +28,7 @@
 #define SIZEMAP_X 64
 #define SIZEMAP_Y 36
 #define SIZENAMEMAPS 101
-#define NUM_MOBS 4
+#define NUM_MOBS 10
 #define MAPSCALE 20
 #define RANGEVIEWMOB 5
 /*_____________________________________________________________*/
@@ -46,6 +46,7 @@ typedef struct shuriken{
 }typeShur;
 typedef struct position{
     int x, y;
+    int hp, fullHp;
     int direction;
     typeShur shuriken;
 }typePos;

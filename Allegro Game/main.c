@@ -27,18 +27,18 @@ int main()
 
     playerPos.x = 2;
     playerPos.y = 2;
-    /*for (i = 0; i < NUM_MOBS; i++){
-        npcPos[i].x = (1 + (rand() % 60));
-        npcPos[i].y = (1 + (rand() % 23));
-    }*/
-    npcPos[0].x = 5;
+    for (i = 0; i < NUM_MOBS; i++){
+        npcPos[i].x = (1 + (rand() % SIZEMAP_X));
+        npcPos[i].y = (1 + (rand() % SIZEMAP_Y));
+    }
+    /*npcPos[0].x = 5;
     npcPos[0].y = 10;
     npcPos[1].x = 10;
     npcPos[1].y = 20;
     npcPos[2].x = 15;
     npcPos[2].y = 10;
     npcPos[3].x = 25;
-    npcPos[3].y = 15;
+    npcPos[3].y = 15;*/
     for (i = 0; i < NUM_MOBS; i ++){
         npcPos[i].shuriken.throwing = 0;
         npcPos[i].shuriken.movex = 0;
@@ -47,6 +47,8 @@ int main()
         npcPos[i].shuriken.y = 0;
     }
     playerPos.shuriken.throwing = 0;
+    playerPos.fullHp = 5;
+    playerPos.hp = 5;
     /*_____________________________________________________________*/
 
 
@@ -56,7 +58,7 @@ int main()
     //inicializacao allegro
 
     if(!al_init()){
-        al_show_native_message_box(NULL, "AVISO!", "Erro de execução!", "Allegro não inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execuï¿½ï¿½o!", "Allegro nï¿½o inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }
     /*_____________________________________________________________*/
@@ -80,6 +82,8 @@ int main()
     ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/enemy.png");
     ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
     ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
+    ALLEGRO_BITMAP *heart = al_load_bitmap("assets/heart.png");
+    ALLEGRO_BITMAP *voidheart = al_load_bitmap("assets/voidheart.png");
 
     /*_____________________________________________________________*/
 
@@ -107,7 +111,7 @@ int main()
     /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
-    //declaraçao do mapa
+    //declaraï¿½ao do mapa
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     map = fopen("arquivos/map64x36.txt", "r");
@@ -127,7 +131,7 @@ int main()
     ALLEGRO_DISPLAY *display = NULL;
     display = al_create_display(width, height);
     if (!display){
-        al_show_native_message_box(NULL, "AVISO!", "Erro de execução!", "O display não pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execuï¿½ï¿½o!", "O display nï¿½o pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }
     /*_____________________________________________________________*/
@@ -163,9 +167,6 @@ int main()
             if(mapMatrix[i][j] == WALL){
                 al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
                 }
-            else if(mapMatrix[i][j] == ' '){
-                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
-            }
             else if(mapMatrix[i][j] == 'X'){
                 al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
@@ -174,6 +175,9 @@ int main()
                 al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
 
+            }
+            else{
+                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
             }
         }
     }
@@ -255,6 +259,10 @@ int main()
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 //drawMap(mapMatrix, spikes, keys);
                 al_draw_bitmap(background, 0, 0, 0);
+                for (i = 0; i < playerPos.hp; i++)
+                    al_draw_bitmap(heart, (i+1)*MAPSCALE, 0, 0);
+                for (i = playerPos.hp; i < playerPos.fullHp; i ++)
+                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);
                 drawMobs(npcPos, enemy);
                 drawMobShur(npcPos, NUM_MOBS, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
