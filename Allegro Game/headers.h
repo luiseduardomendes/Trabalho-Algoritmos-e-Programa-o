@@ -25,11 +25,11 @@
 #define TODOWN 'S'
 #define TORIGHT 'D'
 #define WALL '#'
-#define SIZEMAP_X 60
-#define SIZEMAP_Y 23
+#define SIZEMAP_X 64
+#define SIZEMAP_Y 36
 #define SIZENAMEMAPS 101
 #define NUM_MOBS 4
-#define MAPSCALE 24
+#define MAPSCALE 20
 #define RANGEVIEWMOB 5
 /*_____________________________________________________________*/
 
@@ -64,7 +64,7 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
 
 void npcMovement(typePos infMob[], int numMobs, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void updateShurikenPos(typeShur* shuriken, typePos player, char mapMatrix[23][60]);
+void updateShurikenPos(typeShur* shuriken, typePos player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 void shurikenDir(typePos *npc, typePos playerPos);
 
