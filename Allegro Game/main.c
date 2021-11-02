@@ -25,8 +25,8 @@ int main()
     /*_____________________________________________________________*/
     //inicializacao das posicoes
 
-    playerPos.x = 10;
-    playerPos.y = 10;
+    playerPos.x = 2;
+    playerPos.y = 2;
     /*for (i = 0; i < NUM_MOBS; i++){
         npcPos[i].x = (1 + (rand() % 60));
         npcPos[i].y = (1 + (rand() % 23));
@@ -212,12 +212,10 @@ int main()
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
                 buttonDown(event, &playerPos, &openMenu, mapMatrix);
             }
-
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);
             }
         }
-
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             endOfGame = true;
         if(event.type == ALLEGRO_EVENT_TIMER)
@@ -266,6 +264,7 @@ int main()
     al_destroy_timer(shurTimer);
     al_destroy_display(display);
     al_destroy_bitmap(naruto);
+
     return 0;
 }
 
