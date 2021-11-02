@@ -14,8 +14,8 @@ int main()
     int joystickFound = 1;
     typePos playerPos, npcPos[NUM_MOBS];
     typeSave save;
-    const int width = 60*MAPSCALE; //largura
-    const int height = 23*MAPSCALE; //algura
+    const int width = 64*MAPSCALE; //largura
+    const int height = 36*MAPSCALE; //algura
     bool endOfGame = false, openMenu = false;
     /*_____________________________________________________________*/
 
@@ -97,7 +97,7 @@ int main()
     //declaraçao do mapa
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/maps.txt", "r");
+    map = fopen("arquivos/map64x36.txt", "r");
     rewind(map);
     fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
@@ -201,7 +201,7 @@ int main()
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
-        al_get_keyboard_state(&keyState);
+        //al_get_keyboard_state(&keyState);
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
