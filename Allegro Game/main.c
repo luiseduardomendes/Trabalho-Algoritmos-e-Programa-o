@@ -79,7 +79,7 @@ int main()
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/spikes.png");
     ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
-    ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/enemy.png");
+    ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/akatsuck.png");
     ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
     ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
     ALLEGRO_BITMAP *heart = al_load_bitmap("assets/heart.png");
