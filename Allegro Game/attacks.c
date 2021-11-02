@@ -18,10 +18,10 @@ void shurikenDir(typePos *npc, typePos playerPos)
     int i;
 
 
-    if (!npc->shuriken.throwing) {
+    if (!npc->shuriken.throwing){
         npc->shuriken.x = npc->x;
         npc->shuriken.y = npc->y;
-        if(playerPos.x == npc->x)
+        if(playerPos.y == npc->y)
         {
             if(playerPos.x > npc->x)
             {
@@ -35,7 +35,7 @@ void shurikenDir(typePos *npc, typePos playerPos)
             }
             npc->shuriken.throwing = true;
         }
-        else if(playerPos.y == npc->y)
+        else if(playerPos.x == npc->x)
         {
             if(playerPos.y > npc->y)
             {
