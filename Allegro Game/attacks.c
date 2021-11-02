@@ -1,10 +1,10 @@
 #include "headers.h"
-void updateShurikenPos(typeShur *shuriken, typePos enemy, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void updateShurikenPos(typeShur *shuriken, typePos player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
 
     if(shuriken->throwing){
         shuriken->x += shuriken->movex;
         shuriken->y += shuriken->movey;
-        if (shuriken->x == enemy.x && shuriken->y == enemy.y)
+        if (shuriken->x == player.x && shuriken->y == player.y)
             shuriken->throwing = false;
         if (shuriken->x > 60 || shuriken->x < 0 || shuriken->y > 23 || shuriken->y < 0)
             shuriken->throwing = false;

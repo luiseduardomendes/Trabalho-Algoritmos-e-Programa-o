@@ -63,7 +63,7 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
 
 void npcMovement(typePos infMob[], int numMobs, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void updateShurikenPos(typeShur* shuriken, typePos enemy, char mapMatrix[23][60]);
+void updateShurikenPos(typeShur* shuriken, typePos player, char mapMatrix[23][60]);
 
 void shurikenDir(typePos *npc, typePos playerPos);
 
