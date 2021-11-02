@@ -7,8 +7,8 @@ int main()
 
     float frameRate = 120;
     int mobRate = 4;
+    int shurRate = 8;
     int i, j, k;
-    int running = true;
     int contador = 0;
     int mapUsed = 0;
     int joystickFound = 1;
@@ -136,11 +136,13 @@ int main()
     /*_____________________________________________________________*/
     // controle de tempo
 
-    ALLEGRO_TIMER *timer, *mobTimer;
+    ALLEGRO_TIMER *timer, *mobTimer, *shurTimer;
     timer = al_create_timer(1.0/frameRate);
     al_start_timer(timer);
     mobTimer = al_create_timer(1.0/mobRate);
     al_start_timer(mobTimer);
+    shurTimer = al_create_timer(1.0/shurRate);
+    al_start_timer(shurTimer);
     /*_____________________________________________________________*/
 
 
@@ -155,12 +157,11 @@ int main()
     al_register_event_source(events_queue, al_get_display_event_source(display));
     al_register_event_source(events_queue, al_get_timer_event_source(timer));
     al_register_event_source(events_queue, al_get_timer_event_source(mobTimer));
+    al_register_event_source(events_queue, al_get_timer_event_source(shurTimer));
     al_register_event_source(events_queue, al_get_joystick_event_source());
     /*_____________________________________________________________*/
 
-    al_start_timer(timer);
-
-    while(running && !endOfGame)
+    while(!endOfGame)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
@@ -181,22 +182,24 @@ int main()
             }
         }
 
-        if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || al_key_down(&keyState, ALLEGRO_KEY_BACKSPACE))
-            running = 0;
+        if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            endOfGame = true;
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
             if(event.timer.source == mobTimer)
-                {
+            {
                     npcMovement(npcPos, NUM_MOBS, playerPos, mapMatrix);
-                    updateShurikenPos(&playerPos.shuriken, npcPos[0], mapMatrix);
-                    for (i = 0; i < NUM_MOBS; i ++){
-                        if (npcPos[i].shuriken.throwing)
-                            updateShurikenPos(&npcPos[i].shuriken, playerPos, mapMatrix);
-                        else{
-                            shurikenDir(&npcPos[i], playerPos);
-                        }
-                    }
+            }
+            if(event.timer.source == shurTimer)
+            {
+                updateShurikenPos(&playerPos.shuriken, npcPos[0], mapMatrix);//Player shuriken
+                for (i = 0; i < NUM_MOBS; i ++){//Mob shuriken
+                    if (npcPos[i].shuriken.throwing)
+                        updateShurikenPos(&npcPos[i].shuriken, playerPos, mapMatrix);
+                    else
+                        shurikenDir(&npcPos[i], playerPos);
                 }
+            }
             if(event.timer.source == timer)
             {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -222,6 +225,8 @@ int main()
 
     al_uninstall_keyboard();
     al_destroy_timer(timer);
+    al_destroy_timer(mobTimer);
+    al_destroy_timer(shurTimer);
     al_destroy_display(display);
     al_destroy_bitmap(naruto);
     return 0;
