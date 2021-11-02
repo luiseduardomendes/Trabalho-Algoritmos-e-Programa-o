@@ -74,7 +74,6 @@ int main()
 
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonte.ttf", 48, 0);
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
-    //assert(naruto != NULL);
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     /*_____________________________________________________________*/
 
