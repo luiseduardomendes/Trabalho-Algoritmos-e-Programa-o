@@ -6,7 +6,7 @@ void updateShurikenPos(typeShur *shuriken, typePos player, char mapMatrix[SIZEMA
         shuriken->y += shuriken->movey;
         if (shuriken->x == player.x && shuriken->y == player.y)
             shuriken->throwing = false;
-        if (shuriken->x > 60 || shuriken->x < 0 || shuriken->y > 36 || shuriken->y < 0)
+        if (shuriken->x > SIZEMAP_X || shuriken->x < 0 || shuriken->y > SIZEMAP_Y || shuriken->y < 0)
             shuriken->throwing = false;
         if (mapMatrix[shuriken->y][shuriken->x] == WALL)
             shuriken->throwing = false;
