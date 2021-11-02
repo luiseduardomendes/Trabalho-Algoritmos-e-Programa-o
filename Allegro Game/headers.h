@@ -28,7 +28,7 @@
 #define SIZEMAP_X 64
 #define SIZEMAP_Y 36
 #define SIZENAMEMAPS 101
-#define NUM_MOBS 10
+#define NUM_MOBS 4
 #define MAPSCALE 20
 #define RANGEVIEWMOB 5
 /*_____________________________________________________________*/
