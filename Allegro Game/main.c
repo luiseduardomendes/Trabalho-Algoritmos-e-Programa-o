@@ -5,7 +5,7 @@ int main()
     /*_____________________________________________________________*/
     //variaveis para allegro
 
-    float frameRate = 120;
+    float frameRate = 30;
     int mobRate = 4;
     int shurRate = 8;
     int i, j, k;
@@ -75,6 +75,9 @@ int main()
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonte.ttf", 48, 0);
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
+    ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/espinhos.png");
+    ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
+
     /*_____________________________________________________________*/
 
 
@@ -104,6 +107,7 @@ int main()
 
 
 
+
     /*_____________________________________________________________*/
     //display
 
@@ -128,6 +132,39 @@ int main()
     if (joy == NULL)
         joystickFound = 0;
     /*_____________________________________________________________*/
+
+
+
+
+
+
+
+    ALLEGRO_BITMAP *background = NULL;
+    background = al_create_bitmap(MAPSCALE * SIZEMAP_X, MAPSCALE * SIZEMAP_Y);
+
+    al_set_target_bitmap(background);
+
+    for(i = 0; i < SIZEMAP_Y; i++){
+        for(j = 0; j < SIZEMAP_X; j++){
+
+            if(mapMatrix[i][j] == WALL){
+                al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
+                }
+            else if(mapMatrix[i][j] == 'X'){
+                al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
+                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
+            }
+            else if(mapMatrix[i][j] == 'C'){
+                al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
+                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
+
+            }
+        }
+    }
+    al_set_target_bitmap(al_get_backbuffer(display));
+
+
+
 
 
 
@@ -187,7 +224,7 @@ int main()
         {
             if(event.timer.source == mobTimer)
             {
-                    npcMovement(npcPos, NUM_MOBS, playerPos, mapMatrix);
+                npcMovement(npcPos, NUM_MOBS, playerPos, mapMatrix);
             }
             if(event.timer.source == shurTimer)
             {
@@ -202,14 +239,15 @@ int main()
             if(event.timer.source == timer)
             {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
-                drawMap(mapMatrix);
+                //drawMap(mapMatrix, spikes, keys);
+                al_draw_bitmap(background, 0, 0, 0);
                 drawMobs(npcPos);
                 drawMobShur(npcPos, NUM_MOBS, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
-                    //al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
-                    al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
+                    al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
+                    //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
                 al_flip_display();
             }
         }

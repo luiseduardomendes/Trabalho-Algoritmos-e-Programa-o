@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1635563417 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
+1635873160 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
 	"headers.h"
 
-1635563429 e:\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
+1635873160 e:\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
 	<stdio.h>
 	<math.h>
 	<stdlib.h>
@@ -255,7 +255,7 @@
 	"allegro5/allegro.h"
 	"allegro5/allegro_font.h"
 
-1635563526 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\main.c
+1635874966 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\main.c
 	"headers.h"
 
 1362327499 c:\users\dudup\downloads\português\soc\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_image.h
@@ -578,6 +578,6 @@
 1635868033 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\draw.c
 	"headers.h"
 
-1635561154 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\draw.c
+1635874871 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\draw.c
 	"headers.h"
 
