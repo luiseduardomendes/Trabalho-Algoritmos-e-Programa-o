@@ -1,11 +1,11 @@
 #include "headers.h"
 
-void drawMobs(typePos npcPos[])
+void drawMobs(typePos npcPos[], ALLEGRO_BITMAP *enemy)
 {
     int i;
 
     for (i = 0; i < NUM_MOBS; i++)
-        al_draw_filled_rectangle(npcPos[i].x*MAPSCALE, npcPos[i].y*MAPSCALE,(npcPos[i].x*MAPSCALE)+MAPSCALE, (npcPos[i].y*MAPSCALE)+MAPSCALE,al_map_rgb(200,0,0));
+        al_draw_bitmap(enemy, npcPos[i].x*MAPSCALE, npcPos[i].y*MAPSCALE, 0);
 }
 
 void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw)

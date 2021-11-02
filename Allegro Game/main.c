@@ -77,6 +77,7 @@ int main()
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/espinhos.png");
     ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
+    ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/enemy.png");
 
     /*_____________________________________________________________*/
 
@@ -249,7 +250,7 @@ int main()
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 //drawMap(mapMatrix, spikes, keys);
                 al_draw_bitmap(background, 0, 0, 0);
-                drawMobs(npcPos);
+                drawMobs(npcPos, enemy);
                 drawMobShur(npcPos, NUM_MOBS, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
