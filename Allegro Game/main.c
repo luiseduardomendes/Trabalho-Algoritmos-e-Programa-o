@@ -187,13 +187,13 @@ int main()
         {
             if(event.timer.source == mobTimer)
                 {
-                    npcMovement(npcPos, mobRate, playerPos, mapMatrix);
+                    npcMovement(npcPos, NUM_MOBS, playerPos, mapMatrix);
                     updateShurikenPos(&playerPos.shuriken, npcPos[0], mapMatrix);
                     for (i = 0; i < NUM_MOBS; i ++){
                         if (npcPos[i].shuriken.throwing)
                             updateShurikenPos(&npcPos[i].shuriken, playerPos, mapMatrix);
                         else{
-                            shurikenDir(&npcPos[i]);
+                            shurikenDir(&npcPos[i], playerPos);
                         }
                     }
                 }
@@ -202,12 +202,12 @@ int main()
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 drawMap(mapMatrix);
                 drawMobs(npcPos);
-                drawMobShur(npcPos, mobRate, shurikenDraw);
+                drawMobShur(npcPos, NUM_MOBS, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
-                    al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
-                    //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
+                    //al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
+                    al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
                 al_flip_display();
             }
         }
