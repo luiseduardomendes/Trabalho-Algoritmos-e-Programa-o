@@ -78,6 +78,7 @@ int main()
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/espinhos.png");
     ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
     ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/enemy.png");
+    ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
 
     /*_____________________________________________________________*/
 
@@ -159,7 +160,7 @@ int main()
         for(j = 0; j < SIZEMAP_X; j++){
 
             if(mapMatrix[i][j] == WALL){
-                al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(200,200,200));
+                al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
                 }
             else if(mapMatrix[i][j] == 'X'){
                 al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
