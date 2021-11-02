@@ -6,7 +6,7 @@ void updateShurikenPos(typeShur *shuriken, typePos player, char mapMatrix[SIZEMA
         shuriken->y += shuriken->movey;
         if (shuriken->x == player.x && shuriken->y == player.y)
             shuriken->throwing = false;
-        if (shuriken->x > 60 || shuriken->x < 0 || shuriken->y > 23 || shuriken->y < 0)
+        if (shuriken->x > 60 || shuriken->x < 0 || shuriken->y > 36 || shuriken->y < 0)
             shuriken->throwing = false;
         if (mapMatrix[shuriken->y][shuriken->x] == WALL)
             shuriken->throwing = false;
@@ -20,7 +20,7 @@ void shurikenDir(typePos *npc, typePos playerPos)
         npc->shuriken.y = npc->y;
         if(playerPos.y == npc->y)
         {
-            if(abs(playerPos.x - npc->x) <= 7)
+            if(abs(playerPos.x - npc->x) <= 10)
             {
                 if(playerPos.x > npc->x)
                 {
@@ -37,7 +37,7 @@ void shurikenDir(typePos *npc, typePos playerPos)
         }
         else if(playerPos.x == npc->x)
         {
-            if(abs(playerPos.y - npc->y) <= 7)
+            if(abs(playerPos.y - npc->y) <= 10)
             {
                 if(playerPos.y > npc->y)
                 {

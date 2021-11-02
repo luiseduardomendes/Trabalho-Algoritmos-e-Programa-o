@@ -542,10 +542,10 @@
 
 1362327499 c:\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_image.h
 
-1635871958 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
+1635878912 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
 	"headers.h"
 
-1635871958 c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\headers.h
+1635878635 c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\headers.h
 	<stdio.h>
 	<math.h>
 	<stdlib.h>
@@ -559,8 +559,9 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 	<allegro5/allegro_image.h>
+	<allegro5/allegro_audio.h>
 
-1635872512 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\main.c
+1635878634 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\main.c
 	"headers.h"
 
 1635131408 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\maps.c
@@ -569,15 +570,18 @@
 1635453765 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\menupause.c
 	"headers.h"
 
-1635453765 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\move.c
+1635875962 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\move.c
 	"headers.h"
 
 1635347682 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\teste.c
 	"headers.h"
 
-1635868033 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\draw.c
+1635879134 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\draw.c
 	"headers.h"
 
 1635874871 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\draw.c
 	"headers.h"
+
+1372628331 c:\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_audio.h
+	"allegro5/allegro.h"
 
