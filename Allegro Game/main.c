@@ -22,14 +22,32 @@ int main()
 
 
 
+
+    /*_____________________________________________________________*/
+    //declara�ao do mapa
+
+    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
+    map = fopen("arquivos/map2.64x36.txt", "r");
+    rewind(map);
+    fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
+    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
+    //const int MAPSCALE = 24;
+    /*_____________________________________________________________*/
+
+
+
+
     /*_____________________________________________________________*/
     //inicializacao das posicoes
 
     playerPos.x = 2;
     playerPos.y = 2;
     for (i = 0; i < NUM_MOBS; i++){
-        npcPos[i].x = (1 + (rand() % SIZEMAP_X));
-        npcPos[i].y = (1 + (rand() % SIZEMAP_Y));
+        do{
+
+            npcPos[i].x = (1 + (rand() % SIZEMAP_X));
+            npcPos[i].y = (1 + (rand() % SIZEMAP_Y));
+        } while (mapMatrix[npcPos[i].y][npcPos[i].x] == WALL);
     }
     /*npcPos[0].x = 5;
     npcPos[0].y = 10;
@@ -110,16 +128,6 @@ int main()
     al_attach_sample_instance_to_mixer(throwShurInst, al_get_default_mixer());*/
     /*_____________________________________________________________*/
 
-    /*_____________________________________________________________*/
-    //declara�ao do mapa
-
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/map64x36.txt", "r");
-    rewind(map);
-    fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-    //const int MAPSCALE = 24;
-    /*_____________________________________________________________*/
 
 
 
