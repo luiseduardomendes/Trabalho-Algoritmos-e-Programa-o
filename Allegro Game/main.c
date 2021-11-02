@@ -90,8 +90,18 @@ int main()
 
     /*_____________________________________________________________*/
 
+    /*_____________________________________________________________*/
+    //Audio
 
-
+    /*ALLEGRO_SAMPLE *throwShur = NULL;
+    ALLEGRO_SAMPLE_INSTANCE *throwShurInst = NULL;
+    al_reserve_samples(true);
+    al_install_audio();
+    al_init_acodec_addon();
+    throwShur = al_load_sample("throwShur.wav");
+    throwShurInst = al_create_sample_instance(throwShur);
+    al_attach_sample_instance_to_mixer(throwShurInst, al_get_default_mixer());*/
+    /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
     //declaraçao do mapa
@@ -201,7 +211,7 @@ int main()
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
-        al_get_keyboard_state(&keyState);
+        //al_get_keyboard_state(&keyState);
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
@@ -314,6 +324,7 @@ void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu){
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
             if (!playerPos->shuriken.throwing) {
+                //al_play_sample_instance(throwShurInst);
                 playerPos->shuriken.throwing = true;
                 playerPos->shuriken.x = playerPos->x;
                 playerPos->shuriken.y = playerPos->y;
