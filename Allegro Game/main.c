@@ -169,7 +169,7 @@ int main()
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
-            inputKeyboard(event, &playerPos, &openMenu, mapMatrix);
+            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
@@ -321,7 +321,7 @@ void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu){
     }
 }
 
-void inputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+void playerInputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     switch (event.keyboard.keycode){
         case ALLEGRO_KEY_UP:
         case ALLEGRO_KEY_W:
