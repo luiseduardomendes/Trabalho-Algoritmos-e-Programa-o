@@ -113,8 +113,8 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
 int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed) {
     int k, flag = 1;
     typeSave save;
-    mapUsed = 0;
     save.mapUsed = mapUsed;
+    save.numMobs = numMobs;
     for(k = 0; k < NUM_MOBS; k ++) {
         save.npc[k].direction = npcPos[k].direction;
         save.npc[k].shuriken.movex = npcPos[k].shuriken.movex;
@@ -133,21 +133,28 @@ int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed)
     save.player.shuriken.y = playerPos.shuriken.y;
     save.player.x = playerPos.x;
     save.player.y = playerPos.y;
+    save.player.fullHp = playerPos.fullHp;
+    save.player.hp = playerPos.hp;
+    save.player.numShur = playerPos.numShur;
     saveFile = fopen("save.sav", "wb");
     if (saveFile == NULL)
         flag = 0;
-    fwrite(&save, sizeof(save), 1, saveFile);
-    fclose(saveFile);
+    else {
+        fwrite(&save, sizeof(save), 1, saveFile);
+        fclose(saveFile);
+    }
+
     return flag;
 }
 
-int loadSave(typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed) {
+int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
     typeSave save;
     int k;
     saveFile = fopen("save.sav", "rb");
     if (saveFile != NULL){
         fread(&save, sizeof(save), 1, saveFile);
-        mapUsed = save.mapUsed;
+        *numMobs = save.numMobs;
+        *mapUsed = save.mapUsed;
         for(k = 0; k < NUM_MOBS; k ++) {
             npcPos[k].direction = save.npc[k].direction;
             npcPos[k].shuriken.movex = save.npc[k].shuriken.movex;
@@ -166,7 +173,9 @@ int loadSave(typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed) {
         playerPos->shuriken.y = save.player.shuriken.y;
         playerPos->x = save.player.x;
         playerPos->y = save.player.y;
-
+        playerPos->fullHp = save.player.fullHp;
+        playerPos->hp = save.player.hp;
+        playerPos->numShur = save.player.numShur;
         fclose(saveFile);
     }
 }

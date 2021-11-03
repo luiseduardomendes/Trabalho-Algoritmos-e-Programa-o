@@ -6,7 +6,8 @@ int main()
     //variaveis para allegro
 
     float frameRate = 30;
-    int mobRate = 4;
+    int numMobs = 4;
+    int mobRate = 2;
     int shurRate = 8;
     int i, j, k;
     int contador = 0;
@@ -14,41 +15,9 @@ int main()
     int joystickFound = 1;
     typePos playerPos, npcPos[NUM_MOBS];
     typeSave save;
-    const int width = 64*MAPSCALE; //largura
-    const int height = 36*MAPSCALE; //algura
+    const int width = SIZEMAP_X*MAPSCALE; //largura
+    const int height = SIZEMAP_Y*MAPSCALE; //algura
     bool endOfGame = false, openMenu = false;
-    /*_____________________________________________________________*/
-
-
-
-
-    /*_____________________________________________________________*/
-    //inicializacao das posicoes
-
-    playerPos.x = 2;
-    playerPos.y = 2;
-    for (i = 0; i < NUM_MOBS; i++){
-        npcPos[i].x = (1 + (rand() % SIZEMAP_X));
-        npcPos[i].y = (1 + (rand() % SIZEMAP_Y));
-    }
-    /*npcPos[0].x = 5;
-    npcPos[0].y = 10;
-    npcPos[1].x = 10;
-    npcPos[1].y = 20;
-    npcPos[2].x = 15;
-    npcPos[2].y = 10;
-    npcPos[3].x = 25;
-    npcPos[3].y = 15;*/
-    for (i = 0; i < NUM_MOBS; i ++){
-        npcPos[i].shuriken.throwing = 0;
-        npcPos[i].shuriken.movex = 0;
-        npcPos[i].shuriken.movey = 0;
-        npcPos[i].shuriken.x = 0;
-        npcPos[i].shuriken.y = 0;
-    }
-    playerPos.shuriken.throwing = 0;
-    playerPos.fullHp = 5;
-    playerPos.hp = 5;
     /*_____________________________________________________________*/
 
 
@@ -116,13 +85,57 @@ int main()
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     map = fopen("arquivos/map64x36.txt", "r");
     rewind(map);
-    fseek(map, 0 * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
+    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
     fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
     //const int MAPSCALE = 24;
     /*_____________________________________________________________*/
 
 
 
+
+
+    /*_____________________________________________________________
+    //inicializacao das posicoes
+
+    playerPos.x = 2;
+    playerPos.y = 2;
+    for (i = 0; i < NUM_MOBS; i++){
+        do{
+            npcPos[i].x = (1 + (rand() % SIZEMAP_X));
+            npcPos[i].y = (1 + (rand() % SIZEMAP_Y));
+        } while (mapMatrix[npcPos[i].y][npcPos[i].x] == WALL);
+    }
+    /*npcPos[0].x = 5;
+    npcPos[0].y = 10;
+    npcPos[1].x = 10;
+    npcPos[1].y = 20;
+    npcPos[2].x = 15;
+    npcPos[2].y = 10;
+    npcPos[3].x = 25;
+    npcPos[3].y = 15;
+    for (i = 0; i < NUM_MOBS; i ++){
+        npcPos[i].shuriken.throwing = 0;
+        npcPos[i].shuriken.movex = 0;
+        npcPos[i].shuriken.movey = 0;
+        npcPos[i].shuriken.x = 0;
+        npcPos[i].shuriken.y = 0;
+    }
+    playerPos.shuriken.throwing = 0;
+    playerPos.fullHp = 5;
+    playerPos.hp = 5;
+    numMobs = 5;
+    mapUsed = 0;
+    _____________________________________________________________*/
+    for(i = 0; i < numMobs; i ++) {
+        npcPos[i].hp = 1;
+    }
+
+
+    //saveFunction(npcPos, numMobs, playerPos, mapUsed);
+
+    loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
+
+    playerPos.numShur = 5;
 
 
     /*_____________________________________________________________*/
@@ -135,6 +148,8 @@ int main()
         return -1;
     }
     /*_____________________________________________________________*/
+
+
 
 
 
@@ -152,6 +167,16 @@ int main()
 
 
 
+
+    /*_____________________________________________________________*/
+    // Loading Screen
+
+    ALLEGRO_BITMAP *loading_screen = al_load_bitmap("assets/loading_screen.png");
+    al_clear_to_color(al_map_rgb(0,0,0));
+    al_draw_bitmap(loading_screen, 0,0,0);
+    al_draw_text(font48, al_map_rgb(255, 255, 255), 10, 10, 0, "CARREGANDO...");
+    al_flip_display();
+    /*_____________________________________________________________*/
 
 
 
@@ -242,14 +267,14 @@ int main()
         {
             if(event.timer.source == mobTimer)
             {
-                npcMovement(npcPos, NUM_MOBS, playerPos, mapMatrix);
+                npcMovement(npcPos, numMobs, playerPos, mapMatrix);
             }
             if(event.timer.source == shurTimer)
             {
-                updateShurikenPos(&playerPos.shuriken, npcPos[0], mapMatrix);//Player shuriken
-                for (i = 0; i < NUM_MOBS; i ++){//Mob shuriken
+                updateShurikenPlayer(&playerPos.shuriken, npcPos, numMobs, mapMatrix);//Player shuriken
+                for (i = 0; i < numMobs; i ++){//Mob shuriken
                     if (npcPos[i].shuriken.throwing)
-                        updateShurikenPos(&npcPos[i].shuriken, playerPos, mapMatrix);
+                        updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
                     else
                         shurikenDir(&npcPos[i], playerPos);
                 }
@@ -263,8 +288,10 @@ int main()
                     al_draw_bitmap(heart, (i+1)*MAPSCALE, 0, 0);
                 for (i = playerPos.hp; i < playerPos.fullHp; i ++)
                     al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);
+                for (i = 0; i < playerPos.numShur; i ++)
+                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);
                 drawMobs(npcPos, enemy);
-                drawMobShur(npcPos, NUM_MOBS, shurikenDraw);
+                drawMobShur(npcPos, numMobs, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
@@ -276,9 +303,19 @@ int main()
 
         if (openMenu) {
             if (joystickFound)
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, mobRate, &playerPos, &mapUsed);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, numMobs, &playerPos, &mapUsed);
             else
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, mobRate, &playerPos, &mapUsed);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, numMobs, &playerPos, &mapUsed);
+        }
+        if (playerPos.hp == 0){
+            endOfGame = 1;
+            do{
+                al_clear_to_color(al_map_rgb(0,0,0));
+                al_draw_bitmap(loading_screen, 0,0,0);
+                al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Você morreu!");
+                al_flip_display();
+
+            } while(1);
         }
     }
 
@@ -337,8 +374,9 @@ void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu){
             break;
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
-            if (!playerPos->shuriken.throwing) {
+            if (!playerPos->shuriken.throwing && playerPos->numShur > 0) {
                 //al_play_sample_instance(throwShurInst);
+                playerPos->numShur --;
                 playerPos->shuriken.throwing = true;
                 playerPos->shuriken.x = playerPos->x;
                 playerPos->shuriken.y = playerPos->y;
@@ -417,7 +455,8 @@ void playerInputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu,
 
             break;
         case ALLEGRO_KEY_K:
-            if (!playerPos->shuriken.throwing){
+            if (!playerPos->shuriken.throwing && playerPos->numShur > 0){
+                playerPos->numShur --;
                 playerPos->shuriken.throwing = true;
                 playerPos->shuriken.x = playerPos->x;
                 playerPos->shuriken.y = playerPos->y;

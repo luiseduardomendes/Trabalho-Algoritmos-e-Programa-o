@@ -1,11 +1,35 @@
 #include "headers.h"
-void updateShurikenPos(typeShur *shuriken, typePos player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void updateShurikenPos(typeShur *shuriken, typePos *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
 
     if(shuriken->throwing){
         shuriken->x += shuriken->movex;
         shuriken->y += shuriken->movey;
-        if (shuriken->x == player.x && shuriken->y == player.y)
+        if (shuriken->x == player->x && shuriken->y == player->y){
+            player->hp --;
             shuriken->throwing = false;
+        }
+        if (shuriken->x > SIZEMAP_X || shuriken->x < 0 || shuriken->y > SIZEMAP_Y || shuriken->y < 0)
+            shuriken->throwing = false;
+        if (mapMatrix[shuriken->y][shuriken->x] == WALL)
+            shuriken->throwing = false;
+    }
+}
+
+void updateShurikenPlayer(typeShur *shuriken, typePos npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+    int i;
+
+    if(shuriken->throwing){
+        shuriken->x += shuriken->movex;
+        shuriken->y += shuriken->movey;
+        for (i = 0; i < numMobs; i ++){
+            if (shuriken->x == npc[i].x && shuriken->y == npc[i].y){
+                npc[i].hp --;
+                npc[i].x = -1;
+                npc[i].y = -1;
+                shuriken->throwing = false;
+            }
+        }
+
         if (shuriken->x > SIZEMAP_X || shuriken->x < 0 || shuriken->y > SIZEMAP_Y || shuriken->y < 0)
             shuriken->throwing = false;
         if (mapMatrix[shuriken->y][shuriken->x] == WALL)

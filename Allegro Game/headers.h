@@ -28,7 +28,7 @@
 #define SIZEMAP_X 64
 #define SIZEMAP_Y 36
 #define SIZENAMEMAPS 101
-#define NUM_MOBS 4
+#define NUM_MOBS 5
 #define MAPSCALE 20
 #define RANGEVIEWMOB 5
 /*_____________________________________________________________*/
@@ -48,11 +48,13 @@ typedef struct position{
     int x, y;
     int hp, fullHp;
     int direction;
+    int numShur;
     typeShur shuriken;
 }typePos;
 typedef struct save{
     typePos player;
-    typePos npc[NUM_MOBS];
+    typePos npc[25];
+    int numMobs;
     int mapUsed;
 }typeSave;
 /*_____________________________________________________________*/
@@ -65,7 +67,7 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
 
 void npcMovement(typePos infMob[], int numMobs, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void updateShurikenPos(typeShur* shuriken, typePos player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void updateShurikenPos(typeShur* shuriken, typePos *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 void shurikenDir(typePos *npc, typePos playerPos);
 
@@ -73,7 +75,7 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
 
 int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed);
 
-int loadSave(typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed);
+int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed);
 
 void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 
