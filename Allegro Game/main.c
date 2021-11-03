@@ -135,7 +135,9 @@ int main()
 
     //saveFunction(npcPos, numMobs, playerPos, mapUsed);
 
-    loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
+    //loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
+
+
 
 
 
@@ -185,6 +187,8 @@ int main()
 
 
 
+
+
     ALLEGRO_BITMAP *background = NULL;
     background = al_create_bitmap(MAPSCALE * SIZEMAP_X, MAPSCALE * SIZEMAP_Y);
 
@@ -211,6 +215,7 @@ int main()
         }
     }
     al_set_target_bitmap(al_get_backbuffer(display));
+
 
 
 
@@ -245,6 +250,16 @@ int main()
     al_register_event_source(events_queue, al_get_timer_event_source(shurTimer));
     al_register_event_source(events_queue, al_get_joystick_event_source());
     /*_____________________________________________________________*/
+
+
+
+    if(joystickFound){
+        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, numMobs, &playerPos, &mapUsed);
+    }
+    else
+        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, numMobs, &playerPos, &mapUsed);
+
+
 
     while(!endOfGame)
     {
