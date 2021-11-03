@@ -153,6 +153,7 @@ int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
     saveFile = fopen("save.sav", "rb");
     if (saveFile != NULL){
         fread(&save, sizeof(save), 1, saveFile);
+        fclose(saveFile);
         *numMobs = save.numMobs;
         *mapUsed = save.mapUsed;
         for(k = 0; k < NUM_MOBS; k ++) {
@@ -176,12 +177,12 @@ int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
         playerPos->fullHp = save.player.fullHp;
         playerPos->hp = save.player.hp;
         playerPos->numShur = save.player.numShur;
-        fclose(saveFile);
+
     }
 }
 
 void menuIniciar(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-            ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed){
+            ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed){
     int selectioned = 0, beginGame = 0;
     enum options{newGame, loadGame, credits, exitGame};
 
@@ -231,6 +232,7 @@ void menuIniciar(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO
                             beginGame = true;
                             *endOfGame = false;
                             standardSave(/*mapUsed*/0);
+                            loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
                             break;
                         case loadGame:
                             loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
@@ -315,6 +317,14 @@ void standardSave(int mapUsed) {
             fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
             fclose(map);
         }
+        break;
+    case 1:
+        if(map = fopen("arquivos/map2.64x36.txt", "r")){
+            rewind(map);
+            fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
+            fclose(map);
+        }
+        break;
     }
     for (i = 0; i < save.numMobs; i++){
         do{

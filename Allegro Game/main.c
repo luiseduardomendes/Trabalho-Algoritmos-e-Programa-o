@@ -254,15 +254,16 @@ int main()
 
 
     if(joystickFound){
-        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, numMobs, &playerPos, &mapUsed);
+        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
     }
     else
-        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, numMobs, &playerPos, &mapUsed);
+        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
 
 
 
     while(!endOfGame)
     {
+        printf("hello\n");
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
         //al_get_keyboard_state(&keyState);
