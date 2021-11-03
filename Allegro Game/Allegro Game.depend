@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1635897299 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
+1635898639 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
 	"headers.h"
 
-1635897672 e:\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
+1635900492 e:\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
 	<stdio.h>
 	<math.h>
 	<stdlib.h>

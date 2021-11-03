@@ -22,7 +22,7 @@ void updateShurikenPlayer(typeShur *shuriken, typePos npc[], int numMobs, char m
         shuriken->x += shuriken->movex;
         shuriken->y += shuriken->movey;
         for (i = 0; i < numMobs; i ++){
-            if (shuriken->x == npc[i].x && shuriken->y == npc[i].y){
+            if ((shuriken->x == npc[i].x) && (shuriken->y == npc[i].y)){
                 npc[i].hp --;
                 npc[i].x = -1;
                 npc[i].y = -1;

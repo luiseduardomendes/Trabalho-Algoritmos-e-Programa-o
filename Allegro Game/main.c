@@ -105,7 +105,7 @@ int main()
             npcPos[i].y = (1 + (rand() % SIZEMAP_Y));
         } while (mapMatrix[npcPos[i].y][npcPos[i].x] == WALL);
     }
-    /*npcPos[0].x = 5;
+    npcPos[0].x = 5;
     npcPos[0].y = 10;
     npcPos[1].x = 10;
     npcPos[1].y = 20;
@@ -125,17 +125,21 @@ int main()
     playerPos.hp = 5;
     numMobs = 5;
     mapUsed = 0;
-    _____________________________________________________________*/
     for(i = 0; i < numMobs; i ++) {
         npcPos[i].hp = 1;
     }
+    playerPos.numShur = 5;
+    _____________________________________________________________*/
+
 
 
     //saveFunction(npcPos, numMobs, playerPos, mapUsed);
 
     loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
 
-    playerPos.numShur = 5;
+
+
+
 
 
     /*_____________________________________________________________*/
