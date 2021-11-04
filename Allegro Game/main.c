@@ -16,10 +16,26 @@ int main()
     typePos playerPos, npcPos[NUM_MOBS];
     typeSave save;
     typeItem items[25];
+
     const int width = SIZEMAP_X*MAPSCALE; //largura
     const int height = SIZEMAP_Y*MAPSCALE; //algura
     bool endOfGame = false, openMenu = false;
     /*_____________________________________________________________*/
+
+
+    int numItems = 5;
+    for(i= 0; i < 3; i ++){
+        items[i].nameItems = 1;
+        items[i].onMap = 1;
+        items[i].x = 5+i;
+        items[i].y = 5+i;
+    }
+    for(i= 3; i < 5; i ++){
+        items[i].nameItems = 0;
+        items[i].onMap = 1;
+        items[i].x = 10+i;
+        items[i].y = 10+i;
+    }
 
 
 
@@ -261,7 +277,7 @@ int main()
     }
     else
         menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
-
+    playerPos.numKeys = 0;
 
 
     while(!endOfGame)
@@ -274,17 +290,17 @@ int main()
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix);
-            checkKeyShur(&playerPos, &items, mapMatrix);
+            checkKeyShur(&playerPos, items, mapMatrix, numItems);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
                 buttonDown(event, &playerPos, &openMenu, mapMatrix);
-                checkKeyShur(&playerPos, &items, mapMatrix);
+                checkKeyShur(&playerPos, items, mapMatrix,numItems);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);
-                checkKeyShur(&playerPos, &items, mapMatrix);
+                checkKeyShur(&playerPos, items, mapMatrix, numItems);
             }
         }
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -316,6 +332,15 @@ int main()
                     al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);
                 for (i = 0; i < playerPos.numShur; i ++)
                     al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);
+                for (i = 0; i < playerPos.numKeys; i ++)
+                    al_draw_bitmap(keys, (i+20)*MAPSCALE, 0, 0);
+                for (i = 0; i < numItems; i ++)
+                    if (items[i].onMap == 1)
+                        if (items[i].nameItems == 1)
+                            al_draw_bitmap(keys, items[i].x*MAPSCALE, items[i].y*MAPSCALE, 0);
+                        else if (items[i].nameItems == 0)
+                            al_draw_bitmap(shurikenDraw, items[i].x*MAPSCALE, items[i].y*MAPSCALE, 0);
+
                 drawMobs(npcPos, enemy);
                 drawMobShur(npcPos, numMobs, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
@@ -329,9 +354,9 @@ int main()
 
         if (openMenu) {
             if (joystickFound)
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, numMobs, &playerPos, &mapUsed);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
             else
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, numMobs, &playerPos, &mapUsed);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
         }
         if (playerPos.hp == 0){
             endOfGame = 1;
