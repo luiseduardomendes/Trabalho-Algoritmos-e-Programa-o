@@ -1,6 +1,7 @@
 #include "headers.h"
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-            ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
+            ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
+            int *numShur, int *numKeys, typeItem items[]) {
     int selectioned = 0;
     enum options{resumeGame, saveGame, loadGame, exitGame};
 
@@ -49,10 +50,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed);
+                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, items);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, items);
                             break;
                         case exitGame:
                             *openMenu = false;
@@ -76,10 +77,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed);
+                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, items);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, items);
                             break;
                         case exitGame:
                             *openMenu = false;
@@ -111,11 +112,13 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
     } while (*openMenu);
 }
 
-int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed) {
+int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, typeItem items[]) {
     int k, flag = 1;
     typeSave save;
     save.mapUsed = mapUsed;
     save.numMobs = numMobs;
+    save.numShur = numShur;
+    save.numKeys = numKeys;
     for(k = 0; k < save.numMobs; k ++) {
         save.npc[k].direction = npcPos[k].direction;
         save.npc[k].shuriken.movex = npcPos[k].shuriken.movex;
@@ -125,6 +128,12 @@ int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed)
         save.npc[k].shuriken.y = npcPos[k].shuriken.y;
         save.npc[k].x = npcPos[k].x;
         save.npc[k].y = npcPos[k].y;
+    }
+    for (k = 0; k < save.numKeys + save.numShur; k ++) {
+        save.object[k].nameItems = items[k].nameItems;
+        save.object[k].onMap = items[k].onMap;
+        save.object[k].x = items[k].x;
+        save.object[k].y = items[k].y;
     }
     save.player.direction = playerPos.direction;
     save.player.shuriken.movex = playerPos.shuriken.movex;
@@ -137,6 +146,14 @@ int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed)
     save.player.fullHp = playerPos.fullHp;
     save.player.hp = playerPos.hp;
     save.player.numShur = playerPos.numShur;
+    save.player.numKeys = playerPos.numKeys;
+    save.player.xp = playerPos.xp;
+    save.player.level = playerPos.level;
+    save.player.shurikenItem = playerPos.shurikenItem;
+    save.player.armor = playerPos.armor;
+    save.numKeys = numKeys;
+    save.numShur = numShur;
+
     saveFile = fopen("save.sav", "wb");
     if (saveFile == NULL)
         flag = 0;
@@ -148,7 +165,7 @@ int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed)
     return flag;
 }
 
-int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
+void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, typeItem items[]) {
     typeSave save;
     int k;
     saveFile = fopen("save.sav", "rb");
@@ -157,6 +174,8 @@ int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
         fclose(saveFile);
         *numMobs = save.numMobs;
         *mapUsed = save.mapUsed;
+        *numShur = save.numShur;
+        *numKeys = save.numKeys;
         for(k = 0; k < NUM_MOBS; k ++) {
             npcPos[k].direction = save.npc[k].direction;
             npcPos[k].shuriken.movex = save.npc[k].shuriken.movex;
@@ -166,6 +185,12 @@ int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
             npcPos[k].shuriken.y = save.npc[k].shuriken.y;
             npcPos[k].x = save.npc[k].x;
             npcPos[k].y = save.npc[k].y;
+        }
+        for (k = 0; k < save.numKeys + save.numShur; k ++) {
+            items[k].nameItems = save.object[k].nameItems;
+            items[k].onMap = save.object[k].onMap;
+            items[k].x = save.object[k].x;
+            items[k].y = save.object[k].y;
         }
         playerPos->direction = save.player.direction;
         playerPos->shuriken.movex = save.player.shuriken.movex;
@@ -178,12 +203,17 @@ int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
         playerPos->fullHp = save.player.fullHp;
         playerPos->hp = save.player.hp;
         playerPos->numShur = save.player.numShur;
-
+        playerPos->numKeys = save.player.numKeys;
+        playerPos->xp = save.player.xp;
+        playerPos->level = save.player.level;
+        playerPos->shurikenItem = save.player.shurikenItem;
+        playerPos->armor = save.player.armor;
     }
 }
 
 void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-            ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed){
+            ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
+            int *numShur, int *numKeys, typeItem items[]){
     int selectioned = 0, beginGame = 0;
     enum options{newGame, loadGame, credits, exitGame};
 
@@ -233,10 +263,10 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
                             beginGame = true;
                             *endOfGame = false;
                             standardSave(0);
-                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, items);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, items);
                             beginGame = true;
                             *endOfGame = false;
                             break;
@@ -264,10 +294,10 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
                             beginGame = true;
                             *endOfGame = false;
                             standardSave(0);
-                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, items);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, items);
                             beginGame = true;
                             *endOfGame = false;
                             break;
@@ -308,6 +338,7 @@ void standardSave(int mapUsed) {
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     typeSave save;
     int i;
+    int numShur, numKeys;
     save.player.x = 1;
     save.player.y = 1;
     save.player.direction = TORIGHT;
@@ -320,8 +351,8 @@ void standardSave(int mapUsed) {
             rewind(map);
             fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
             fclose(map);
-            save.numKey = 5;
             save.numShur = 5;
+            save.numKeys = 5;
         }
         break;
     case 1:
@@ -329,8 +360,8 @@ void standardSave(int mapUsed) {
             rewind(map);
             fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
             fclose(map);
-            save.numKey = 7;
-            save.numShur = 10;
+            save.numShur = 7;
+            save.numKeys = 7;
         }
         break;
     }
@@ -351,7 +382,7 @@ void standardSave(int mapUsed) {
             }
             break;
         case 'keys':
-            for (i = save.numShur; i < (save.numShur + save.numKey); i++){
+            for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
                 do{
                     save.object[i].x = (1 + (rand() % SIZEMAP_X));
                     save.object[i].y = (1 + (rand() % SIZEMAP_Y));

@@ -31,6 +31,7 @@
 #define NUM_MOBS 5
 #define MAPSCALE 20
 #define RANGEVIEWMOB 5
+#define MIN_ITEMS 25
 /*_____________________________________________________________*/
 
 enum directions{UP, DOWN, LEFT, RIGHT};
@@ -69,13 +70,13 @@ typedef struct items{
     int nameItems;
 }typeItem;
 typedef struct save{
-    typePos player;
-    typePos npc[25];
+    t_player player;
+    t_npc npc[25];
     typeItem object[25];
     int numMobs;
     int mapUsed;
-    int numKey;
     int numShur;
+    int numKeys;
 }typeSave;
 /*_____________________________________________________________*/
 
@@ -93,14 +94,16 @@ void updateShurikenPlayer(typeShur *shuriken, t_npc npc[], int numMobs, char map
 
 void shurikenDir(t_npc *npc, t_player playerPos);
 
-void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, typePos *playerPos, int *mapUsed);
+void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
+            ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
+            int *numShur, int *numKeys, typeItem items[]);
 
-int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed);
+int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, typeItem items[]);
 
-int loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed);
+void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, typeItem items[]);
 
 void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 
 void playerMovement(t_player playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
 
-void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numItems);
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys);

@@ -1,6 +1,6 @@
 #include "headers.h"
 // Procedure to control the movement of the enemies
-void npcMovement(typePos mobPos[], int numMobs, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+void npcMovement(t_npc mobPos[], int numMobs, t_player playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int flagMov;
     int i;
 
@@ -93,11 +93,11 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
-void checkKeyShur(typePos *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numItems)
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys)
 {
     int i = 0;
 
-    for (i = 0; i < numItems; i ++){
+    for (i = 0; i < numShur + numKeys; i ++){
         if(items[i].x == player->x && items[i].y == player->y && items[i].onMap == 1){
             items[i].onMap = 0;
             switch (items[i].nameItems){

@@ -1,6 +1,6 @@
 #include "headers.h"
 
-void drawMobs(typePos npcPos[], ALLEGRO_BITMAP *enemy)
+void drawMobs(t_npc npcPos[], ALLEGRO_BITMAP *enemy)
 {
     int i;
 
@@ -8,7 +8,7 @@ void drawMobs(typePos npcPos[], ALLEGRO_BITMAP *enemy)
         al_draw_bitmap(enemy, npcPos[i].x*MAPSCALE, npcPos[i].y*MAPSCALE, 0);
 }
 
-void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw)
+void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw)
 {
     int i;
 

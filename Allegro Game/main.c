@@ -13,9 +13,11 @@ int main()
     int contador = 0;
     int mapUsed = 0;
     int joystickFound = 1;
-    typePos playerPos, npcPos[NUM_MOBS];
+    t_player playerPos;
+    t_npc npcPos[NUM_MOBS];
     typeSave save;
-    typeItem items[25];
+    typeItem items[MIN_ITEMS];
+    int numShur, numKeys;
 
     const int width = SIZEMAP_X*MAPSCALE; //largura
     const int height = SIZEMAP_Y*MAPSCALE; //algura
@@ -23,19 +25,7 @@ int main()
     /*_____________________________________________________________*/
 
 
-    int numItems = 5;
-    for(i= 0; i < 3; i ++){
-        items[i].nameItems = 1;
-        items[i].onMap = 1;
-        items[i].x = 5+i;
-        items[i].y = 5+i;
-    }
-    for(i= 3; i < 5; i ++){
-        items[i].nameItems = 0;
-        items[i].onMap = 1;
-        items[i].x = 8+i;
-        items[i].y = 8+i;
-    }
+
 
 
 
@@ -273,28 +263,41 @@ int main()
 
 
     if(joystickFound){
-        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
+        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     }
     else
-        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
+        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     playerPos.numKeys = 0;
+
+
+    for(i= 0; i < 3; i ++){
+        items[i].nameItems = 1;
+        items[i].onMap = 1;
+        items[i].x = 5+i;
+        items[i].y = 5+i;
+    }
+    for(i= 3; i < 5; i ++){
+        items[i].nameItems = 0;
+        items[i].onMap = 1;
+        items[i].x = 8+i;
+        items[i].y = 8+i;
+    }
 
 
     while(!endOfGame)
     {
-        printf("hello\n");
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
         //al_get_keyboard_state(&keyState);
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
-            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numItems);
+            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
-                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numItems);
+                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);
@@ -331,7 +334,7 @@ int main()
                     al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);
                 for (i = 0; i < playerPos.numKeys; i ++)
                     al_draw_bitmap(keys, (i+20)*MAPSCALE, 0, 0);
-                for (i = 0; i < numItems; i ++)
+                for (i = 0; i < numShur + numKeys; i ++)
                     if (items[i].onMap == 1)
                         if (items[i].nameItems == 1)
                             al_draw_bitmap(keys, items[i].x*MAPSCALE, items[i].y*MAPSCALE, 0);
@@ -351,9 +354,9 @@ int main()
 
         if (openMenu) {
             if (joystickFound)
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
             else
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
         }
         if (playerPos.hp == 0){
             endOfGame = 1;
@@ -377,7 +380,7 @@ int main()
     return 0;
 }
 
-void moveJoystick(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     if(event.joystick.axis == 0){
 
         if (event.joystick.pos > 0.25){
@@ -414,12 +417,12 @@ void moveJoystick(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char m
     }
 }
 
-void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numItems){
+void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur, int numKeys){
     switch (event.joystick.button){
         case CONTROL_BUTTON_A:
             break;
         case CONTROL_BUTTON_B:
-            checkKeyShur(playerPos, items, mapMatrix, numItems);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys);
             break;
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
@@ -469,7 +472,8 @@ void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char map
     }
 }
 
-void playerInputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[], int numItems) {
+void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
+                         int numShur, int numKeys) {
     switch (event.keyboard.keycode){
         case ALLEGRO_KEY_UP:
         case ALLEGRO_KEY_W:
@@ -530,7 +534,7 @@ void playerInputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu,
             }
             break;
         case ALLEGRO_KEY_E:
-            checkKeyShur(playerPos, items, mapMatrix, numItems);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys);
             break;
     }
 }

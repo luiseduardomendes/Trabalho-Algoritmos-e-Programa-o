@@ -1,5 +1,5 @@
 #include "headers.h"
-void showDisplay (int mapUsed, typePos playerPos, typePos infMob[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void showDisplay (int mapUsed, t_player playerPos, t_npc infMob[], typeShur shuriken[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int i, j, k, mobFound = 0, shurikenFound, playerFound;
 
     for(i = 0; i < SIZEMAP_Y; i++){

@@ -1,5 +1,5 @@
 #include "headers.h"
-void updateShurikenPos(typeShur *shuriken, typePos *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void updateShurikenPos(typeShur *shuriken, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
 
     if(shuriken->throwing){
         shuriken->x += shuriken->movex;
@@ -15,7 +15,7 @@ void updateShurikenPos(typeShur *shuriken, typePos *player, char mapMatrix[SIZEM
     }
 }
 
-void updateShurikenPlayer(typeShur *shuriken, typePos npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void updateShurikenPlayer(typeShur *shuriken, t_npc npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int i;
 
     if(shuriken->throwing){
@@ -24,8 +24,10 @@ void updateShurikenPlayer(typeShur *shuriken, typePos npc[], int numMobs, char m
         for (i = 0; i < numMobs; i ++){
             if ((shuriken->x == npc[i].x) && (shuriken->y == npc[i].y)){
                 npc[i].hp --;
-                npc[i].x = -1;
-                npc[i].y = -1;
+                if (npc[i].hp <= 0){
+                    npc[i].x = -1;
+                    npc[i].y = -1;
+                }
                 shuriken->throwing = false;
             }
         }
@@ -37,7 +39,7 @@ void updateShurikenPlayer(typeShur *shuriken, typePos npc[], int numMobs, char m
     }
 }
 
-void shurikenDir(typePos *npc, typePos playerPos)
+void shurikenDir(t_npc *npc, t_player playerPos)
 {
     if (!npc->shuriken.throwing){
         npc->shuriken.x = npc->x;
