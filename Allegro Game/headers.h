@@ -44,13 +44,25 @@ typedef struct shuriken{
     int movex, movey;
     bool throwing;
 }typeShur;
+
 typedef struct position{
-    int x, y;
+    int x,y;
     int hp, fullHp;
     int direction;
     int numShur, numKeys;
+    int xp;
+    int level;
+    int armor, shurikenItem;
     typeShur shuriken;
-}typePos;
+}t_player;
+
+typedef struct{
+    int x,y;
+    int hp, fullHp;
+    int direction;
+    typeShur shuriken;
+}t_npc;
+
 typedef struct items{
     int x, y;
     int onMap;
@@ -63,7 +75,7 @@ typedef struct save{
     int numMobs;
     int mapUsed;
     int numKey;
-    int numShur
+    int numShur;
 }typeSave;
 /*_____________________________________________________________*/
 
@@ -73,22 +85,22 @@ FILE *saveFile;
 
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void npcMovement(typePos infMob[], int numMobs, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void npcMovement(t_npc infMob[], int numMobs, t_player playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void updateShurikenPos(typeShur* shuriken, typePos *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void updateShurikenPos(typeShur* shuriken, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void updateShurikenPlayer(typeShur *shuriken, typePos npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void updateShurikenPlayer(typeShur *shuriken, t_npc npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void shurikenDir(typePos *npc, typePos playerPos);
+void shurikenDir(t_npc *npc, t_player playerPos);
 
-void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed);
+void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, typePos *playerPos, int *mapUsed);
 
-int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed);
+int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed);
 
-int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed);
+int loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed);
 
-void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
+void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 
-void playerMovement(typePos playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
+void playerMovement(t_player playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
 
-void checkKeyShur(typePos *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numItems);
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numItems);

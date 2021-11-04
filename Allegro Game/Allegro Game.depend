@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1635898639 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
+1635994698 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c
 	"headers.h"
 
 1635993073 e:\github\trabalho-algoritmos-e-programa-o\allegro game\headers.h
@@ -264,7 +264,7 @@
 1635956558 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\maps.c
 	"headers.h"
 
-1635992041 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\move.c
+1635992778 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\move.c
 	"headers.h"
 
 1635955359 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\attacks.c

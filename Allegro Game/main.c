@@ -33,8 +33,8 @@ int main()
     for(i= 3; i < 5; i ++){
         items[i].nameItems = 0;
         items[i].onMap = 1;
-        items[i].x = 10+i;
-        items[i].y = 10+i;
+        items[i].x = 8+i;
+        items[i].y = 8+i;
     }
 
 
@@ -289,18 +289,15 @@ int main()
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
-            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix);
-            checkKeyShur(&playerPos, items, mapMatrix, numItems);
+            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numItems);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
-                buttonDown(event, &playerPos, &openMenu, mapMatrix);
-                checkKeyShur(&playerPos, items, mapMatrix,numItems);
+                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numItems);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);
-                checkKeyShur(&playerPos, items, mapMatrix, numItems);
             }
         }
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -417,11 +414,12 @@ void moveJoystick(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char m
     }
 }
 
-void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu){
+void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numItems){
     switch (event.joystick.button){
         case CONTROL_BUTTON_A:
             break;
         case CONTROL_BUTTON_B:
+            checkKeyShur(playerPos, items, mapMatrix, numItems);
             break;
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
@@ -471,7 +469,7 @@ void buttonDown(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu){
     }
 }
 
-void playerInputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+void playerInputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[], int numItems) {
     switch (event.keyboard.keycode){
         case ALLEGRO_KEY_UP:
         case ALLEGRO_KEY_W:
@@ -530,6 +528,9 @@ void playerInputKeyboard(ALLEGRO_EVENT event, typePos *playerPos, int *openMenu,
                         break;
                 }
             }
+            break;
+        case ALLEGRO_KEY_E:
+            checkKeyShur(playerPos, items, mapMatrix, numItems);
             break;
     }
 }
