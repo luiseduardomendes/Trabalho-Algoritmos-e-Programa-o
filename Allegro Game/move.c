@@ -93,6 +93,22 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
+void checkKeyShur(typePos *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
+{
+    if(mapMatrix[player->y][player->x] == 'Z')
+    {
+        if(player->numShur < 5)
+        {
+            player->numShur++;
+            mapMatrix[player->y][player->x] = NULL;
+        }
+    }else if(mapMatrix[player->y][player->x] == 'C')
+    {
+        player->numKeys++;
+        mapMatrix[player->y][player->x] = NULL;
+    }
+
+}
 //void playerMovement(typePos *playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound)
 /*{
     bool openMenu = false;

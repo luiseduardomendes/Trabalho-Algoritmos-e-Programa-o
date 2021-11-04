@@ -257,7 +257,7 @@ int main()
         menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
     }
     else
-        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
+        //menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
 
 
 
@@ -271,14 +271,17 @@ int main()
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix);
+            checkKeyShur(&playerPos, mapMatrix);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
                 buttonDown(event, &playerPos, &openMenu, mapMatrix);
+                checkKeyShur(&playerPos, mapMatrix);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);
+                checkKeyShur(&playerPos, mapMatrix);
             }
         }
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)

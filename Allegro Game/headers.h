@@ -48,7 +48,7 @@ typedef struct position{
     int x, y;
     int hp, fullHp;
     int direction;
-    int numShur;
+    int numShur, numKeys;
     typeShur shuriken;
 }typePos;
 typedef struct save{
@@ -82,3 +82,5 @@ int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed);
 void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 
 void playerMovement(typePos playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
+
+void checkKeyShur(typePos *playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
