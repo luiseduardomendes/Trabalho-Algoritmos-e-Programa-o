@@ -257,10 +257,10 @@ int main()
 
 
     if(joystickFound){
-        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
+        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
     }
     else
-        menuIniciar(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
+        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed);
 
 
 
