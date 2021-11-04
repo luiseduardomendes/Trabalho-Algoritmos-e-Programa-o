@@ -320,6 +320,8 @@ void standardSave(int mapUsed) {
             rewind(map);
             fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
             fclose(map);
+            save.numKey = 5;
+            save.numShur = 5;
         }
         break;
     case 1:
@@ -327,6 +329,8 @@ void standardSave(int mapUsed) {
             rewind(map);
             fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
             fclose(map);
+            save.numKey = 7;
+            save.numShur = 10;
         }
         break;
     }
@@ -335,6 +339,25 @@ void standardSave(int mapUsed) {
             save.npc[i].x = (1 + (rand() % SIZEMAP_X));
             save.npc[i].y = (1 + (rand() % SIZEMAP_Y));
         } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL);
+    }
+    switch(save.object->nameItems)
+    {
+        case 'shur':
+            for (i = 0; i < save.numShur; i++){
+                do{
+                    save.object[i].x = (1 + (rand() % SIZEMAP_X));
+                    save.object[i].y = (1 + (rand() % SIZEMAP_Y));
+                } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
+            }
+            break;
+        case 'keys':
+            for (i = save.numShur; i < (save.numShur + save.numKey); i++){
+                do{
+                    save.object[i].x = (1 + (rand() % SIZEMAP_X));
+                    save.object[i].y = (1 + (rand() % SIZEMAP_Y));
+                } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
+            }
+            break;
     }
     for (i = 0; i < save.numMobs; i ++){
         save.npc[i].shuriken.throwing = 0;
