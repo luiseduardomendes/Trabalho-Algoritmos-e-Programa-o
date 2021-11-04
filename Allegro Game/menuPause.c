@@ -1,6 +1,6 @@
 #include "headers.h"
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-            ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed) {
+            ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
     int selectioned = 0;
     enum options{resumeGame, saveGame, loadGame, exitGame};
 
@@ -49,10 +49,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, numMobs, *playerPos, mapUsed);
+                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, &mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed);
                             break;
                         case exitGame:
                             *openMenu = false;
@@ -72,20 +72,21 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                     break;
                 case 0: //Xbox_A
                     switch (selectioned){
-                    case resumeGame:
-                        *openMenu = false;
-                        break;
-                    case saveGame:
-                        saveFunction(npcPos, numMobs, *playerPos, mapUsed);
-                        break;
-                    case loadGame:
-                        loadSave(npcPos, numMobs, playerPos, &mapUsed);
-                        break;
-                    case exitGame:
-                        *openMenu = false;
-                        *endOfGame = true;
-                        break;
-                    }
+                        case resumeGame:
+                            *openMenu = false;
+                            break;
+                        case saveGame:
+                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed);
+                            break;
+                        case loadGame:
+                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            break;
+                        case exitGame:
+                            *openMenu = false;
+                            *endOfGame = true;
+                            break;
+                        }
+                    break;
                 }
             }
             if(ev.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
@@ -115,7 +116,7 @@ int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed)
     typeSave save;
     save.mapUsed = mapUsed;
     save.numMobs = numMobs;
-    for(k = 0; k < NUM_MOBS; k ++) {
+    for(k = 0; k < save.numMobs; k ++) {
         save.npc[k].direction = npcPos[k].direction;
         save.npc[k].shuriken.movex = npcPos[k].shuriken.movex;
         save.npc[k].shuriken.movey = npcPos[k].shuriken.movey;
@@ -181,7 +182,7 @@ int loadSave(typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed) {
     }
 }
 
-void menuIniciar(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
+void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed){
     int selectioned = 0, beginGame = 0;
     enum options{newGame, loadGame, credits, exitGame};
@@ -210,7 +211,7 @@ void menuIniciar(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){
                 case ALLEGRO_KEY_ESCAPE:
-                    *openMenu = false;
+
                     break;
                 case ALLEGRO_KEY_UP:
                 case ALLEGRO_KEY_W:
@@ -231,11 +232,13 @@ void menuIniciar(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO
                         case newGame:
                             beginGame = true;
                             *endOfGame = false;
-                            standardSave(/*mapUsed*/0);
-                            loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
+                            standardSave(0);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed);
                             break;
                         case loadGame:
-                            loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            beginGame = true;
+                            *endOfGame = false;
                             break;
                         case credits:
                             break;
@@ -254,18 +257,19 @@ void menuIniciar(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO
                 switch(ev.joystick.button){
                 case 6: // Xbox_options
                 case 1: // Xbox_B
-                    *openMenu = false;
                     break;
                 case 0: //Xbox_A
                     switch (selectioned){
                         case newGame:
                             beginGame = true;
                             *endOfGame = false;
-                            standardSave(/*mapUsed*/0);
-                            loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
+                            standardSave(0);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed);
                             break;
                         case loadGame:
-                            loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed);
+                            beginGame = true;
+                            *endOfGame = false;
                             break;
                         case credits:
                             break;

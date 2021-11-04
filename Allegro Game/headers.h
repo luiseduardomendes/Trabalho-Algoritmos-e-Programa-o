@@ -81,7 +81,7 @@ void updateShurikenPlayer(typeShur *shuriken, typePos npc[], int numMobs, char m
 
 void shurikenDir(typePos *npc, typePos playerPos);
 
-void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int numMobs, typePos *playerPos, int *mapUsed);
+void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, typePos npcPos[], int *numMobs, typePos *playerPos, int *mapUsed);
 
 int saveFunction (typePos npcPos[], int numMobs, typePos playerPos, int mapUsed);
 
