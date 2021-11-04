@@ -15,6 +15,7 @@ int main()
     int joystickFound = 1;
     typePos playerPos, npcPos[NUM_MOBS];
     typeSave save;
+    typeItem items[25];
     const int width = SIZEMAP_X*MAPSCALE; //largura
     const int height = SIZEMAP_Y*MAPSCALE; //algura
     bool endOfGame = false, openMenu = false;
@@ -129,6 +130,8 @@ int main()
         npcPos[i].hp = 1;
     }
     playerPos.numShur = 5;
+
+
     _____________________________________________________________*/
 
 
@@ -271,17 +274,17 @@ int main()
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix);
-            checkKeyShur(&playerPos, mapMatrix);
+            checkKeyShur(&playerPos, &items);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
                 buttonDown(event, &playerPos, &openMenu, mapMatrix);
-                checkKeyShur(&playerPos, mapMatrix);
+                checkKeyShur(&playerPos, &items);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);
-                checkKeyShur(&playerPos, mapMatrix);
+                checkKeyShur(&playerPos, &items);
             }
         }
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)

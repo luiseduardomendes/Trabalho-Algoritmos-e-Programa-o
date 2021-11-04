@@ -36,7 +36,7 @@
 enum directions{UP, DOWN, LEFT, RIGHT};
 enum control_buttons{CONTROL_BUTTON_A, CONTROL_BUTTON_B, CONTROL_BUTTON_X, CONTROL_BUTTON_Y, CONTROL_BUTTON_LB, CONTROL_BUTTON_RB,
     CONTROL_BUTTON_OPTIONS, CONTROL_BUTTON_START, CONTROL_BUTTON_L, CONTROL_BUTTON_R};
-
+enum itemsID{shur, keys};
 
 /*___________________________STRUCTS___________________________*/
 typedef struct shuriken{
@@ -51,11 +51,19 @@ typedef struct position{
     int numShur, numKeys;
     typeShur shuriken;
 }typePos;
+typedef struct items{
+    int x, y;
+    int onMap;
+    int nameItems;
+}typeItem;
 typedef struct save{
     typePos player;
     typePos npc[25];
+    typeItem object[25];
     int numMobs;
     int mapUsed;
+    int numKey;
+    int numShur
 }typeSave;
 /*_____________________________________________________________*/
 
@@ -83,4 +91,4 @@ void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 
 void playerMovement(typePos playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
 
-void checkKeyShur(typePos *playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void checkKeyShur(typePos *playerPos, typeItem *items);
