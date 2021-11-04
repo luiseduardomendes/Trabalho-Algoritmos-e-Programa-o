@@ -91,4 +91,4 @@ void drawMobShur(typePos npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 
 void playerMovement(typePos playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
 
-void checkKeyShur(typePos *playerPos, typeItem *items);
+void checkKeyShur(typePos *player, typeItem *items, char mapMatrix[][SIZEMAP_X]);

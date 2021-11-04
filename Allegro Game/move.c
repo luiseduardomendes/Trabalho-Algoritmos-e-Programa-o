@@ -93,7 +93,7 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
-void checkKeyShur(typePos *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
+void checkKeyShur(typePos *player, typeItem *items, char mapMatrix[][SIZEMAP_X])
 {
     if(mapMatrix[player->y][player->x] == 'Z')
     {
