@@ -270,19 +270,19 @@ int main()
     playerPos.numKeys = 0;
 
 
+
+    /*_____________________________________________________________*/
+    // Inicialização das posições dos itens
+
     for(i= 0; i < 3; i ++){
-        items[i].nameItems = 1;
-        items[i].onMap = 1;
         items[i].x = 5+i;
         items[i].y = 5+i;
     }
     for(i= 3; i < 5; i ++){
-        items[i].nameItems = 0;
-        items[i].onMap = 1;
         items[i].x = 8+i;
         items[i].y = 8+i;
     }
-
+    /*_____________________________________________________________*/
 
     while(!endOfGame)
     {
