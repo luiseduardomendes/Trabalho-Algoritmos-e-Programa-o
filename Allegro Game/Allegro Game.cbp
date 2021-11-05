@@ -36,6 +36,7 @@
 			<Add option="-Wall" />
 			<Add directory="C:/allegro-5.0.10-mingw-4.7.0/include" />
 		</Compiler>
+		<Unit filename="arquivos/map1.txt" />
 		<Unit filename="attacks.c">
 			<Option compilerVar="CC" />
 		</Unit>

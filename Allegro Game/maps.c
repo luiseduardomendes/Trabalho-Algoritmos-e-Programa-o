@@ -34,3 +34,53 @@ void showDisplay (int mapUsed, t_player playerPos, t_npc infMob[], typeShur shur
         printf("\n");
     }
 }
+
+int readMap(char mapMatrix[][SIZEMAP_X], int mapUsed, int *numMobs, int *numShur, int *numKeys){
+    FILE* localMap;
+    int flag = 1;
+    int i, j;
+    char bufferCh[SIZEMAP_X];
+
+    char mapNames[ ][99] = {{"arquivos/map1.txt"},
+                            {"arquivos/map2.txt"},
+                            {"arquivos/map3.txt"},
+                            {"arquivos/map4.txt"}};
+    localMap = fopen(mapNames[mapUsed], "r");
+    if (localMap != NULL){
+        switch (mapUsed){
+        case 0:
+            *numMobs = 5;
+            *numShur = 5;
+            *numKeys = 5;
+            break;
+        case 1:
+            *numMobs = 8;
+            *numShur = 8;
+            *numKeys = 8;
+            break;
+        case 2:
+            *numMobs = 10;
+            *numShur = 10;
+            *numKeys = 10;
+            break;
+        default:
+            *numMobs = 10;
+            *numShur = 10;
+            *numKeys = 10;
+        }
+
+        rewind(localMap);
+
+        for (i = 0; i < SIZEMAP_Y; i ++) {
+            fgets(bufferCh, SIZEMAP_X, localMap);
+            for (j = 0; j < SIZEMAP_X; j ++) {
+                mapMatrix[i][j] = bufferCh[j];
+            }
+        }
+        fclose(localMap);
+    }
+    else {
+        flag = 0;
+    }
+    return flag;
+}

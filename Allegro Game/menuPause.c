@@ -345,51 +345,33 @@ void standardSave(int mapUsed) {
     save.numMobs = 5;
     save.mapUsed = 0;
 
-    switch (mapUsed) {
-    case 0:
-        if(map = fopen("arquivos/map64x36.txt", "r")){
-            rewind(map);
-            fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-            fclose(map);
-            save.numShur = 5;
-            save.numKeys = 5;
-        }
-        break;
-    case 1:
-        if(map = fopen("arquivos/map2.64x36.txt", "r")){
-            rewind(map);
-            fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-            fclose(map);
-            save.numShur = 7;
-            save.numKeys = 7;
-        }
-        break;
-    }
+    readMap(mapMatrix, save.mapUsed, &save.numMobs, &save.numShur, &save.numKeys);
+
     for (i = 0; i < save.numMobs; i++){
         do{
             save.npc[i].x = (1 + (rand() % SIZEMAP_X));
             save.npc[i].y = (1 + (rand() % SIZEMAP_Y));
         } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL);
     }
-    switch(save.object->nameItems)
-    {
-        case 'shur':
-            for (i = 0; i < save.numShur; i++){
-                do{
-                    save.object[i].x = (1 + (rand() % SIZEMAP_X));
-                    save.object[i].y = (1 + (rand() % SIZEMAP_Y));
-                } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
-            }
-            break;
-        case 'keys':
-            for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
-                do{
-                    save.object[i].x = (1 + (rand() % SIZEMAP_X));
-                    save.object[i].y = (1 + (rand() % SIZEMAP_Y));
-                } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
-            }
-            break;
+
+    for (i = 0; i < save.numShur; i++){
+        save.object[i].nameItems = shur;
+        save.object[i].onMap = 1;
+        do{
+            save.object[i].x = (1 + (rand() % SIZEMAP_X));
+            save.object[i].y = (1 + (rand() % SIZEMAP_Y));
+        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
     }
+
+    for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
+        save.object[i].nameItems = keys;
+        save.object[i].onMap = 1;
+        do{
+            save.object[i].x = (1 + (rand() % SIZEMAP_X));
+            save.object[i].y = (1 + (rand() % SIZEMAP_Y));
+        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
+    }
+
     for (i = 0; i < save.numMobs; i ++){
         save.npc[i].shuriken.throwing = 0;
         save.npc[i].shuriken.movex = 0;

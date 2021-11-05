@@ -90,10 +90,6 @@ int main()
     //declara�ao do mapa
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/map64x36.txt", "r");
-    rewind(map);
-    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
     //const int MAPSCALE = 24;
     /*_____________________________________________________________*/
 
@@ -198,38 +194,6 @@ int main()
 
 
 
-    ALLEGRO_BITMAP *background = NULL;
-    background = al_create_bitmap(MAPSCALE * SIZEMAP_X, MAPSCALE * SIZEMAP_Y);
-
-    al_set_target_bitmap(background);
-
-    for(i = 0; i < SIZEMAP_Y; i++){
-        for(j = 0; j < SIZEMAP_X; j++){
-
-            if(mapMatrix[i][j] == WALL){
-                al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
-                }
-            else if(mapMatrix[i][j] == 'X'){
-                al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
-                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
-            }
-            else if(mapMatrix[i][j] == 'C'){
-                al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
-                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
-
-            }
-            else{
-                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
-            }
-        }
-    }
-    al_set_target_bitmap(al_get_backbuffer(display));
-
-
-
-
-
-
 
 
     /*_____________________________________________________________*/
@@ -262,6 +226,7 @@ int main()
 
 
 
+
     if(joystickFound){
         menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     }
@@ -271,7 +236,44 @@ int main()
 
 
 
-    /*_____________________________________________________________*/
+    readMap(mapMatrix, mapUsed, &numMobs, &numShur, &numKeys);
+
+    ALLEGRO_BITMAP *background;
+    //createBgBitmap(background, mapMatrix, wall, spikes, grass, display); //erro nessa funcao
+
+    al_set_target_bitmap(background);
+    for(i = 0; i < SIZEMAP_Y; i ++){
+        for(j = 0; j < SIZEMAP_X; j ++){
+            printf("%c",mapMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    for(i = 0; i < SIZEMAP_Y; i++){
+        for(j = 0; j < SIZEMAP_X; j++){
+
+            if(mapMatrix[i][j] == WALL){
+                al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
+                }
+            else if(mapMatrix[i][j] == 'X'){
+                al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
+                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
+            }
+            /*else if(mapMatrix[i][j] == 'C'){
+                al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
+                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
+
+            }*/
+            else{
+                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
+            }
+        }
+    }
+    al_set_target_bitmap(al_get_backbuffer(display));
+    background = al_create_bitmap(MAPSCALE * SIZEMAP_X, MAPSCALE * SIZEMAP_Y);
+
+
+    /*_____________________________________________________________
     // Inicialização das posições dos itens
 
     for(i= 0; i < 3; i ++){
