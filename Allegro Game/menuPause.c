@@ -338,14 +338,15 @@ void standardSave(int mapUsed) {
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     typeSave save;
     int i;
-    int numShur, numKeys;
+    int numMobs, numShur, numKeys;
     save.player.x = 1;
     save.player.y = 1;
     save.player.direction = TORIGHT;
-    save.numMobs = 5;
+    readMap(mapMatrix, mapUsed, &numMobs, &numShur, &numKeys);
+    save.numMobs = numMobs;
+    save.numKeys = numKeys;
+    save.numShur = numShur;
     save.mapUsed = 0;
-
-    readMap(mapMatrix, save.mapUsed, &save.numMobs, &save.numShur, &save.numKeys);
 
     for (i = 0; i < save.numMobs; i++){
         do{

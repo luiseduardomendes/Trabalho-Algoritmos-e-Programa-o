@@ -256,12 +256,12 @@
 	"allegro5/allegro.h"
 	"allegro5/allegro_font.h"
 
-1636078472 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\main.c
+1636222846 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\main.c
 	"headers.h"
 
 1362327499 c:\users\dudup\downloads\português\soc\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_image.h
 
-1636078745 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\maps.c
+1636220900 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\maps.c
 	"headers.h"
 
 1636029121 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\move.c
@@ -301,7 +301,7 @@
 1635434674 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\teste.c
 	"headers.h"
 
-1636078016 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\menupause.c
+1636221644 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\menupause.c
 	"headers.h"
 
 1372628331 c:\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro.h
@@ -581,7 +581,7 @@
 1635899869 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\draw.c
 	"headers.h"
 
-1636076411 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\draw.c
+1636223160 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\draw.c
 	"headers.h"
 
 1372628331 c:\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_audio.h

@@ -39,7 +39,8 @@ int readMap(char mapMatrix[][SIZEMAP_X], int mapUsed, int *numMobs, int *numShur
     FILE* localMap;
     int flag = 1;
     int i, j;
-    char bufferCh[SIZEMAP_X];
+    char bufferCh[SIZEMAP_X+3];
+    printf("OLA\n");
 
     char mapNames[ ][99] = {{"arquivos/map1.txt"},
                             {"arquivos/map2.txt"},
@@ -48,35 +49,44 @@ int readMap(char mapMatrix[][SIZEMAP_X], int mapUsed, int *numMobs, int *numShur
     localMap = fopen(mapNames[mapUsed], "r");
     if (localMap != NULL){
         switch (mapUsed){
-        case 0:
-            *numMobs = 5;
-            *numShur = 5;
-            *numKeys = 5;
-            break;
-        case 1:
-            *numMobs = 8;
-            *numShur = 8;
-            *numKeys = 8;
-            break;
-        case 2:
-            *numMobs = 10;
-            *numShur = 10;
-            *numKeys = 10;
-            break;
-        default:
-            *numMobs = 10;
-            *numShur = 10;
-            *numKeys = 10;
+            case 0:
+                *numMobs = 5;
+                *numShur = 5;
+                *numKeys = 5;
+                break;
+            case 1:
+                *numMobs = 8;
+                *numShur = 8;
+                *numKeys = 8;
+                break;
+            case 2:
+                *numMobs = 10;
+                *numShur = 10;
+                *numKeys = 10;
+                break;
+            default:
+                *numMobs = 10;
+                *numShur = 10;
+                *numKeys = 10;
         }
 
         rewind(localMap);
 
         for (i = 0; i < SIZEMAP_Y; i ++) {
-            fgets(bufferCh, SIZEMAP_X, localMap);
-            for (j = 0; j < SIZEMAP_X; j ++) {
+            fgets(bufferCh, SIZEMAP_X+3, localMap);
+            j = 0;
+            while(bufferCh[j]!= '\n' && bufferCh[j]!= '\0'){
                 mapMatrix[i][j] = bufferCh[j];
+                j++;
             }
         }
+        for ( i = 0; i < SIZEMAP_Y; i ++){
+            for( j = 0; j < SIZEMAP_X; j++){
+                printf("%c", mapMatrix[i][j]);
+            }
+            printf("\n");
+        }
+
         fclose(localMap);
     }
     else {

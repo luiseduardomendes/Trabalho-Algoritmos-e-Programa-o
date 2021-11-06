@@ -54,7 +54,7 @@ int main()
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/Naruto.png");
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/spikes.png");
-    ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
+    ALLEGRO_BITMAP *keys = al_load_bitmap("assets/key.png");
     ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/akatsuck.png");
     ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
     ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
@@ -237,11 +237,17 @@ int main()
 
 
     readMap(mapMatrix, mapUsed, &numMobs, &numShur, &numKeys);
+    for ( i = 0; i < SIZEMAP_Y; i ++){
+            for( j = 0; j < SIZEMAP_X; j++){
+                printf("%c", mapMatrix[i][j]);
+            }
+            printf("\n");
+        }
 
-    ALLEGRO_BITMAP *background;
-    //createBgBitmap(background, mapMatrix, wall, spikes, grass, display); //erro nessa funcao
+    ALLEGRO_BITMAP *background = NULL;
+    createBgBitmap(background, mapMatrix, wall, spikes, grass, display); //erro nessa funcao
 
-    al_set_target_bitmap(background);
+    /*al_set_target_bitmap(background);
     for(i = 0; i < SIZEMAP_Y; i ++){
         for(j = 0; j < SIZEMAP_X; j ++){
             printf("%c",mapMatrix[i][j]);
@@ -263,7 +269,7 @@ int main()
                 al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
 
-            }*/
+            }*//*
             else{
                 al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
             }
@@ -285,12 +291,12 @@ int main()
         items[i].y = 8+i;
     }
     /*_____________________________________________________________*/
-
+    //printf("Hello");
     while(!endOfGame)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
-        //al_get_keyboard_state(&keyState);
+        al_get_keyboard_state(&keyState);
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
@@ -325,17 +331,18 @@ int main()
             }
             if(event.timer.source == timer)
             {
+
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 //drawMap(mapMatrix, spikes, keys);
-                al_draw_bitmap(background, 0, 0, 0);
+                al_draw_bitmap(background, 0, 0, 0);printf("Hello\n");
                 for (i = 0; i < playerPos.hp; i++)
                     al_draw_bitmap(heart, (i+1)*MAPSCALE, 0, 0);
                 for (i = playerPos.hp; i < playerPos.fullHp; i ++)
-                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);
+                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);printf("Hello");
                 for (i = 0; i < playerPos.numShur; i ++)
-                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);
+                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);printf("Hello");
                 for (i = 0; i < playerPos.numKeys; i ++)
-                    al_draw_bitmap(keys, (i+20)*MAPSCALE, 0, 0);
+                    al_draw_bitmap(keys, (i+20)*MAPSCALE, 0, 0);printf("Hello");
                 for (i = 0; i < numShur + numKeys; i ++)
                     if (items[i].onMap == 1)
                         if (items[i].nameItems == 1)
