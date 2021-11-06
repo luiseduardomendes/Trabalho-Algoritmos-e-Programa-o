@@ -40,7 +40,6 @@ int readMap(char mapMatrix[][SIZEMAP_X], int mapUsed, int *numMobs, int *numShur
     int flag = 1;
     int i, j;
     char bufferCh[SIZEMAP_X+3];
-    printf("OLA\n");
 
     char mapNames[ ][99] = {{"arquivos/map1.txt"},
                             {"arquivos/map2.txt"},
@@ -80,12 +79,7 @@ int readMap(char mapMatrix[][SIZEMAP_X], int mapUsed, int *numMobs, int *numShur
                 j++;
             }
         }
-        for ( i = 0; i < SIZEMAP_Y; i ++){
-            for( j = 0; j < SIZEMAP_X; j++){
-                printf("%c", mapMatrix[i][j]);
-            }
-            printf("\n");
-        }
+
 
         fclose(localMap);
     }

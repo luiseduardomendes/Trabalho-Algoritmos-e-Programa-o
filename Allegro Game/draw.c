@@ -20,7 +20,7 @@ void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw)
     }
 }
 
-void createBgBitmap(ALLEGRO_BITMAP *background, char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP* wall,
+ALLEGRO_BITMAP* createBgBitmap(ALLEGRO_BITMAP *background, char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP* wall,
                     ALLEGRO_BITMAP *spikes, ALLEGRO_BITMAP *grass, ALLEGRO_DISPLAY *display){
     int i, j;
     al_init_image_addon();
@@ -46,5 +46,6 @@ void createBgBitmap(ALLEGRO_BITMAP *background, char mapMatrix[][SIZEMAP_X], ALL
         }
     }
     al_set_target_bitmap(al_get_backbuffer(display));
+    return background;
 
 }

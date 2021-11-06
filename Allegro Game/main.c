@@ -45,10 +45,21 @@ int main()
     /*_____________________________________________________________*/
     //fontes && bitmaps && formas primitivas
 
-    al_init_primitives_addon();
-    al_init_image_addon();
+
+    if(!al_init_primitives_addon()){
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execu��o!", "Allegro n�o inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+    }
+    if(!al_init_image_addon()){
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execu��o!", "Allegro n�o inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+    }
     al_init_font_addon();
-    al_init_ttf_addon();
+
+    if(!al_init_ttf_addon()){
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execu��o!", "Allegro n�o inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+    }
 
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonte.ttf", 48, 0);
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/Naruto.png");
@@ -237,15 +248,10 @@ int main()
 
 
     readMap(mapMatrix, mapUsed, &numMobs, &numShur, &numKeys);
-    for ( i = 0; i < SIZEMAP_Y; i ++){
-            for( j = 0; j < SIZEMAP_X; j++){
-                printf("%c", mapMatrix[i][j]);
-            }
-            printf("\n");
-        }
+
 
     ALLEGRO_BITMAP *background = NULL;
-    createBgBitmap(background, mapMatrix, wall, spikes, grass, display); //erro nessa funcao
+    background = createBgBitmap(background, mapMatrix, wall, spikes, grass, display); //erro nessa funcao
 
     /*al_set_target_bitmap(background);
     for(i = 0; i < SIZEMAP_Y; i ++){
@@ -292,11 +298,12 @@ int main()
     }
     /*_____________________________________________________________*/
     //printf("Hello");
+
     while(!endOfGame)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
-        al_get_keyboard_state(&keyState);
+        //al_get_keyboard_state(&keyState);
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
@@ -304,7 +311,7 @@ int main()
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
-                //printf("Botao pressionado: %d\n", ev.joystick.button);
+                //printf("Botao pressionado: %d\n", event.joystick.button);
                 buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
@@ -334,15 +341,15 @@ int main()
 
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 //drawMap(mapMatrix, spikes, keys);
-                al_draw_bitmap(background, 0, 0, 0);printf("Hello\n");
+                al_draw_bitmap(background, 0, 0, 0);
                 for (i = 0; i < playerPos.hp; i++)
                     al_draw_bitmap(heart, (i+1)*MAPSCALE, 0, 0);
                 for (i = playerPos.hp; i < playerPos.fullHp; i ++)
-                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);printf("Hello");
+                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);
                 for (i = 0; i < playerPos.numShur; i ++)
-                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);printf("Hello");
+                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);
                 for (i = 0; i < playerPos.numKeys; i ++)
-                    al_draw_bitmap(keys, (i+20)*MAPSCALE, 0, 0);printf("Hello");
+                    al_draw_bitmap(keys, (i+20)*MAPSCALE, 0, 0);
                 for (i = 0; i < numShur + numKeys; i ++)
                     if (items[i].onMap == 1)
                         if (items[i].nameItems == 1)
