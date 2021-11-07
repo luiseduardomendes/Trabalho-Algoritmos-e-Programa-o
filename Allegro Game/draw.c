@@ -20,6 +20,7 @@ void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw)
     }
 }
 
+<<<<<<< Updated upstream
 ALLEGRO_BITMAP* createBgBitmap(ALLEGRO_BITMAP *background, char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP* wall,
                     ALLEGRO_BITMAP *spikes, ALLEGRO_BITMAP *grass, ALLEGRO_DISPLAY *display){
     int i, j;
@@ -31,6 +32,18 @@ ALLEGRO_BITMAP* createBgBitmap(ALLEGRO_BITMAP *background, char mapMatrix[][SIZE
     for(i = 0; i < SIZEMAP_Y; i++){
         for(j = 0; j < SIZEMAP_X; j++){
             al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
+=======
+ALLEGRO_BITMAP* createbgbmp(ALLEGRO_BITMAP* background, ALLEGRO_BITMAP* wall, ALLEGRO_BITMAP* spikes, ALLEGRO_BITMAP* keys,
+                            ALLEGRO_BITMAP* grass, ALLEGRO_DISPLAY* display, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+
+    background = al_create_bitmap(MAPSCALE * SIZEMAP_X, MAPSCALE * SIZEMAP_Y);
+    int i, j;
+    al_set_target_bitmap(background);
+
+    for(i = 0; i < SIZEMAP_Y; i++){
+        for(j = 0; j < SIZEMAP_X; j++){
+
+>>>>>>> Stashed changes
             if(mapMatrix[i][j] == WALL){
                 al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
                 }
@@ -38,14 +51,28 @@ ALLEGRO_BITMAP* createBgBitmap(ALLEGRO_BITMAP *background, char mapMatrix[][SIZE
                 al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
             }
+<<<<<<< Updated upstream
             /*else if(mapMatrix[i][j] == 'C'){
                 al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
 
             }*/
+=======
+            else if(mapMatrix[i][j] == 'C'){
+                al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
+                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
+
+            }
+            else{
+                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
+            }
+>>>>>>> Stashed changes
         }
     }
     al_set_target_bitmap(al_get_backbuffer(display));
     return background;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 }

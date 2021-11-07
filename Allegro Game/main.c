@@ -101,6 +101,10 @@ int main()
     //declara�ao do mapa
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     //const int MAPSCALE = 24;
     /*_____________________________________________________________*/
 
@@ -205,6 +209,18 @@ int main()
 
 
 
+<<<<<<< Updated upstream
+=======
+    ALLEGRO_BITMAP *background = NULL;
+
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
 
 
     /*_____________________________________________________________*/
@@ -239,11 +255,15 @@ int main()
 
 
     if(joystickFound){
-        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
+        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
     }
     else
-        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
+        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
+
     playerPos.numKeys = 0;
+
+
+    background = createbgbmp(background, wall, spikes, keys, grass, display, mapMatrix);
 
 
 
@@ -298,6 +318,13 @@ int main()
     }
     /*_____________________________________________________________*/
     //printf("Hello");
+
+
+    for (i = 0; i < SIZEMAP_Y; i ++) {
+        for (j = 0; j < SIZEMAP_X; j ++)
+            printf("%c", mapMatrix[i][j]);
+        printf("\n");
+    }
 
     while(!endOfGame)
     {
@@ -370,9 +397,9 @@ int main()
 
         if (openMenu) {
             if (joystickFound)
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
             else
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
         }
         if (playerPos.hp == 0){
             endOfGame = 1;

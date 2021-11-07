@@ -96,11 +96,11 @@ void shurikenDir(t_npc *npc, t_player playerPos);
 
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
-            int *numShur, int *numKeys, typeItem items[]);
+            int *numShur, int *numKeys, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, typeItem items[]);
 
-void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, typeItem items[]);
+void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 

@@ -1,7 +1,7 @@
 #include "headers.h"
 // Procedure to control the movement of the enemies
 void npcMovement(t_npc mobPos[], int numMobs, t_player playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
-    int flagMov;
+    int flagMov, moved;
     int i;
 
 
@@ -9,62 +9,71 @@ void npcMovement(t_npc mobPos[], int numMobs, t_player playerPos, char mapMatrix
 
 
     for (i = 0; i < NUM_MOBS; i ++){
-        flagMov = (rand() % 4);
-        if (fabs(playerPos.x - mobPos[i].x) < RANGEVIEWMOB && fabs(playerPos.y - mobPos[i].y) < RANGEVIEWMOB){
-            if (playerPos.x > mobPos[i].x){
-                if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)) {
-                    mobPos[i].x ++;
-                    mobPos[i].direction = RIGHT;
-                }
-            }
-            else {
-                if (verifyPosition(mobPos[i].x, mobPos[i].y, TOLEFT, mapMatrix)) {
-                    mobPos[i].x --;
-                    mobPos[i].direction = LEFT;
-                }
-            }
-            if (playerPos.y > mobPos[i].y){
-                if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)) {
-                    mobPos[i].y ++;
-                    mobPos[i].direction = DOWN;
-                }
-            }
-            else {
-                if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)) {
-                    mobPos[i].y --;
-                    mobPos[i].direction = UP;
-                }
-            }
-        }
-        else{
-
-            switch (flagMov) {
-                case 0:
-                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)){
+        do{
+            moved = 0;
+            flagMov = (rand() % 4);
+            if (fabs(playerPos.x - mobPos[i].x) < RANGEVIEWMOB && fabs(playerPos.y - mobPos[i].y) < RANGEVIEWMOB){
+                moved = 1;
+                if (playerPos.x > mobPos[i].x){
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)) {
                         mobPos[i].x ++;
                         mobPos[i].direction = RIGHT;
                     }
-                    break;
-                case 1:
-                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)){
-                        mobPos[i].y --;
-                        mobPos[i].direction = UP;
-                    }
-                    break;
-                case 2:
-                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TOLEFT, mapMatrix)){
+                }
+                else {
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TOLEFT, mapMatrix)) {
                         mobPos[i].x --;
                         mobPos[i].direction = LEFT;
                     }
-                    break;
-                case 3:
-                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)){
+                }
+                if (playerPos.y > mobPos[i].y){
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)) {
                         mobPos[i].y ++;
                         mobPos[i].direction = DOWN;
                     }
-                    break;
+                }
+                else {
+                    if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)) {
+                        mobPos[i].y --;
+                        mobPos[i].direction = UP;
+                    }
+                }
             }
-        }
+            else{
+
+                switch (flagMov) {
+                    case 0:
+                        if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)){
+                            mobPos[i].x ++;
+                            mobPos[i].direction = RIGHT;
+                            moved = 1;
+                        }
+                        break;
+                    case 1:
+                        if (verifyPosition(mobPos[i].x, mobPos[i].y, TOUP, mapMatrix)){
+                            mobPos[i].y --;
+                            mobPos[i].direction = UP;
+                            moved = 1;
+                        }
+                        break;
+                    case 2:
+                        if (verifyPosition(mobPos[i].x, mobPos[i].y, TOLEFT, mapMatrix)){
+                            mobPos[i].x --;
+                            mobPos[i].direction = LEFT;
+                            moved = 1;
+                        }
+                        break;
+                    case 3:
+                        if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)){
+                            mobPos[i].y ++;
+                            mobPos[i].direction = DOWN;
+                            moved = 1;
+                        }
+                        break;
+                }
+            }
+        } while (!moved);
+
     }
 }
 
