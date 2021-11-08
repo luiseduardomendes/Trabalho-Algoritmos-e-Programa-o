@@ -37,32 +37,33 @@
 			<Add directory="C:/allegro-5.0.10-mingw-4.7.0/include" />
 		</Compiler>
 		<Unit filename="arquivos/map64x36.txt" />
-		<Unit filename="attacks.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="controlls.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="draw.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="headers.h" />
-		<Unit filename="main.c">
+		<Unit filename="src/attacks.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="maps.c">
+		<Unit filename="src/controlls.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="menuPause.c">
+		<Unit filename="src/draw.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="move.c">
+		<Unit filename="src/headers.h" />
+		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sfx.c">
+		<Unit filename="src/maps.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="teste.c">
+		<Unit filename="src/menuPause.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/sfx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/teste.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
