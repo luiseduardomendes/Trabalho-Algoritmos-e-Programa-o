@@ -35,6 +35,17 @@ int main()
     /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
+    //display
+
+    ALLEGRO_DISPLAY *display = NULL;
+    display = al_create_display(width, height);
+    if (!display){
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execu��o!", "O display n�o pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+    }
+    /*_____________________________________________________________*/
+
+    /*_____________________________________________________________*/
     //fontes && bitmaps && formas primitivas
 
     al_init_primitives_addon();
@@ -71,18 +82,6 @@ int main()
     throwShurInst = al_create_sample_instance(throwShur);
     al_attach_sample_instance_to_mixer(throwShurInst, al_get_default_mixer());*/
     /*_____________________________________________________________*/
-
-    /*_____________________________________________________________*/
-    //display
-
-    ALLEGRO_DISPLAY *display = NULL;
-    display = al_create_display(width, height);
-    if (!display){
-        al_show_native_message_box(NULL, "AVISO!", "Erro de execu��o!", "O display n�o pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return -1;
-    }
-    /*_____________________________________________________________*/
-
 
     /*_____________________________________________________________*/
     // Keyboard & Joystick
@@ -132,14 +131,13 @@ int main()
         menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     playerPos.numKeys = 0;
     /*_____________________________________________________________*/
-    
+
     showLoadingScreen(font48, loading_screen);
     loadMap(mapMatrix, mapUsed);
     background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
 
     /*_____________________________________________________________*/
     // Inicialização das posições dos itens
-    {
 
     for(i= 0; i < 3; i ++){
         items[i].x = 5+i;
@@ -149,7 +147,7 @@ int main()
         items[i].x = 8+i;
         items[i].y = 8+i;
     }
-    /*_____________________________________________________________*/}
+    /*_____________________________________________________________*/
 
     while(!endOfGame)
     {
