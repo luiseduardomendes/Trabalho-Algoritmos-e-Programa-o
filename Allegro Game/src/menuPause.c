@@ -120,39 +120,12 @@ int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, 
     save.numShur = numShur;
     save.numKeys = numKeys;
     for(k = 0; k < save.numMobs; k ++) {
-        save.npc[k].direction = npcPos[k].direction;
-        save.npc[k].shuriken.movex = npcPos[k].shuriken.movex;
-        save.npc[k].shuriken.movey = npcPos[k].shuriken.movey;
-        save.npc[k].shuriken.throwing = npcPos[k].shuriken.throwing;
-        save.npc[k].shuriken.x = npcPos[k].shuriken.x;
-        save.npc[k].shuriken.y = npcPos[k].shuriken.y;
-        save.npc[k].x = npcPos[k].x;
-        save.npc[k].y = npcPos[k].y;
+        save.npc[k] = npcPos[k];
     }
     for (k = 0; k < save.numKeys + save.numShur; k ++) {
-        save.object[k].nameItems = items[k].nameItems;
-        save.object[k].onMap = items[k].onMap;
-        save.object[k].x = items[k].x;
-        save.object[k].y = items[k].y;
+        save.object[k] = items[k];
     }
-    save.player.direction = playerPos.direction;
-    save.player.shuriken.movex = playerPos.shuriken.movex;
-    save.player.shuriken.movey = playerPos.shuriken.movey;
-    save.player.shuriken.throwing = playerPos.shuriken.throwing;
-    save.player.shuriken.x = playerPos.shuriken.x;
-    save.player.shuriken.y = playerPos.shuriken.y;
-    save.player.x = playerPos.x;
-    save.player.y = playerPos.y;
-    save.player.fullHp = playerPos.fullHp;
-    save.player.hp = playerPos.hp;
-    save.player.numShur = playerPos.numShur;
-    save.player.numKeys = playerPos.numKeys;
-    save.player.xp = playerPos.xp;
-    save.player.level = playerPos.level;
-    save.player.shurikenItem = playerPos.shurikenItem;
-    save.player.armor = playerPos.armor;
-    save.numKeys = numKeys;
-    save.numShur = numShur;
+    save.player = playerPos;
 
     saveFile = fopen("save.sav", "wb");
     if (saveFile == NULL)
@@ -177,37 +150,12 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
         *numShur = save.numShur;
         *numKeys = save.numKeys;
         for(k = 0; k < NUM_MOBS; k ++) {
-            npcPos[k].direction = save.npc[k].direction;
-            npcPos[k].shuriken.movex = save.npc[k].shuriken.movex;
-            npcPos[k].shuriken.movey = save.npc[k].shuriken.movey;
-            npcPos[k].shuriken.throwing = save.npc[k].shuriken.throwing;
-            npcPos[k].shuriken.x = save.npc[k].shuriken.x;
-            npcPos[k].shuriken.y = save.npc[k].shuriken.y;
-            npcPos[k].x = save.npc[k].x;
-            npcPos[k].y = save.npc[k].y;
+            npcPos[k] = save.npc[k];
         }
         for (k = 0; k < save.numKeys + save.numShur; k ++) {
-            items[k].nameItems = save.object[k].nameItems;
-            items[k].onMap = save.object[k].onMap;
-            items[k].x = save.object[k].x;
-            items[k].y = save.object[k].y;
+            items[k] = save.object[k];
         }
-        playerPos->direction = save.player.direction;
-        playerPos->shuriken.movex = save.player.shuriken.movex;
-        playerPos->shuriken.movey = save.player.shuriken.movey;
-        playerPos->shuriken.throwing = save.player.shuriken.throwing;
-        playerPos->shuriken.x = save.player.shuriken.x;
-        playerPos->shuriken.y = save.player.shuriken.y;
-        playerPos->x = save.player.x;
-        playerPos->y = save.player.y;
-        playerPos->fullHp = save.player.fullHp;
-        playerPos->hp = save.player.hp;
-        playerPos->numShur = save.player.numShur;
-        playerPos->numKeys = save.player.numKeys;
-        playerPos->xp = save.player.xp;
-        playerPos->level = save.player.level;
-        playerPos->shurikenItem = save.player.shurikenItem;
-        playerPos->armor = save.player.armor;
+        *playerPos = save.player;
     }
 }
 
