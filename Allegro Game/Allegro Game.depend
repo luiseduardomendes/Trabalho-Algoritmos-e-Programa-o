@@ -620,10 +620,10 @@
 1636339032 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\controlls.c
 	"headers.h"
 
-1636390352 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\draw.c
+1636397956 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\draw.c
 	"headers.h"
 
-1636390891 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\main.c
+1636398075 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\main.c
 	"headers.h"
 
 1636341090 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\maps.c
@@ -635,5 +635,8 @@
 1636339327 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\sfx.c
 
 1635434674 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\teste.c
+	"headers.h"
+
+1636397690 source:e:\github\trabalho-algoritmos-e-programa-o\allegro game\src\menupause.c
 	"headers.h"
 
