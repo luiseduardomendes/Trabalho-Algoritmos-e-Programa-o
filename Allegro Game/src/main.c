@@ -53,6 +53,7 @@ int main()
     al_init_font_addon();
     al_init_ttf_addon();
 
+
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonts/fonte.ttf", 48, 0);
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/Naruto.png");
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
@@ -189,8 +190,6 @@ int main()
             if(event.timer.source == timer)
             {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
-                //drawMap(mapMatrix, spikes, keys);
-
                 al_draw_bitmap(background, 0, 0, 0);
 
                 for (i = 0; i < playerPos.hp; i++)
@@ -210,12 +209,12 @@ int main()
 
                 drawMobs(npcPos, enemy);
                 drawMobShur(npcPos, numMobs, shurikenDraw);
-                al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
-                //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
+                //al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
-                    al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
+                    //al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
 
-                    //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
+                    al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
                 if (0){ // dialogo
                     al_draw_filled_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(255,230,106));
                     al_draw_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(0,0,0), 5);
