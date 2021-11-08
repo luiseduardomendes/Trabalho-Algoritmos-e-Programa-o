@@ -80,7 +80,6 @@ int main()
     //declara�ao do mapa
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    loadMap(mapMatrix, 0);
     /*_____________________________________________________________*/
 
 
@@ -113,12 +112,8 @@ int main()
     // Loading Screen
 
     ALLEGRO_BITMAP *loading_screen = al_load_bitmap("assets/loading_screen.png");
-    al_clear_to_color(al_map_rgb(0,0,0));
-    al_draw_bitmap(loading_screen, 0,0,0);
-    al_draw_text(font48, al_map_rgb(255, 255, 255), 10, 10, 0, "CARREGANDO...");
-    al_flip_display();
     ALLEGRO_BITMAP *background = NULL;
-    background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
+
     /*_____________________________________________________________*/
 
 
@@ -158,6 +153,15 @@ int main()
         menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     playerPos.numKeys = 0;
     /*_____________________________________________________________*/
+    al_clear_to_color(al_map_rgb(0,0,0));
+    al_draw_bitmap(loading_screen, 0,0,0);
+    al_draw_text(font48, al_map_rgb(255, 255, 255), 10, 10, 0, "CARREGANDO...");
+    al_flip_display();
+
+    loadMap(mapMatrix, mapUsed);
+    background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
+
+
 
 
     /*_____________________________________________________________*/
@@ -241,7 +245,7 @@ int main()
                     al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
 
                     //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
-                if (event.type){ // dialogo
+                if (0){ // dialogo
                     al_draw_filled_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(255,230,106));
                     al_draw_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(0,0,0), 5);
                     al_draw_text(font48, al_map_rgb(0,0,0), width*1.75/3, height*2.2/4, ALLEGRO_ALIGN_CENTER, "VoceS nao vao se sair bem dessa");
