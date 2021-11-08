@@ -34,7 +34,8 @@ void showDisplay (int mapUsed, t_player playerPos, t_npc infMob[], typeShur shur
         printf("\n");
     }
 }
-
+    /*_____________________________________________________________*/
+    //Realiza as leitura dos mapas e constroi uma matriz com eles
 int readMap(char mapMatrix[][SIZEMAP_X], int mapUsed, int *numMobs, int *numShur, int *numKeys){
     FILE* localMap;
     int flag = 1;

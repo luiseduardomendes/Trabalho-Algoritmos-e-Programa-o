@@ -237,6 +237,8 @@ int main()
 
 
 
+    /*_____________________________________________________________*/
+    //determina se o menu deve ser iniciado com o controle ou teclado
 
     if(joystickFound){
         menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
@@ -244,74 +246,33 @@ int main()
     else
         menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     playerPos.numKeys = 0;
+    /*_____________________________________________________________*/
 
 
+    /*_____________________________________________________________*/
+    //faz a leitura do mapa e constroi uma matriz com ele
 
     readMap(mapMatrix, mapUsed, &numMobs, &numShur, &numKeys);
 
+    /*_____________________________________________________________*/
+    //criação do bitmap
 
     ALLEGRO_BITMAP *background = NULL;
     background = createBgBitmap(background, mapMatrix, wall, spikes, grass, display); //erro nessa funcao
 
-    /*al_set_target_bitmap(background);
-    for(i = 0; i < SIZEMAP_Y; i ++){
-        for(j = 0; j < SIZEMAP_X; j ++){
-            printf("%c",mapMatrix[i][j]);
-        }
-        printf("\n");
-    }
-
-    for(i = 0; i < SIZEMAP_Y; i++){
-        for(j = 0; j < SIZEMAP_X; j++){
-
-            if(mapMatrix[i][j] == WALL){
-                al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
-                }
-            else if(mapMatrix[i][j] == 'X'){
-                al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
-                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
-            }
-            /*else if(mapMatrix[i][j] == 'C'){
-                al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
-                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
-
-            }*//*
-            else{
-                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
-            }
-        }
-    }
-    al_set_target_bitmap(al_get_backbuffer(display));
-    background = al_create_bitmap(MAPSCALE * SIZEMAP_X, MAPSCALE * SIZEMAP_Y);
-
-
-    /*_____________________________________________________________
-    // Inicialização das posições dos itens
-
-    for(i= 0; i < 3; i ++){
-        items[i].x = 5+i;
-        items[i].y = 5+i;
-    }
-    for(i= 3; i < 5; i ++){
-        items[i].x = 8+i;
-        items[i].y = 8+i;
-    }
     /*_____________________________________________________________*/
-    //printf("Hello");
 
     while(!endOfGame)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(events_queue, &event);
-        //al_get_keyboard_state(&keyState);
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
-            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys);
-        }
+            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys); //Ações no teclado
         if(joystickFound) {
+            //Ações no controle
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
-                //printf("Botao pressionado: %d\n", event.joystick.button);
                 buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
@@ -324,7 +285,7 @@ int main()
         {
             if(event.timer.source == mobTimer)
             {
-                npcMovement(npcPos, numMobs, playerPos, mapMatrix);
+                npcMovement(npcPos, numMobs, playerPos, mapMatrix); //Movimentação do mob
             }
             if(event.timer.source == shurTimer)
             {
@@ -333,14 +294,15 @@ int main()
                     if (npcPos[i].shuriken.throwing)
                         updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
                     else
-                        shurikenDir(&npcPos[i], playerPos);
+                        shurikenDir(&npcPos[i], playerPos); //Caso a shuriken não estiver sendo lançada, checará a posição do player para lança-la
                 }
             }
             if(event.timer.source == timer)
             {
+                /*_____________________________________________________________*/
+                //Desenha os objetos do mapa
 
                 al_clear_to_color(al_map_rgb(0, 0, 0));
-                //drawMap(mapMatrix, spikes, keys);
                 al_draw_bitmap(background, 0, 0, 0);
                 for (i = 0; i < playerPos.hp; i++)
                     al_draw_bitmap(heart, (i+1)*MAPSCALE, 0, 0);
@@ -360,21 +322,20 @@ int main()
                 drawMobs(npcPos, enemy);
                 drawMobShur(npcPos, numMobs, shurikenDraw);
                 al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
-                //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
                     al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
-                    //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
                 al_flip_display();
             }
         }
 
         if (openMenu) {
+            //Detecta se o player abriu o menu
             if (joystickFound)
                 showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
             else
                 showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
         }
-        if (playerPos.hp == 0){
+        if (playerPos.hp == 0){ //Se o player morrer, acaba o jogo
             endOfGame = 1;
             do{
                 al_clear_to_color(al_map_rgb(0,0,0));
@@ -395,6 +356,9 @@ int main()
 
     return 0;
 }
+
+    /*_____________________________________________________________*/
+    //Funções de detecção e realização do INPUT para o controle
 
 void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     if(event.joystick.axis == 0){
@@ -441,9 +405,7 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
             checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys);
             break;
         case CONTROL_BUTTON_X:
-            //printf("botao X\n");
             if (!playerPos->shuriken.throwing && playerPos->numShur > 0) {
-                //al_play_sample_instance(throwShurInst);
                 playerPos->numShur --;
                 playerPos->shuriken.throwing = true;
                 playerPos->shuriken.x = playerPos->x;
@@ -480,13 +442,17 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
             *openMenu = true;
             break;
         case CONTROL_BUTTON_L:
-            //printf("botao L3\n");
             break;
         case CONTROL_BUTTON_R:
-            //printf("botao R3\n");
             break;
     }
 }
+
+    /*_____________________________________________________________*/
+
+
+    /*_____________________________________________________________*/
+    //Funções de detecção e realização do INPUT para o teclado
 
 void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
                          int numShur, int numKeys) {

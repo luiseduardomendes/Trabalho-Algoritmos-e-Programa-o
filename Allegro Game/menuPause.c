@@ -1,4 +1,7 @@
 #include "headers.h"
+
+    /*_____________________________________________________________*/
+    //Mostra o menu
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
             int *numShur, int *numKeys, typeItem items[]) {
@@ -15,6 +18,8 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
         if (joy != NULL)
             al_get_joystick_state(joy, &joyState);
 
+            /*_____________________________________________________________*/
+            //Desenha o menu
 
         al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
         al_draw_rectangle(width*2/5, height*(selectioned*2+4.25)/16, width*3/5, height*(selectioned*2+6)/16, al_map_rgb(0,128,128), 5);
@@ -23,7 +28,11 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
 
+            /*_____________________________________________________________*/
 
+
+            /*_____________________________________________________________*/
+            //Realiza a ação no Menu baseada no INPUT do jogador
         al_flip_display();
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){
@@ -64,6 +73,8 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
 
             }
         }
+        /*_____________________________________________________________*/
+        //Realiza a ação no menu baseado no INPUT do jogador no controle
         if (joy != NULL) {
             if(ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN){
                 switch(ev.joystick.button){
@@ -112,6 +123,8 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
     } while (*openMenu);
 }
 
+    /*_____________________________________________________________*/
+    //Salva as informações do jogo caso o player decida salvar o jogo
 int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, typeItem items[]) {
     int k, flag = 1;
     typeSave save;
@@ -165,6 +178,8 @@ int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, 
     return flag;
 }
 
+    /*_____________________________________________________________*/
+    //Carrega o save
 void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, typeItem items[]) {
     typeSave save;
     int k;
@@ -210,7 +225,9 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
         playerPos->armor = save.player.armor;
     }
 }
-
+    /*_____________________________________________________________*/
+    //Printa o menu iniciar na tela no começo do jogo
+    //Funciona de modo parecido ao menu
 void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
             int *numShur, int *numKeys, typeItem items[]){
@@ -333,7 +350,8 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
         }
     } while (!beginGame);
 }
-
+    /*_____________________________________________________________*/
+    //Carrega o save padrão caso o jogador escolha iniciar um novo jogo
 void standardSave(int mapUsed) {
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     typeSave save;
