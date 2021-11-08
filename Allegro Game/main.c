@@ -24,12 +24,6 @@ int main()
     bool endOfGame = false, openMenu = false;
     /*_____________________________________________________________*/
 
-
-
-
-
-
-
     /*_____________________________________________________________*/
     //inicializacao allegro
 
@@ -38,9 +32,6 @@ int main()
         return -1;
     }
     /*_____________________________________________________________*/
-
-
-
 
     /*_____________________________________________________________*/
     //fontes && bitmaps && formas primitivas
@@ -60,11 +51,10 @@ int main()
     ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
     ALLEGRO_BITMAP *heart = al_load_bitmap("assets/heart.png");
     ALLEGRO_BITMAP *voidheart = al_load_bitmap("assets/voidheart.png");
+    ALLEGRO_BITMAP *narutoDialog = al_load_bitmap("assets/narutodialog.png");
+    al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
     /*_____________________________________________________________*/
-
-
-
 
     /*_____________________________________________________________*/
     //teclado
@@ -90,66 +80,8 @@ int main()
     //declara�ao do mapa
 
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    map = fopen("arquivos/map64x36.txt", "r");
-    rewind(map);
-    fseek(map, mapUsed * SIZEMAP_X * SIZEMAP_Y * sizeof(char), SEEK_SET);
-    fread(mapMatrix, sizeof(char), SIZEMAP_X * SIZEMAP_Y, map);
-    //const int MAPSCALE = 24;
+    loadMap(mapMatrix, 0);
     /*_____________________________________________________________*/
-
-
-
-
-
-    /*_____________________________________________________________
-    //inicializacao das posicoes
-
-    playerPos.x = 2;
-    playerPos.y = 2;
-    for (i = 0; i < NUM_MOBS; i++){
-        do{
-            npcPos[i].x = (1 + (rand() % SIZEMAP_X));
-            npcPos[i].y = (1 + (rand() % SIZEMAP_Y));
-        } while (mapMatrix[npcPos[i].y][npcPos[i].x] == WALL);
-    }
-    npcPos[0].x = 5;
-    npcPos[0].y = 10;
-    npcPos[1].x = 10;
-    npcPos[1].y = 20;
-    npcPos[2].x = 15;
-    npcPos[2].y = 10;
-    npcPos[3].x = 25;
-    npcPos[3].y = 15;
-    for (i = 0; i < NUM_MOBS; i ++){
-        npcPos[i].shuriken.throwing = 0;
-        npcPos[i].shuriken.movex = 0;
-        npcPos[i].shuriken.movey = 0;
-        npcPos[i].shuriken.x = 0;
-        npcPos[i].shuriken.y = 0;
-    }
-    playerPos.shuriken.throwing = 0;
-    playerPos.fullHp = 5;
-    playerPos.hp = 5;
-    numMobs = 5;
-    mapUsed = 0;
-    for(i = 0; i < numMobs; i ++) {
-        npcPos[i].hp = 1;
-    }
-    playerPos.numShur = 5;
-
-
-    _____________________________________________________________*/
-
-
-
-    //saveFunction(npcPos, numMobs, playerPos, mapUsed);
-
-    //loadSave(npcPos, &numMobs, &playerPos, &mapUsed);
-
-
-
-
-
 
 
 
@@ -165,10 +97,6 @@ int main()
     /*_____________________________________________________________*/
 
 
-
-
-
-
     /*_____________________________________________________________*/
     // Keyboard & Joystick
 
@@ -181,8 +109,6 @@ int main()
     /*_____________________________________________________________*/
 
 
-
-
     /*_____________________________________________________________*/
     // Loading Screen
 
@@ -191,45 +117,9 @@ int main()
     al_draw_bitmap(loading_screen, 0,0,0);
     al_draw_text(font48, al_map_rgb(255, 255, 255), 10, 10, 0, "CARREGANDO...");
     al_flip_display();
-    /*_____________________________________________________________*/
-
-
-
-
-
-
     ALLEGRO_BITMAP *background = NULL;
-    background = al_create_bitmap(MAPSCALE * SIZEMAP_X, MAPSCALE * SIZEMAP_Y);
-
-    al_set_target_bitmap(background);
-
-    for(i = 0; i < SIZEMAP_Y; i++){
-        for(j = 0; j < SIZEMAP_X; j++){
-
-            if(mapMatrix[i][j] == WALL){
-                al_draw_bitmap(wall, j*MAPSCALE, i*MAPSCALE, 0);
-                }
-            else if(mapMatrix[i][j] == 'X'){
-                al_draw_bitmap(spikes, j*MAPSCALE, i*MAPSCALE, 0);
-                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
-            }
-            else if(mapMatrix[i][j] == 'C'){
-                al_draw_bitmap(keys, j*MAPSCALE, i*MAPSCALE, 0);
-                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
-
-            }
-            else{
-                al_draw_bitmap(grass, j*MAPSCALE, i*MAPSCALE, 0);
-            }
-        }
-    }
-    al_set_target_bitmap(al_get_backbuffer(display));
-
-
-
-
-
-
+    background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
+    /*_____________________________________________________________*/
 
 
     /*_____________________________________________________________*/
@@ -245,8 +135,6 @@ int main()
     /*_____________________________________________________________*/
 
 
-
-
     /*_____________________________________________________________*/
     //fila de eventos
 
@@ -260,7 +148,8 @@ int main()
     al_register_event_source(events_queue, al_get_joystick_event_source());
     /*_____________________________________________________________*/
 
-
+    /*_____________________________________________________________*/
+    //menu iniciar
 
     if(joystickFound){
         menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
@@ -268,11 +157,12 @@ int main()
     else
         menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     playerPos.numKeys = 0;
-
+    /*_____________________________________________________________*/
 
 
     /*_____________________________________________________________*/
     // Inicialização das posições dos itens
+    {
 
     for(i= 0; i < 3; i ++){
         items[i].x = 5+i;
@@ -282,7 +172,7 @@ int main()
         items[i].x = 8+i;
         items[i].y = 8+i;
     }
-    /*_____________________________________________________________*/
+    /*_____________________________________________________________*/}
 
     while(!endOfGame)
     {
@@ -325,7 +215,9 @@ int main()
             {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 //drawMap(mapMatrix, spikes, keys);
+
                 al_draw_bitmap(background, 0, 0, 0);
+
                 for (i = 0; i < playerPos.hp; i++)
                     al_draw_bitmap(heart, (i+1)*MAPSCALE, 0, 0);
                 for (i = playerPos.hp; i < playerPos.fullHp; i ++)
@@ -347,7 +239,16 @@ int main()
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
                     al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
+
                     //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
+                if (event.type){ // dialogo
+                    al_draw_filled_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(255,230,106));
+                    al_draw_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(0,0,0), 5);
+                    al_draw_text(font48, al_map_rgb(0,0,0), width*1.75/3, height*2.2/4, ALLEGRO_ALIGN_CENTER, "VoceS nao vao se sair bem dessa");
+                    al_draw_text(font48, al_map_rgb(0,0,0), width*1.75/3, height*2.7/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");
+                    al_draw_text(font48, al_map_rgb(0,0,0), width*1.75/3, height*3.2/4, ALLEGRO_ALIGN_CENTER, "da vila da folha");
+                    al_draw_bitmap(narutoDialog, -50, height-433,0);
+                }
                 al_flip_display();
             }
         }
@@ -376,165 +277,17 @@ int main()
     al_destroy_timer(shurTimer);
     al_destroy_display(display);
     al_destroy_bitmap(naruto);
+    al_destroy_bitmap(shurikenDraw);
+    al_destroy_bitmap(spikes);
+    al_destroy_bitmap(keys);
+    al_destroy_bitmap(enemy);
+    al_destroy_bitmap(wall);
+    al_destroy_bitmap(grass);
+    al_destroy_bitmap(heart);
+    al_destroy_bitmap(voidheart);
+    al_destroy_bitmap(narutoDialog);
+    al_destroy_display(display);
 
     return 0;
 }
 
-void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
-    if(event.joystick.axis == 0){
-
-        if (event.joystick.pos > 0.25){
-
-            if (verifyPosition(playerPos->x, playerPos->y, TORIGHT, mapMatrix)) {
-                playerPos->x ++;
-                playerPos->direction = RIGHT;
-            }
-        }
-
-        else if (event.joystick.pos < -0.25) {
-                if (verifyPosition(playerPos->x, playerPos->y, TOLEFT, mapMatrix)) {
-                    playerPos->x --;
-                    playerPos->direction = LEFT;
-                }
-
-        }
-    }
-    else if(event.joystick.axis == 1){
-        switch((int)round(event.joystick.pos)){
-            case 1:
-                if (verifyPosition(playerPos->x, playerPos->y, TODOWN, mapMatrix)) {
-                    playerPos->y ++;
-                    playerPos->direction = DOWN;
-                }
-            break;
-            case -1:
-                if (verifyPosition(playerPos->x, playerPos->y, TOUP, mapMatrix)) {
-                    playerPos->y --;
-                    playerPos->direction = UP;
-                }
-            break;
-        }
-    }
-}
-
-void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur, int numKeys){
-    switch (event.joystick.button){
-        case CONTROL_BUTTON_A:
-            break;
-        case CONTROL_BUTTON_B:
-            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys);
-            break;
-        case CONTROL_BUTTON_X:
-            //printf("botao X\n");
-            if (!playerPos->shuriken.throwing && playerPos->numShur > 0) {
-                //al_play_sample_instance(throwShurInst);
-                playerPos->numShur --;
-                playerPos->shuriken.throwing = true;
-                playerPos->shuriken.x = playerPos->x;
-                playerPos->shuriken.y = playerPos->y;
-                switch (playerPos->direction) {
-                    case UP:
-                        playerPos->shuriken.movex = 0;
-                        playerPos->shuriken.movey = -1;
-                        break;
-                    case DOWN:
-                        playerPos->shuriken.movex = 0;
-                        playerPos->shuriken.movey = 1;
-                        break;
-                    case LEFT:
-                        playerPos->shuriken.movex = -1;
-                        playerPos->shuriken.movey = 0;
-                        break;
-                    case RIGHT:
-                        playerPos->shuriken.movex = 1;
-                        playerPos->shuriken.movey = 0;
-                        break;
-                }
-            }
-            break;
-        case CONTROL_BUTTON_Y:
-            break;
-        case CONTROL_BUTTON_LB:
-            break;
-        case CONTROL_BUTTON_RB:
-            break;
-        case CONTROL_BUTTON_OPTIONS:
-            break;
-        case CONTROL_BUTTON_START:
-            *openMenu = true;
-            break;
-        case CONTROL_BUTTON_L:
-            //printf("botao L3\n");
-            break;
-        case CONTROL_BUTTON_R:
-            //printf("botao R3\n");
-            break;
-    }
-}
-
-void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
-                         int numShur, int numKeys) {
-    switch (event.keyboard.keycode){
-        case ALLEGRO_KEY_UP:
-        case ALLEGRO_KEY_W:
-            if (verifyPosition(playerPos->x, playerPos->y, TOUP, mapMatrix)){
-                playerPos->y --;
-                playerPos->direction = UP;
-            }
-            break;
-        case ALLEGRO_KEY_DOWN:
-        case ALLEGRO_KEY_S:
-            if (verifyPosition(playerPos->x, playerPos->y, TODOWN, mapMatrix)) {
-                playerPos->y ++;
-                playerPos->direction = DOWN;
-            }
-            break;
-        case ALLEGRO_KEY_LEFT:
-        case ALLEGRO_KEY_A:
-            if (verifyPosition(playerPos->x, playerPos->y, TOLEFT, mapMatrix)) {
-                playerPos->x --;
-                playerPos->direction = LEFT;
-            }
-            break;
-        case ALLEGRO_KEY_RIGHT:
-        case ALLEGRO_KEY_D:
-            if (verifyPosition(playerPos->x, playerPos->y, TORIGHT, mapMatrix)){
-                playerPos->x ++;
-                playerPos->direction = RIGHT;
-            }
-            break;
-        case ALLEGRO_KEY_ESCAPE:
-            *openMenu = true;
-
-            break;
-        case ALLEGRO_KEY_K:
-            if (!playerPos->shuriken.throwing && playerPos->numShur > 0){
-                playerPos->numShur --;
-                playerPos->shuriken.throwing = true;
-                playerPos->shuriken.x = playerPos->x;
-                playerPos->shuriken.y = playerPos->y;
-                switch (playerPos->direction) {
-                    case UP:
-                        playerPos->shuriken.movex = 0;
-                        playerPos->shuriken.movey = -1;
-                        break;
-                    case DOWN:
-                        playerPos->shuriken.movex = 0;
-                        playerPos->shuriken.movey = 1;
-                        break;
-                    case LEFT:
-                        playerPos->shuriken.movex = -1;
-                        playerPos->shuriken.movey = 0;
-                        break;
-                    case RIGHT:
-                        playerPos->shuriken.movex = 1;
-                        playerPos->shuriken.movey = 0;
-                        break;
-                }
-            }
-            break;
-        case ALLEGRO_KEY_E:
-            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys);
-            break;
-    }
-}

@@ -36,7 +36,11 @@
 			<Add option="-Wall" />
 			<Add directory="C:/allegro-5.0.10-mingw-4.7.0/include" />
 		</Compiler>
+		<Unit filename="arquivos/map64x36.txt" />
 		<Unit filename="attacks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="controlls.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="draw.c">
@@ -53,6 +57,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sfx.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="teste.c">
