@@ -18,6 +18,7 @@ int main()
     typeSave save;
     typeItem items[MIN_ITEMS];
     int numShur, numKeys;
+    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
 
     const int width = SIZEMAP_X*MAPSCALE; //largura
     const int height = SIZEMAP_Y*MAPSCALE; //algura
@@ -52,14 +53,9 @@ int main()
     ALLEGRO_BITMAP *heart = al_load_bitmap("assets/heart.png");
     ALLEGRO_BITMAP *voidheart = al_load_bitmap("assets/voidheart.png");
     ALLEGRO_BITMAP *narutoDialog = al_load_bitmap("assets/narutodialog.png");
+    ALLEGRO_BITMAP *loading_screen = al_load_bitmap("assets/loading_screen.png");
+    ALLEGRO_BITMAP *background = NULL;
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
-
-    /*_____________________________________________________________*/
-
-    /*_____________________________________________________________*/
-    //teclado
-
-    al_install_keyboard();
 
     /*_____________________________________________________________*/
 
@@ -77,14 +73,6 @@ int main()
     /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
-    //declara�ao do mapa
-
-    char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    /*_____________________________________________________________*/
-
-
-
-    /*_____________________________________________________________*/
     //display
 
     ALLEGRO_DISPLAY *display = NULL;
@@ -99,6 +87,7 @@ int main()
     /*_____________________________________________________________*/
     // Keyboard & Joystick
 
+    al_install_keyboard();
     ALLEGRO_KEYBOARD_STATE *keyState;
     al_install_joystick();
     ALLEGRO_JOYSTICK *joy = al_get_joystick(0);
@@ -106,16 +95,6 @@ int main()
     if (joy == NULL)
         joystickFound = 0;
     /*_____________________________________________________________*/
-
-
-    /*_____________________________________________________________*/
-    // Loading Screen
-
-    ALLEGRO_BITMAP *loading_screen = al_load_bitmap("assets/loading_screen.png");
-    ALLEGRO_BITMAP *background = NULL;
-
-    /*_____________________________________________________________*/
-
 
     /*_____________________________________________________________*/
     // controle de tempo
@@ -153,16 +132,10 @@ int main()
         menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
     playerPos.numKeys = 0;
     /*_____________________________________________________________*/
-    al_clear_to_color(al_map_rgb(0,0,0));
-    al_draw_bitmap(loading_screen, 0,0,0);
-    al_draw_text(font48, al_map_rgb(255, 255, 255), 10, 10, 0, "CARREGANDO...");
-    al_flip_display();
-
+    
+    showLoadingScreen(font48, loading_screen);
     loadMap(mapMatrix, mapUsed);
     background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
-
-
-
 
     /*_____________________________________________________________*/
     // Inicialização das posições dos itens
