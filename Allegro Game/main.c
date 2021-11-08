@@ -42,7 +42,7 @@ int main()
     al_init_font_addon();
     al_init_ttf_addon();
 
-    ALLEGRO_FONT* font48 = al_load_ttf_font("fonte.ttf", 48, 0);
+    ALLEGRO_FONT* font48 = al_load_ttf_font("fonts/fonte.ttf", 48, 0);
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/Naruto.png");
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/spikes.png");
