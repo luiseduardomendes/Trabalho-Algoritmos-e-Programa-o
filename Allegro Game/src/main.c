@@ -70,6 +70,9 @@ int main()
     ALLEGRO_BITMAP *narutoback = al_load_bitmap("assets/narutoback.png");
     ALLEGRO_BITMAP *narutoleft = al_load_bitmap("assets/narutoleft.png");
     ALLEGRO_BITMAP *narutoright = al_load_bitmap("assets/narutoright.png");
+    ALLEGRO_BITMAP *enemyback = al_load_bitmap("assets/akatsuckback.png");
+    ALLEGRO_BITMAP *enemyleft = al_load_bitmap("assets/akatsuckleft.png");
+    ALLEGRO_BITMAP *enemyright = al_load_bitmap("assets/akatsuckright.png");
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
     /*_____________________________________________________________*/
@@ -210,7 +213,7 @@ int main()
                         else if (items[i].nameItems == 0)
                             al_draw_bitmap(shurikenDraw, items[i].x*MAPSCALE, items[i].y*MAPSCALE, 0);
 
-                drawMobs(npcPos, enemy);
+                drawMobs(npcPos, enemy, enemyback, enemyleft, enemyright);
                 drawMobShur(npcPos, numMobs, shurikenDraw);
                 switch(playerPos.direction){
                     case UP:
