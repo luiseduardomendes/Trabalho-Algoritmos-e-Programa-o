@@ -57,11 +57,11 @@ int main()
 
 
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonts/fonte.ttf", 48, 0);
-    ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/Naruto.png");
+    ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken.png");
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/spikes.png");
     ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
-    ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/akatsuck.png");
+    ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/akatsuki.png");
     ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
     ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
     ALLEGRO_BITMAP *heart = al_load_bitmap("assets/heart.png");
@@ -72,9 +72,9 @@ int main()
     ALLEGRO_BITMAP *narutoback = al_load_bitmap("assets/narutoback.png");
     ALLEGRO_BITMAP *narutoleft = al_load_bitmap("assets/narutoleft.png");
     ALLEGRO_BITMAP *narutoright = al_load_bitmap("assets/narutoright.png");
-    ALLEGRO_BITMAP *enemyback = al_load_bitmap("assets/akatsuckback.png");
-    ALLEGRO_BITMAP *enemyleft = al_load_bitmap("assets/akatsuckleft.png");
-    ALLEGRO_BITMAP *enemyright = al_load_bitmap("assets/akatsuckright.png");
+    ALLEGRO_BITMAP *enemyback = al_load_bitmap("assets/akatsukiback.png");
+    ALLEGRO_BITMAP *enemyleft = al_load_bitmap("assets/akatsukileft.png");
+    ALLEGRO_BITMAP *enemyright = al_load_bitmap("assets/akatsukiright.png");
     ALLEGRO_BITMAP *chest = al_load_bitmap("assets/bau.png");
     ALLEGRO_BITMAP *openchest = al_load_bitmap("assets/bauaberto.png");
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
