@@ -57,6 +57,7 @@ int main()
 
 
     ALLEGRO_FONT* font48 = al_load_ttf_font("fonts/fonte.ttf", 48, 0);
+    ALLEGRO_FONT* font36 = al_load_ttf_font("fonts/fonte.ttf", 36, 0);
     ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
     ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken2.png");
     ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/spikes.png");
@@ -71,6 +72,7 @@ int main()
     ALLEGRO_BITMAP *narutoDialog = al_load_bitmap("assets/narutodialog.png");
     ALLEGRO_BITMAP *loading_screen = al_load_bitmap("assets/loading_screen.png");
     ALLEGRO_BITMAP *background = NULL;
+    ALLEGRO_BITMAP *dialogBmp = al_load_bitmap("assets/dialogChat.png");
     ALLEGRO_BITMAP *narutoback = al_load_bitmap("assets/narutoback.png");
     ALLEGRO_BITMAP *narutoleft = al_load_bitmap("assets/narutoleft.png");
     ALLEGRO_BITMAP *narutoright = al_load_bitmap("assets/narutoright.png");
@@ -241,13 +243,14 @@ int main()
                                    *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
 
                     //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
-                if (0){ // dialogo
-                    al_draw_filled_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(255,230,106));
-                    al_draw_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(0,0,0), 5);
-                    al_draw_text(font48, al_map_rgb(0,0,0), width*1.75/3, height*2.2/4, ALLEGRO_ALIGN_CENTER, "VoceS nao vao se sair bem dessa");
-                    al_draw_text(font48, al_map_rgb(0,0,0), width*1.75/3, height*2.7/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");
-                    al_draw_text(font48, al_map_rgb(0,0,0), width*1.75/3, height*3.2/4, ALLEGRO_ALIGN_CENTER, "da vila da folha");
-                    al_draw_bitmap(narutoDialog, -50, height-433,0);
+                if (1){ // dialogo
+                    //al_draw_filled_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(255,230,106));
+                    //al_draw_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(0,0,0), 5);
+                    al_draw_bitmap(dialogBmp, width/5, height*1/2, 0);
+                    al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
+                    al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");
+                    al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "da vila da folha");
+                    al_draw_bitmap(narutoDialog, -70, height-433,0);
                 }
                 al_flip_display();
             }
