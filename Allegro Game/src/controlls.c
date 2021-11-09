@@ -8,6 +8,8 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
             if (verifyPosition(playerPos->x, playerPos->y, TORIGHT, mapMatrix)) {
                 playerPos->x ++;
                 playerPos->direction = RIGHT;
+                if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                    playerPos->hp --;
             }
         }
 
@@ -15,6 +17,8 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
                 if (verifyPosition(playerPos->x, playerPos->y, TOLEFT, mapMatrix)) {
                     playerPos->x --;
                     playerPos->direction = LEFT;
+                    if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                        playerPos->hp --;
                 }
 
         }
@@ -25,12 +29,16 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
                 if (verifyPosition(playerPos->x, playerPos->y, TODOWN, mapMatrix)) {
                     playerPos->y ++;
                     playerPos->direction = DOWN;
+                    if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                        playerPos->hp --;
                 }
             break;
             case -1:
                 if (verifyPosition(playerPos->x, playerPos->y, TOUP, mapMatrix)) {
                     playerPos->y --;
                     playerPos->direction = UP;
+                    if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                        playerPos->hp --;
                 }
             break;
         }
@@ -100,6 +108,8 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             if (verifyPosition(playerPos->x, playerPos->y, TOUP, mapMatrix)){
                 playerPos->y --;
                 playerPos->direction = UP;
+                if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                    playerPos->hp --;
             }
             break;
         case ALLEGRO_KEY_DOWN:
@@ -107,6 +117,8 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             if (verifyPosition(playerPos->x, playerPos->y, TODOWN, mapMatrix)) {
                 playerPos->y ++;
                 playerPos->direction = DOWN;
+                if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                    playerPos->hp --;
             }
             break;
         case ALLEGRO_KEY_LEFT:
@@ -114,6 +126,8 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             if (verifyPosition(playerPos->x, playerPos->y, TOLEFT, mapMatrix)) {
                 playerPos->x --;
                 playerPos->direction = LEFT;
+                if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                    playerPos->hp --;
             }
             break;
         case ALLEGRO_KEY_RIGHT:
@@ -121,6 +135,8 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             if (verifyPosition(playerPos->x, playerPos->y, TORIGHT, mapMatrix)){
                 playerPos->x ++;
                 playerPos->direction = RIGHT;
+                if(mapMatrix[playerPos->y][playerPos->x] == 'X')
+                    playerPos->hp --;
             }
             break;
         case ALLEGRO_KEY_ESCAPE:
