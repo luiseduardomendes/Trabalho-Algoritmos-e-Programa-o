@@ -143,23 +143,7 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
     typeSave save;
     int k;
     loadMap(mapMatrix, *mapUsed);
-    switch (*mapUsed){
-    case 0:
-        save.numKeys = 5;
-        save.numMobs = 5;
-        save.numShur = 5;
-        break;
-    case 1:
-        save.numKeys = 5;
-        save.numMobs = 5;
-        save.numShur = 5;
-        break;
-    case 2:
-        save.numKeys = 5;
-        save.numMobs = 5;
-        save.numShur = 5;
-        break;
-    }
+
     saveFile = fopen("save.sav", "rb");
     if (saveFile != NULL){
         fread(&save, sizeof(save), 1, saveFile);
@@ -323,7 +307,7 @@ void standardSave() {
             save.npc[i].y = (1 + (rand() % SIZEMAP_Y));
         } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL);
     }
-    switch(save.object->nameItems)
+    switch(save.object[i].nameItems)
     {
         case shur:
             for (i = 0; i < save.numShur; i++){
