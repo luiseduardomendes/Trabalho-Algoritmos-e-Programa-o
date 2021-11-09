@@ -108,7 +108,7 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
-void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys)
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[])
 {
     int i = 0;
 
@@ -123,6 +123,26 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 player->numShur ++;
                 break;
             }
+        }
+        else if (chests[i].x == player->x && chests[i].y == player->y && chests[i].closed == 1){
+            switch(chests[i].itemStore){
+            case shur:
+                player->numShur ++;
+                break;
+            case keys:
+                player->numKeys ++;
+                break;
+            case armorBuff:
+                player->fullHp ++;
+                player->hp ++;
+                break;
+            case shurikenBuff:
+                break;
+            case lamen:
+                player->hp ++;
+                break;
+            }
+            chests[i].closed = 0;
         }
     }
 

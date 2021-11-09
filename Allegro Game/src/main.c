@@ -152,12 +152,12 @@ int main()
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
-            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys);
+            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
-                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys);
+                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);

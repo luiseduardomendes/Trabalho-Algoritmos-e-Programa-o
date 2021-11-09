@@ -45,12 +45,12 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
     }
 }
 
-void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur, int numKeys){
+void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur, int numKeys, int numChest, t_chest chests[]){
     switch (event.joystick.button){
         case CONTROL_BUTTON_A:
             break;
         case CONTROL_BUTTON_B:
-            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests);
             break;
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
@@ -101,7 +101,7 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
 }
 
 void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
-                         int numShur, int numKeys) {
+                         int numShur, int numKeys, int numChest, t_chest chests[]) {
     switch (event.keyboard.keycode){
         case ALLEGRO_KEY_UP:
         case ALLEGRO_KEY_W:
@@ -170,7 +170,7 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             }
             break;
         case ALLEGRO_KEY_E:
-            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests);
             break;
     }
 }
