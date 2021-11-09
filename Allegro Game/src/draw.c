@@ -1,10 +1,10 @@
 #include "headers.h"
 
-void drawMobs(t_npc npcPos[], ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft, ALLEGRO_BITMAP *enemyright, t_player playerPos)
+void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft, ALLEGRO_BITMAP *enemyright, t_player playerPos)
 {
     int i;
 
-    for (i = 0; i < NUM_MOBS; i++)
+    for (i = 0; i < numMobs; i++)
     {
         switch(npcPos[i].direction){
             case UP:
@@ -20,7 +20,7 @@ void drawMobs(t_npc npcPos[], ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, 
                 al_draw_bitmap(enemyright, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                 break;
             default:
-                al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X)/(2*MULT)*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
         }
     }
 }
@@ -29,7 +29,7 @@ void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_pl
 {
     int i;
 
-    for(i = 0; i < NUM_MOBS; i++)
+    for(i = 0; i < numMobs; i++)
     {
         if (npcPos[i].shuriken.throwing)
             al_draw_bitmap(shurikenDraw, (npcPos[i].shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT,(npcPos[i].shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))*

@@ -86,14 +86,15 @@ int main()
     /*_____________________________________________________________*/
     //Audio
 
-    /*ALLEGRO_SAMPLE *throwShur = NULL;
-    ALLEGRO_SAMPLE_INSTANCE *throwShurInst = NULL;
-    al_reserve_samples(true);
-    al_install_audio();
+    ALLEGRO_SAMPLE *throwShur = NULL;
+    //ALLEGRO_SAMPLE_INSTANCE *throwShurInst = NULL;
+
     al_init_acodec_addon();
-    throwShur = al_load_sample("throwShur.wav");
-    throwShurInst = al_create_sample_instance(throwShur);
-    al_attach_sample_instance_to_mixer(throwShurInst, al_get_default_mixer());*/
+    al_install_audio();
+    al_reserve_samples(true);
+    throwShur = al_load_sample("sfx/throwShur.wav");
+    //throwShurInst = al_create_sample_instance(throwShur);
+    //al_attach_sample_instance_to_mixer(throwShurInst, al_get_default_mixer());
     /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
@@ -156,12 +157,12 @@ int main()
 
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
-            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests);
+            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur);
         }
         if(joystickFound) {
             if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                 //printf("Botao pressionado: %d\n", ev.joystick.button);
-                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests);
+                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur);
             }
             if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                 moveJoystick(event, &playerPos, &openMenu, mapMatrix);
@@ -174,6 +175,7 @@ int main()
             if(event.timer.source == mobTimer)
             {
                 npcMovement(npcPos, numMobs, playerPos, mapMatrix);
+
             }
             if(event.timer.source == shurTimer)
             {
@@ -181,8 +183,9 @@ int main()
                 for (i = 0; i < numMobs; i ++){//Mob shuriken
                     if (npcPos[i].shuriken.throwing)
                         updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
-                    else
-                        shurikenDir(&npcPos[i], playerPos);
+                    else{
+                        shurikenDir(&npcPos[i], playerPos, throwShur);
+                    }
                 }
             }
             if(event.timer.source == timer)
@@ -214,7 +217,7 @@ int main()
                     }
                 }
 
-                drawMobs(npcPos, enemy, enemyback, enemyleft, enemyright, playerPos);
+                drawMobs(npcPos, numMobs, enemy, enemyback, enemyleft, enemyright, playerPos);
                 drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
                 switch(playerPos.direction){
                     case UP:

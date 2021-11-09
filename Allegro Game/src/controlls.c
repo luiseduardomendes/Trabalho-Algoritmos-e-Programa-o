@@ -45,7 +45,10 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
     }
 }
 
-void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur, int numKeys, int numChest, t_chest chests[]){
+void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur,
+                int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur){
+    al_init_acodec_addon();
+    al_install_audio();
     switch (event.joystick.button){
         case CONTROL_BUTTON_A:
             break;
@@ -56,6 +59,7 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
             //printf("botao X\n");
             if (!playerPos->shuriken.throwing && playerPos->numShur > 0) {
                 //al_play_sample_instance(throwShurInst);
+                al_play_sample(throwShur, 0.5, 0.0, 0.75, ALLEGRO_PLAYMODE_ONCE, 0);
                 playerPos->numShur --;
                 playerPos->shuriken.throwing = true;
                 playerPos->shuriken.x = playerPos->x;
@@ -101,7 +105,9 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
 }
 
 void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
-                         int numShur, int numKeys, int numChest, t_chest chests[]) {
+                         int numShur, int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur) {
+    al_init_acodec_addon();
+    al_install_audio();
     switch (event.keyboard.keycode){
         case ALLEGRO_KEY_UP:
         case ALLEGRO_KEY_W:
@@ -145,6 +151,7 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             break;
         case ALLEGRO_KEY_K:
             if (!playerPos->shuriken.throwing && playerPos->numShur > 0){
+                al_play_sample(throwShur, 0.5, 0.0, 0.75, ALLEGRO_PLAYMODE_ONCE, 0);
                 playerPos->numShur --;
                 playerPos->shuriken.throwing = true;
                 playerPos->shuriken.x = playerPos->x;

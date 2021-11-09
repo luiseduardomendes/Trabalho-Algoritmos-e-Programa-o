@@ -39,8 +39,10 @@ void updateShurikenPlayer(typeShur *shuriken, t_npc npc[], int numMobs, char map
     }
 }
 
-void shurikenDir(t_npc *npc, t_player playerPos)
+void shurikenDir(t_npc *npc, t_player playerPos, ALLEGRO_SAMPLE* throwShur)
 {
+    al_init_acodec_addon();
+    al_install_audio();
     if (!npc->shuriken.throwing){
         npc->shuriken.x = npc->x;
         npc->shuriken.y = npc->y;
@@ -48,6 +50,7 @@ void shurikenDir(t_npc *npc, t_player playerPos)
         {
             if(abs(playerPos.x - npc->x) <= 10)
             {
+                al_play_sample(throwShur, 0.5, 0.0, 0.75, ALLEGRO_PLAYMODE_ONCE, 0);
                 if(playerPos.x > npc->x)
                 {
                     npc->shuriken.movex = 1;//Move right
@@ -65,6 +68,7 @@ void shurikenDir(t_npc *npc, t_player playerPos)
         {
             if(abs(playerPos.y - npc->y) <= 10)
             {
+                al_play_sample(throwShur, 0.5, 0.0, 0.75, ALLEGRO_PLAYMODE_ONCE, 0);
                 if(playerPos.y > npc->y)
                 {
                     npc->shuriken.movex = 0;//Move down
