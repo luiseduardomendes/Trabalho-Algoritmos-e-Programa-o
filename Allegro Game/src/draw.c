@@ -39,11 +39,12 @@ void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_pl
 }
 
 ALLEGRO_BITMAP* createBackground(ALLEGRO_BITMAP* background, ALLEGRO_BITMAP* wall, ALLEGRO_BITMAP* spikes, ALLEGRO_BITMAP* keys,
-                                 ALLEGRO_BITMAP* grass, ALLEGRO_DISPLAY* display, char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
+                                 ALLEGRO_BITMAP* grass, ALLEGRO_BITMAP* darkGrass, ALLEGRO_BITMAP* lightGrass, ALLEGRO_DISPLAY* display,
+                                 char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
 {
     background = al_create_bitmap(MAPSCALE * SIZEMAP_X * MULT, MAPSCALE * SIZEMAP_Y * MULT);
     al_set_target_bitmap(background);
-    int i, j;
+    int i, j, flag;
 
     for(i = 0; i < SIZEMAP_Y; i++){
         for(j = 0; j < SIZEMAP_X; j++){
@@ -55,14 +56,22 @@ ALLEGRO_BITMAP* createBackground(ALLEGRO_BITMAP* background, ALLEGRO_BITMAP* wal
                 al_draw_bitmap(spikes, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
             }
-            else if(mapMatrix[i][j] == 'C'){
-                al_draw_bitmap(keys, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
-                //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,150,50));
+            else {
+                flag = rand() % 20;
+                switch (flag) {
+                case 8:
+                    al_draw_bitmap(lightGrass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                    break;
+                case 9:
+                    al_draw_bitmap(darkGrass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                    break;
+                default:
+                    al_draw_bitmap(grass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                    break;
+                }
+            }
 
-            }
-            else{
-                al_draw_bitmap(grass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
-            }
+
         }
     }
     al_set_target_bitmap(al_get_backbuffer(display));

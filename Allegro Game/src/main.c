@@ -64,6 +64,8 @@ int main()
     ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/akatsuki.png");
     ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
     ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
+    ALLEGRO_BITMAP *darkGrass = al_load_bitmap("assets/darkGrass.png");
+    ALLEGRO_BITMAP *lightgrass = al_load_bitmap("assets/lightGrass.png");
     ALLEGRO_BITMAP *heart = al_load_bitmap("assets/heart.png");
     ALLEGRO_BITMAP *voidheart = al_load_bitmap("assets/voidheart.png");
     ALLEGRO_BITMAP *narutoDialog = al_load_bitmap("assets/narutodialog.png");
@@ -144,7 +146,7 @@ int main()
                     &numKeys, &numChest, items, chests, mapMatrix);
     /*_____________________________________________________________*/
 
-    background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
+    background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
 
     while(!endOfGame)
     {
