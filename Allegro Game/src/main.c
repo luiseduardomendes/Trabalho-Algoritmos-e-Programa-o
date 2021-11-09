@@ -8,7 +8,7 @@ int main()
     float frameRate = 30;
     int numMobs = 4;
     int mobRate = 2;
-    int shurRate = 8;
+    int shurRate = 12;
     int i, j, k;
     int contador = 0;
     int mapUsed = 0;
