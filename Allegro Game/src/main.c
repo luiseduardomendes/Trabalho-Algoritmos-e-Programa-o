@@ -67,6 +67,9 @@ int main()
     ALLEGRO_BITMAP *narutoDialog = al_load_bitmap("assets/narutodialog.png");
     ALLEGRO_BITMAP *loading_screen = al_load_bitmap("assets/loading_screen.png");
     ALLEGRO_BITMAP *background = NULL;
+    ALLEGRO_BITMAP *narutoback = al_load_bitmap("assets/narutoback.png");
+    ALLEGRO_BITMAP *narutoleft = al_load_bitmap("assets/narutoleft.png");
+    ALLEGRO_BITMAP *narutoright = al_load_bitmap("assets/narutoright.png");
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
     /*_____________________________________________________________*/
@@ -209,7 +212,22 @@ int main()
 
                 drawMobs(npcPos, enemy);
                 drawMobShur(npcPos, numMobs, shurikenDraw);
-                al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                switch(playerPos.direction){
+                    case UP:
+                        al_draw_bitmap(narutoback, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        break;
+                    case DOWN:
+                        al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        break;
+                    case LEFT:
+                        al_draw_bitmap(narutoleft, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        break;
+                    case RIGHT:
+                        al_draw_bitmap(narutoright, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        break;
+                    default:
+                        al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                }
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
                     al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
