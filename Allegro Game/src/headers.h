@@ -32,6 +32,7 @@
 #define MAPSCALE 20
 #define RANGEVIEWMOB 5
 #define MIN_ITEMS 25
+#define MULT 2
 /*_____________________________________________________________*/
 
 enum directions{UP, DOWN, LEFT, RIGHT};
@@ -115,8 +116,10 @@ int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, 
 void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, int *numChest,
               typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
+void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_player playerPos);
 
 void playerMovement(t_player playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
 
 void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[]);
+
+void drawMobs(t_npc npcPos[], ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft, ALLEGRO_BITMAP *enemyright, t_player playerPos);

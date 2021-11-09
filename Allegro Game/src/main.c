@@ -186,53 +186,54 @@ int main()
             if(event.timer.source == timer)
             {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
-                al_draw_bitmap(background, 0, 0, 0);
+                al_draw_bitmap(background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
 
                 for (i = 0; i < playerPos.hp; i++)
-                    al_draw_bitmap(heart, (i+1)*MAPSCALE, 0, 0);
+                    al_draw_bitmap(heart, (i+1)*MAPSCALE*MULT, 0, 0);
                 for (i = playerPos.hp; i < playerPos.fullHp; i ++)
-                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE, 0, 0);
+                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE*MULT, 0, 0);
                 for (i = 0; i < playerPos.numShur; i ++)
-                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE, 0, 0);
+                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE*MULT, 0, 0);
                 for (i = 0; i < playerPos.numKeys; i ++)
-                    al_draw_bitmap(keys, (i+20)*MAPSCALE, 0, 0);
+                    al_draw_bitmap(keys, (i+20)*MAPSCALE*MULT, 0, 0);
                 for (i = 0; i < numShur + numKeys; i ++)
                     if (items[i].onMap == 1)
                         if (items[i].nameItems == 1)
-                            al_draw_bitmap(keys, items[i].x*MAPSCALE, items[i].y*MAPSCALE, 0);
+                            al_draw_bitmap(keys, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                         else if (items[i].nameItems == 0)
-                            al_draw_bitmap(shurikenDraw, items[i].x*MAPSCALE, items[i].y*MAPSCALE, 0);
+                            al_draw_bitmap(shurikenDraw, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
 
                 for (i = 0; i < numChest; i ++){
                     if (chests[i].closed){
-                        al_draw_bitmap(chest, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
+                        al_draw_bitmap(chest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                     }
                     else {
-                        al_draw_bitmap(openchest, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
+                        al_draw_bitmap(openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                     }
                 }
 
-                drawMobs(npcPos, enemy, enemyback, enemyleft, enemyright);
-                drawMobShur(npcPos, numMobs, shurikenDraw);
+                drawMobs(npcPos, enemy, enemyback, enemyleft, enemyright, playerPos);
+                drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
                 switch(playerPos.direction){
                     case UP:
-                        al_draw_bitmap(narutoback, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        al_draw_bitmap(narutoback, width/2, height/2, 0);
                         break;
                     case DOWN:
-                        al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        al_draw_bitmap(naruto, width/2, height/2, 0);
                         break;
                     case LEFT:
-                        al_draw_bitmap(narutoleft, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        al_draw_bitmap(narutoleft, width/2, height/2, 0);
                         break;
                     case RIGHT:
-                        al_draw_bitmap(narutoright, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        al_draw_bitmap(narutoright, width/2, height/2, 0);
                         break;
                     default:
-                        al_draw_bitmap(naruto, playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, 0);
+                        al_draw_bitmap(naruto, width/2, height/2, 0);
                 }
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)
-                    al_draw_bitmap(shurikenDraw, playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, 0);//Temp because shuriken.png assertion is failling
+                    al_draw_bitmap(shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
+                                   *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
 
                     //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
                 if (0){ // dialogo
