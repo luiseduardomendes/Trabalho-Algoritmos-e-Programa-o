@@ -15,6 +15,8 @@ int main()
     int joystickFound = 1;
     t_player playerPos;
     t_npc npcPos[NUM_MOBS];
+    t_chest chests[10];
+    int numChest;
     typeSave save;
     typeItem items[MIN_ITEMS];
     int numShur, numKeys;
@@ -132,10 +134,12 @@ int main()
     //menu iniciar
 
     if(joystickFound){
-        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
+        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+                    &numKeys, &numChest, items, chests, mapMatrix);
     }
     else
-        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
+        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+                    &numKeys, &numChest, items, chests, mapMatrix);
     /*_____________________________________________________________*/
 
     background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
@@ -197,6 +201,15 @@ int main()
                         else if (items[i].nameItems == 0)
                             al_draw_bitmap(shurikenDraw, items[i].x*MAPSCALE, items[i].y*MAPSCALE, 0);
 
+                for (i = 0; i < numChest; i ++){
+                    if (chests[i].closed){
+                        al_draw_bitmap(heart, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
+                    }
+                    else {
+                        al_draw_bitmap(voidheart, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
+                    }
+                }
+
                 drawMobs(npcPos, enemy, enemyback, enemyleft, enemyright);
                 drawMobShur(npcPos, numMobs, shurikenDraw);
                 switch(playerPos.direction){
@@ -234,9 +247,11 @@ int main()
 
         if (openMenu) {
             if (joystickFound)
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos,
+                         &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
             else
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
+                         &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
         }
         if (playerPos.hp == 0){
             endOfGame = 1;

@@ -37,7 +37,7 @@
 enum directions{UP, DOWN, LEFT, RIGHT};
 enum control_buttons{CONTROL_BUTTON_A, CONTROL_BUTTON_B, CONTROL_BUTTON_X, CONTROL_BUTTON_Y, CONTROL_BUTTON_LB, CONTROL_BUTTON_RB,
     CONTROL_BUTTON_OPTIONS, CONTROL_BUTTON_START, CONTROL_BUTTON_L, CONTROL_BUTTON_R};
-enum itemsID{shur, keys};
+enum itemsID{shur, keys, armorBuff, shurikenBuff, lamen};
 
 /*___________________________STRUCTS___________________________*/
 typedef struct shuriken{
@@ -69,15 +69,26 @@ typedef struct items{
     int onMap;
     int nameItems;
 }typeItem;
+
+typedef struct {
+    int itemStore;
+    int closed;
+    int x, y;
+} t_chest;
+
 typedef struct save{
     t_player player;
     t_npc npc[25];
     typeItem object[25];
+    t_chest chestItem[10];
     int numMobs;
     int mapUsed;
     int numShur;
     int numKeys;
+    int numChest;
 }typeSave;
+
+
 /*_____________________________________________________________*/
 
 FILE *map;
@@ -96,11 +107,13 @@ void shurikenDir(t_npc *npc, t_player playerPos);
 
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
-            int *numShur, int *numKeys, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+            int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[]);
 
-int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, typeItem items[]);
+int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, int numChest,
+                  typeItem items[], t_chest chests[]);
 
-void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, int *numChest,
+              typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw);
 
