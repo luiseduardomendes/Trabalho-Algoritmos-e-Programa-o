@@ -320,7 +320,7 @@ void standardSave() {
 
     for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
         do{
-            save.object[i].nameItems = shur;
+            save.object[i].nameItems = keys;
             save.object[i].onMap = 1;
             save.object[i].x = (1 + (rand() % SIZEMAP_X));
             save.object[i].y = (1 + (rand() % SIZEMAP_Y));
