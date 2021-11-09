@@ -132,29 +132,13 @@ int main()
     //menu iniciar
 
     if(joystickFound){
-        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
+        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
     }
     else
-        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
-    playerPos.numKeys = 0;
+        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
     /*_____________________________________________________________*/
 
-    showLoadingScreen(font48, loading_screen);
-    loadMap(mapMatrix, mapUsed);
     background = createBackground(background, wall, spikes, keys, grass, display, mapMatrix);
-
-    /*_____________________________________________________________*/
-    // Inicialização das posições dos itens
-
-    for(i= 0; i < 3; i ++){
-        items[i].x = 5+i;
-        items[i].y = 5+i;
-    }
-    for(i= 3; i < 5; i ++){
-        items[i].x = 8+i;
-        items[i].y = 8+i;
-    }
-    /*_____________________________________________________________*/
 
     while(!endOfGame)
     {
@@ -250,9 +234,9 @@ int main()
 
         if (openMenu) {
             if (joystickFound)
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
             else
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items);
+                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, items, mapMatrix);
         }
         if (playerPos.hp == 0){
             endOfGame = 1;
