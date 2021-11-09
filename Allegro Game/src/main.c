@@ -75,6 +75,8 @@ int main()
     ALLEGRO_BITMAP *enemyback = al_load_bitmap("assets/akatsuckback.png");
     ALLEGRO_BITMAP *enemyleft = al_load_bitmap("assets/akatsuckleft.png");
     ALLEGRO_BITMAP *enemyright = al_load_bitmap("assets/akatsuckright.png");
+    ALLEGRO_BITMAP *chest = al_load_bitmap("assets/bau.png");
+    ALLEGRO_BITMAP *openchest = al_load_bitmap("assets/bauaberto.png");
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
     /*_____________________________________________________________*/
@@ -203,10 +205,10 @@ int main()
 
                 for (i = 0; i < numChest; i ++){
                     if (chests[i].closed){
-                        al_draw_bitmap(heart, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
+                        al_draw_bitmap(chest, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
                     }
                     else {
-                        al_draw_bitmap(voidheart, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
+                        al_draw_bitmap(openchest, chests[i].x * MAPSCALE, chests[i].y * MAPSCALE, 0);
                     }
                 }
 
