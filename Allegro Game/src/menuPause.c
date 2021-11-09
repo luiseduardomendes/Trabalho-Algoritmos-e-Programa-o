@@ -152,10 +152,10 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
         *mapUsed = save.mapUsed;
         *numShur = save.numShur;
         *numKeys = save.numKeys;
-        for(k = 0; k < NUM_MOBS; k ++) {
+        for(k = 0; k < *numMobs; k ++) {
             npcPos[k] = save.npc[k];
         }
-        for (k = 0; k < save.numKeys + save.numShur; k ++) {
+        for (k = 0; k < *numKeys + *numShur; k ++) {
             items[k] = save.object[k];
         }
         *playerPos = save.player;
@@ -287,7 +287,8 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
 
 void standardSave() {
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
-    char fileNames[99][49] = {{"arquivos/map64x36.txt"}};
+    char fileNames[99][49] =   {{"arquivos/map64x36.txt"},
+                                {"arquivos/map2.64x36.txt"}};
     typeSave save;
     int i;
     int numShur, numKeys;
@@ -307,25 +308,25 @@ void standardSave() {
             save.npc[i].y = (1 + (rand() % SIZEMAP_Y));
         } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL);
     }
-    switch(save.object[i].nameItems)
-    {
-        case shur:
-            for (i = 0; i < save.numShur; i++){
-                do{
-                    save.object[i].x = (1 + (rand() % SIZEMAP_X));
-                    save.object[i].y = (1 + (rand() % SIZEMAP_Y));
-                } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
-            }
-            break;
-        case keys:
-            for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
-                do{
-                    save.object[i].x = (1 + (rand() % SIZEMAP_X));
-                    save.object[i].y = (1 + (rand() % SIZEMAP_Y));
-                } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
-            }
-            break;
+
+    for (i = 0; i < save.numShur; i++){
+        do{
+            save.object[i].nameItems = shur;
+            save.object[i].onMap = 1;
+            save.object[i].x = (1 + (rand() % SIZEMAP_X));
+            save.object[i].y = (1 + (rand() % SIZEMAP_Y));
+        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
     }
+
+    for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
+        do{
+            save.object[i].nameItems = shur;
+            save.object[i].onMap = 1;
+            save.object[i].x = (1 + (rand() % SIZEMAP_X));
+            save.object[i].y = (1 + (rand() % SIZEMAP_Y));
+        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
+    }
+
     for (i = 0; i < save.numMobs; i ++){
         save.npc[i].shuriken.throwing = 0;
         save.npc[i].shuriken.movex = 0;
