@@ -84,3 +84,35 @@ void showLoadingScreen (ALLEGRO_FONT* font48, ALLEGRO_BITMAP* loading_screen) {
     al_draw_text(font48, al_map_rgb(255, 255, 255), 10, 10, 0, "CARREGANDO...");
     al_flip_display();
 }
+
+
+
+void createMiniMap(char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP** miniMap, ALLEGRO_DISPLAY *display, t_player player){
+    int i, j;
+
+    *miniMap = al_create_bitmap(MINIMAP_SCALE * SIZEMAP_X, MINIMAP_SCALE * SIZEMAP_Y);
+    al_set_target_bitmap(*miniMap);
+
+    for (i = 0; i < SIZEMAP_Y; i ++) {
+        for (j = 0; j < SIZEMAP_X; j ++) {
+            switch (mapMatrix[i][j]){
+            case WALL:
+                al_draw_filled_rectangle(j * MINIMAP_SCALE, i * MINIMAP_SCALE, (j + 1) * MINIMAP_SCALE, (i + 1) * MINIMAP_SCALE,
+                                  al_map_rgb(50,50,50));
+                break;
+            case 'X':
+                al_draw_filled_rectangle(j * MINIMAP_SCALE, i * MINIMAP_SCALE, (j + 1) * MINIMAP_SCALE, (i + 1) * MINIMAP_SCALE,
+                                  al_map_rgb(255,0,100));
+                break;
+            default:
+                al_draw_filled_rectangle(j * MINIMAP_SCALE, i * MINIMAP_SCALE, (j + 1) * MINIMAP_SCALE, (i + 1) * MINIMAP_SCALE,
+                                  al_map_rgb(100,200,10));
+                break;
+            }
+        }
+    }
+    al_draw_filled_rectangle(player.x * MINIMAP_SCALE, player.y * MINIMAP_SCALE, (player.x + 1) * MINIMAP_SCALE,
+                             (player.y + 1) * MINIMAP_SCALE, al_map_rgb(255,242,0));
+
+    al_set_target_bitmap(al_get_backbuffer(display));
+}

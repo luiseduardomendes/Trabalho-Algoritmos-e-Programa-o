@@ -81,9 +81,11 @@ int main()
     ALLEGRO_BITMAP *enemyright = al_load_bitmap("assets/akatsukiright.png");
     ALLEGRO_BITMAP *chest = al_load_bitmap("assets/bau.png");
     ALLEGRO_BITMAP *openchest = al_load_bitmap("assets/bauaberto.png");
+    ALLEGRO_BITMAP *miniMap = NULL;
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
     /*_____________________________________________________________*/
+
 
     /*_____________________________________________________________*/
     //Audio
@@ -192,17 +194,18 @@ int main()
             }
             if(event.timer.source == timer)
             {
+                createMiniMap(mapMatrix, &miniMap, display, playerPos);
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 al_draw_bitmap(background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
 
                 for (i = 0; i < playerPos.hp; i++)
-                    al_draw_bitmap(heart, (i+1)*MAPSCALE*MULT, 0, 0);
+                    al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
                 for (i = playerPos.hp; i < playerPos.fullHp; i ++)
-                    al_draw_bitmap(voidheart, (i+1)*MAPSCALE*MULT, 0, 0);
+                    al_draw_tinted_bitmap(voidheart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
                 for (i = 0; i < playerPos.numShur; i ++)
-                    al_draw_bitmap(shurikenDraw, (i+7)*MAPSCALE*MULT, 0, 0);
+                    al_draw_tinted_bitmap(shurikenDraw, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (1)*MAPSCALE*MULT, 0);
                 for (i = 0; i < playerPos.numKeys; i ++)
-                    al_draw_bitmap(keys, (i+20)*MAPSCALE*MULT, 0, 0);
+                    al_draw_tinted_bitmap(keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
                 for (i = 0; i < numShur + numKeys; i ++)
                     if (items[i].onMap == 1)
                         if (items[i].nameItems == 1)
@@ -241,11 +244,10 @@ int main()
                 if (playerPos.shuriken.throwing)
                     al_draw_bitmap(shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
                                    *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
-
+                al_draw_tinted_bitmap(miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
                     //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
-                if (1){ // dialogo
-                    //al_draw_filled_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(255,230,106));
-                    //al_draw_rectangle(width/5, height*2/4, width*4.75/5, height*15/16, al_map_rgb(0,0,0), 5);
+                if (0){ // dialogo
+
                     al_draw_bitmap(dialogBmp, width/5, height*1/2, 0);
                     al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
                     al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");

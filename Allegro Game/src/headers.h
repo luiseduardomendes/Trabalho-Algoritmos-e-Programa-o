@@ -33,6 +33,8 @@
 #define RANGEVIEWMOB 5
 #define MIN_ITEMS 25
 #define MULT 2
+#define MINIMAP_SCALE 3
+#define OPACITY 0.75
 /*_____________________________________________________________*/
 
 enum directions{UP, DOWN, LEFT, RIGHT};
@@ -123,3 +125,5 @@ void playerMovement(t_player playerPos, ALLEGRO_EVENT event, char mapMatrix[][SI
 void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[]);
 
 void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft, ALLEGRO_BITMAP *enemyright, t_player playerPos);
+
+void createMiniMap(char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP** miniMap, ALLEGRO_DISPLAY *display, t_player player);
