@@ -362,6 +362,7 @@ void standardSave() {
     save.player.numShur = 5;
     save.player.xp = 0;
     save.player.shurikenItem = 0;
+    save.player.invulnerable = 0;
 
 
 

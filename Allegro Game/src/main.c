@@ -179,6 +179,9 @@ int main()
             if(event.timer.source == mobTimer)
             {
                 npcMovement(npcPos, numMobs, playerPos, mapMatrix);
+                if(playerPos.invulnerable > 0){
+                    playerPos.invulnerable --;
+                }
 
             }
             if(event.timer.source == shurTimer)
@@ -224,21 +227,41 @@ int main()
 
                 drawMobs(npcPos, numMobs, enemy, enemyback, enemyleft, enemyright, playerPos);
                 drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
-                switch(playerPos.direction){
-                    case UP:
-                        al_draw_bitmap(narutoback, width/2, height/2, 0);
-                        break;
-                    case DOWN:
-                        al_draw_bitmap(naruto, width/2, height/2, 0);
-                        break;
-                    case LEFT:
-                        al_draw_bitmap(narutoleft, width/2, height/2, 0);
-                        break;
-                    case RIGHT:
-                        al_draw_bitmap(narutoright, width/2, height/2, 0);
-                        break;
-                    default:
-                        al_draw_bitmap(naruto, width/2, height/2, 0);
+                if (playerPos.invulnerable){
+                    switch(playerPos.direction){
+                        case UP:
+                            al_draw_tinted_bitmap(narutoback, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width/2, height/2, 0);
+                            break;
+                        case DOWN:
+                            al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                            break;
+                        case LEFT:
+                            al_draw_tinted_bitmap(narutoleft, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                            break;
+                        case RIGHT:
+                            al_draw_tinted_bitmap(narutoright, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                            break;
+                        default:
+                            al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                    }
+                }
+                else{
+                    switch(playerPos.direction){
+                        case UP:
+                            al_draw_bitmap(narutoback, width/2, height/2, 0);
+                            break;
+                        case DOWN:
+                            al_draw_bitmap(naruto, width/2, height/2, 0);
+                            break;
+                        case LEFT:
+                            al_draw_bitmap(narutoleft, width/2, height/2, 0);
+                            break;
+                        case RIGHT:
+                            al_draw_bitmap(narutoright, width/2, height/2, 0);
+                            break;
+                        default:
+                            al_draw_bitmap(naruto, width/2, height/2, 0);
+                    }
                 }
                 //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                 if (playerPos.shuriken.throwing)

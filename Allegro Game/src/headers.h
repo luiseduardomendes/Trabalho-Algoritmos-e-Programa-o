@@ -56,6 +56,7 @@ typedef struct position{
     int numShur, numKeys;
     int xp;
     int level;
+    int invulnerable;
     int armor, shurikenItem;
     typeShur shuriken;
 }t_player;
