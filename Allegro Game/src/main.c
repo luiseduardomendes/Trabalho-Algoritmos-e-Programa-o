@@ -16,6 +16,7 @@ int main()
     t_player playerPos;
     t_npc npcPos[NUM_MOBS];
     t_chest chests[10];
+    t_exit mapExit;
     int numChest;
     typeSave save;
     typeItem items[MIN_ITEMS];
@@ -24,7 +25,7 @@ int main()
 
     const int width = SIZEMAP_X*MAPSCALE; //largura
     const int height = SIZEMAP_Y*MAPSCALE; //algura
-    bool endOfGame = false, openMenu = false;
+    bool endOfGame = false, endOfLevel = false, openMenu = false;
     /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
@@ -81,6 +82,7 @@ int main()
     ALLEGRO_BITMAP *enemyright = al_load_bitmap("assets/akatsukiright.png");
     ALLEGRO_BITMAP *chest = al_load_bitmap("assets/bau.png");
     ALLEGRO_BITMAP *openchest = al_load_bitmap("assets/bauaberto.png");
+    ALLEGRO_BITMAP *trapdoor = al_load_bitmap("assets/trapdoor.png");
     ALLEGRO_BITMAP *miniMap = NULL;
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
@@ -143,163 +145,172 @@ int main()
     //menu iniciar
 
     if(joystickFound){
-        menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+        menuIniciar(width, height, &endOfLevel, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
                     &numKeys, &numChest, items, chests, mapMatrix);
     }
     else
-        menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+        menuIniciar(width, height, &endOfLevel, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
                     &numKeys, &numChest, items, chests, mapMatrix);
     /*_____________________________________________________________*/
 
-    background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
+    do{
+        printf("%d", mapUsed);
+        loadMap(mapMatrix, mapUsed);
 
-    while(!endOfGame)
-    {
-        ALLEGRO_EVENT event;
-        al_wait_for_event(events_queue, &event);
-        //al_get_keyboard_state(&keyState);
+        background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
 
-        if(event.type == ALLEGRO_EVENT_KEY_DOWN)
+        while(!endOfLevel)
         {
-            playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur);
-        }
-        if(joystickFound) {
-            if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
-                //printf("Botao pressionado: %d\n", ev.joystick.button);
-                buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur);
-            }
-            if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
-                moveJoystick(event, &playerPos, &openMenu, mapMatrix);
-            }
-        }
-        if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-            endOfGame = true;
-        if(event.type == ALLEGRO_EVENT_TIMER)
-        {
-            if(event.timer.source == mobTimer)
+            ALLEGRO_EVENT event;
+            al_wait_for_event(events_queue, &event);
+            //al_get_keyboard_state(&keyState);
+
+            if(event.type == ALLEGRO_EVENT_KEY_DOWN)
             {
-                npcMovement(npcPos, numMobs, playerPos, mapMatrix);
-                if(playerPos.invulnerable > 0){
-                    playerPos.invulnerable --;
+                playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
+            }
+            if(joystickFound) {
+                if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
+                    //printf("Botao pressionado: %d\n", ev.joystick.button);
+                    buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
                 }
-
+                if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
+                    moveJoystick(event, &playerPos, &openMenu, mapMatrix);
+                }
             }
-            if(event.timer.source == shurTimer)
+            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+                endOfGame = true;
+            if(event.type == ALLEGRO_EVENT_TIMER)
             {
-                updateShurikenPlayer(&playerPos.shuriken, npcPos, numMobs, mapMatrix);//Player shuriken
-                for (i = 0; i < numMobs; i ++){//Mob shuriken
-                    if (npcPos[i].shuriken.throwing)
-                        updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
+                if(event.timer.source == mobTimer)
+                {
+                    npcMovement(npcPos, numMobs, playerPos, mapMatrix);
+                    if(playerPos.invulnerable > 0){
+                        playerPos.invulnerable --;
+                    }
+
+                }
+                if(event.timer.source == shurTimer)
+                {
+                    updateShurikenPlayer(&playerPos.shuriken, npcPos, numMobs, mapMatrix);//Player shuriken
+                    for (i = 0; i < numMobs; i ++){//Mob shuriken
+                        if (npcPos[i].shuriken.throwing)
+                            updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
+                        else{
+                            shurikenDir(&npcPos[i], playerPos, throwShur);
+                        }
+                    }
+                }
+                if(event.timer.source == timer)
+                {
+                    createMiniMap(mapMatrix, &miniMap, display, playerPos);
+                    al_clear_to_color(al_map_rgb(0, 0, 0));
+                    al_draw_bitmap(background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
+
+                    for (i = 0; i < playerPos.hp; i++)
+                        al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
+                    for (i = playerPos.hp; i < playerPos.fullHp; i ++)
+                        al_draw_tinted_bitmap(voidheart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
+                    for (i = 0; i < playerPos.numShur; i ++)
+                        al_draw_tinted_bitmap(shurikenDraw, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (1)*MAPSCALE*MULT, 0);
+                    for (i = 0; i < playerPos.numKeys; i ++)
+                        al_draw_tinted_bitmap(keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
+                    for (i = 0; i < numShur + numKeys; i ++)
+                        if (items[i].onMap == 1)
+                            if (items[i].nameItems == 1)
+                                al_draw_bitmap(keys, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                            else if (items[i].nameItems == 0)
+                                al_draw_bitmap(shurikenDraw, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+
+                    for (i = 0; i < numChest; i ++){
+                        if (chests[i].closed){
+                            al_draw_bitmap(chest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+                        }
+                        else {
+                            al_draw_bitmap(openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+                        }
+                    }
+                    if(mapExit.onMap == 1)
+                    {
+                        al_draw_bitmap(trapdoor, (mapExit.x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+                    }
+
+                    drawMobs(npcPos, numMobs, enemy, enemyback, enemyleft, enemyright, playerPos);
+                    drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
+                    if (playerPos.invulnerable){
+                        switch(playerPos.direction){
+                            case UP:
+                                al_draw_tinted_bitmap(narutoback, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width/2, height/2, 0);
+                                break;
+                            case DOWN:
+                                al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                                break;
+                            case LEFT:
+                                al_draw_tinted_bitmap(narutoleft, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                                break;
+                            case RIGHT:
+                                al_draw_tinted_bitmap(narutoright, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                                break;
+                            default:
+                                al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                        }
+                    }
                     else{
-                        shurikenDir(&npcPos[i], playerPos, throwShur);
+                        switch(playerPos.direction){
+                            case UP:
+                                al_draw_bitmap(narutoback, width/2, height/2, 0);
+                                break;
+                            case DOWN:
+                                al_draw_bitmap(naruto, width/2, height/2, 0);
+                                break;
+                            case LEFT:
+                                al_draw_bitmap(narutoleft, width/2, height/2, 0);
+                                break;
+                            case RIGHT:
+                                al_draw_bitmap(narutoright, width/2, height/2, 0);
+                                break;
+                            default:
+                                al_draw_bitmap(naruto, width/2, height/2, 0);
+                        }
                     }
+                    //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
+                    if (playerPos.shuriken.throwing)
+                        al_draw_bitmap(shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
+                                       *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
+                    al_draw_tinted_bitmap(miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
+                        //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
+                    if (0){ // dialogo
+
+                        al_draw_bitmap(dialogBmp, width/5, height*1/2, 0);
+                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
+                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");
+                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "da vila da folha");
+                        al_draw_bitmap(narutoDialog, -70, height-433,0);
+                    }
+                    al_flip_display();
                 }
             }
-            if(event.timer.source == timer)
-            {
-                createMiniMap(mapMatrix, &miniMap, display, playerPos);
-                al_clear_to_color(al_map_rgb(0, 0, 0));
-                al_draw_bitmap(background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
 
-                for (i = 0; i < playerPos.hp; i++)
-                    al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
-                for (i = playerPos.hp; i < playerPos.fullHp; i ++)
-                    al_draw_tinted_bitmap(voidheart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
-                for (i = 0; i < playerPos.numShur; i ++)
-                    al_draw_tinted_bitmap(shurikenDraw, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (1)*MAPSCALE*MULT, 0);
-                for (i = 0; i < playerPos.numKeys; i ++)
-                    al_draw_tinted_bitmap(keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
-                for (i = 0; i < numShur + numKeys; i ++)
-                    if (items[i].onMap == 1)
-                        if (items[i].nameItems == 1)
-                            al_draw_bitmap(keys, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                        else if (items[i].nameItems == 0)
-                            al_draw_bitmap(shurikenDraw, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+            if (openMenu) {
+                if (joystickFound)
+                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos,
+                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
+                else
+                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
+                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
+            }
+            if (playerPos.hp == 0){
+                endOfLevel = 1;
+                do{
+                    al_clear_to_color(al_map_rgb(0,0,0));
+                    al_draw_bitmap(loading_screen, 0,0,0);
+                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Você morreu!");
+                    al_flip_display();
 
-                for (i = 0; i < numChest; i ++){
-                    if (chests[i].closed){
-                        al_draw_bitmap(chest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
-                    }
-                    else {
-                        al_draw_bitmap(openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
-                    }
-                }
-
-                drawMobs(npcPos, numMobs, enemy, enemyback, enemyleft, enemyright, playerPos);
-                drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
-                if (playerPos.invulnerable){
-                    switch(playerPos.direction){
-                        case UP:
-                            al_draw_tinted_bitmap(narutoback, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width/2, height/2, 0);
-                            break;
-                        case DOWN:
-                            al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                            break;
-                        case LEFT:
-                            al_draw_tinted_bitmap(narutoleft, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                            break;
-                        case RIGHT:
-                            al_draw_tinted_bitmap(narutoright, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                            break;
-                        default:
-                            al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                    }
-                }
-                else{
-                    switch(playerPos.direction){
-                        case UP:
-                            al_draw_bitmap(narutoback, width/2, height/2, 0);
-                            break;
-                        case DOWN:
-                            al_draw_bitmap(naruto, width/2, height/2, 0);
-                            break;
-                        case LEFT:
-                            al_draw_bitmap(narutoleft, width/2, height/2, 0);
-                            break;
-                        case RIGHT:
-                            al_draw_bitmap(narutoright, width/2, height/2, 0);
-                            break;
-                        default:
-                            al_draw_bitmap(naruto, width/2, height/2, 0);
-                    }
-                }
-                //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
-                if (playerPos.shuriken.throwing)
-                    al_draw_bitmap(shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
-                                   *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
-                al_draw_tinted_bitmap(miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
-                    //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
-                if (0){ // dialogo
-
-                    al_draw_bitmap(dialogBmp, width/5, height*1/2, 0);
-                    al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
-                    al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");
-                    al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "da vila da folha");
-                    al_draw_bitmap(narutoDialog, -70, height-433,0);
-                }
-                al_flip_display();
+                } while(1);
             }
         }
-
-        if (openMenu) {
-            if (joystickFound)
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos,
-                         &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
-            else
-                showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
-                         &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
-        }
-        if (playerPos.hp == 0){
-            endOfGame = 1;
-            do{
-                al_clear_to_color(al_map_rgb(0,0,0));
-                al_draw_bitmap(loading_screen, 0,0,0);
-                al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Você morreu!");
-                al_flip_display();
-
-            } while(1);
-        }
-    }
+    }while(!endOfGame);
 
     al_uninstall_keyboard();
     al_destroy_timer(timer);
