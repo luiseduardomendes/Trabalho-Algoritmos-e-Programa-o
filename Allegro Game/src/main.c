@@ -156,6 +156,7 @@ int main()
     do{
         printf("%d", mapUsed);
         loadMap(mapMatrix, mapUsed);
+        playerPos.numKeys = 4;
 
         background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
 
@@ -167,12 +168,12 @@ int main()
 
             if(event.type == ALLEGRO_EVENT_KEY_DOWN)
             {
-                playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
+                playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, &mapUsed, &endOfLevel);
             }
             if(joystickFound) {
                 if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                     //printf("Botao pressionado: %d\n", ev.joystick.button);
-                    buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
+                    buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, &mapUsed, &endOfLevel);
                 }
                 if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                     moveJoystick(event, &playerPos, &openMenu, mapMatrix);

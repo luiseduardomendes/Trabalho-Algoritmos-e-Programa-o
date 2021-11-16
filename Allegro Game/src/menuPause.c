@@ -313,6 +313,8 @@ void standardSave() {
     save.numShur = 5;
     save.numChest = 5;
 
+    save.mapUsed = 0;
+
     for (i = 0; i < save.numMobs; i++){
         do{
             save.npc[i].x = (1 + (rand() % SIZEMAP_X));

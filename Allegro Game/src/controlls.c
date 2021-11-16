@@ -113,7 +113,7 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
 }
 
 void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
-                         int numShur, int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed, int *endOfGame) {
+                         int numShur, int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int *mapUsed, int *endOfGame) {
     al_init_acodec_addon();
     al_install_audio();
     switch (event.keyboard.keycode){
