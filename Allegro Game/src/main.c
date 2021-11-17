@@ -312,7 +312,6 @@ int main()
                     al_draw_bitmap(loading_screen, 0,0,0);
                     al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Você morreu!");
                     al_flip_display();
-
                 } while(!endOfGame);
             }
         }

@@ -135,11 +135,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->y --;
                 playerPos->direction = UP;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                        if(playerPos->invulnerable == 0)
-                        {
-                            playerPos->hp --;
-                            playerPos->invulnerable = TIME_INV;
-                        }
+                    if(playerPos->invulnerable == 0)
+                    {
+                        playerPos->hp --;
+                        playerPos->invulnerable = TIME_INV;
+                    }
                 }
             }
             break;
@@ -149,11 +149,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->y ++;
                 playerPos->direction = DOWN;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                        if(playerPos->invulnerable == 0)
-                        {
-                            playerPos->hp --;
-                            playerPos->invulnerable = TIME_INV;
-                        }
+                    if(playerPos->invulnerable == 0)
+                    {
+                        playerPos->hp --;
+                        playerPos->invulnerable = TIME_INV;
+                    }
                 }
             }
             break;
@@ -163,11 +163,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->x --;
                 playerPos->direction = LEFT;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                        if(playerPos->invulnerable == 0)
-                        {
-                            playerPos->hp --;
-                            playerPos->invulnerable = TIME_INV;
-                        }
+                    if(playerPos->invulnerable == 0)
+                    {
+                        playerPos->hp --;
+                        playerPos->invulnerable = TIME_INV;
+                    }
                 }
             }
             break;
@@ -177,11 +177,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->x ++;
                 playerPos->direction = RIGHT;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                        if(playerPos->invulnerable == 0)
-                        {
-                            playerPos->hp --;
-                            playerPos->invulnerable = TIME_INV;
-                        }
+                    if(playerPos->invulnerable == 0)
+                    {
+                        playerPos->hp --;
+                        playerPos->invulnerable = TIME_INV;
+                    }
                 }
             }
             break;
