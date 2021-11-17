@@ -141,7 +141,9 @@ int checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X]
                 break;
             }
         }
-        else if (chests[i].x == player->x && chests[i].y == player->y && chests[i].closed == 1){
+        else
+        if (chests[i].x == player->x && chests[i].y == player->y && chests[i].closed == 1)
+        {
             switch(chests[i].itemStore){
             case shur:
                 player->numShur ++;
@@ -150,8 +152,6 @@ int checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X]
                 player->numKeys ++;
                 if(player->numKeys >= numKeys)
                 {
-
-
                     switch(**mapUsed){
                         case 0:
                             mapExit->y = 20;
@@ -165,23 +165,23 @@ int checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X]
                     }
 
                 }
-                break;
-            case armorBuff:
-                player->fullHp ++;
-                player->hp ++;
-                break;
-            case shurikenBuff:
-                break;
-            case lamen:
-                player->hp ++;
-                break;
+                    break;
+                case armorBuff:
+                    player->fullHp ++;
+                    player->hp ++;
+                    break;
+                case shurikenBuff:
+                    break;
+                case lamen:
+                    player->hp ++;
+                    break;
             }
             chests[i].closed = 0;
         }
-        if (mapExit->x == player->x && mapExit->y == player->y && mapExit->onMap == 1){
-            aux++;
-            *endOfLevel = 1;
-        }
+    }
+    if (mapExit->x == player->x && mapExit->y == player->y && mapExit->onMap == 1){
+        aux++;
+        *endOfLevel = 1;
     }
     printf("\n\nf%d\n\n", aux);
     return aux;
