@@ -66,6 +66,7 @@ typedef struct{
     int x,y;
     int hp, fullHp;
     int direction;
+    int alive;
     typeShur shuriken;
 }t_npc;
 

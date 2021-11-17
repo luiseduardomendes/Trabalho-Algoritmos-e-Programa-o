@@ -31,7 +31,7 @@ void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_pl
 
     for(i = 0; i < numMobs; i++)
     {
-        if (npcPos[i].shuriken.throwing)
+        if (npcPos[i].shuriken.throwing && npcPos[i].alive)
             al_draw_bitmap(shurikenDraw, (npcPos[i].shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT,(npcPos[i].shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))*
                            MAPSCALE*MULT, 0);
             //al_draw_filled_rectangle(npcPos[i].shuriken.x*MAPSCALE, npcPos[i].shuriken.y*MAPSCALE, (npcPos[i].shuriken.x*MAPSCALE)+MAPSCALE, (npcPos[i].shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));

@@ -165,13 +165,13 @@ int main()
         }
         else{
             endOfLevel = 0;
-            printf("Mapa atual: %d\n", mapUsed);
+
             loadMap(mapMatrix, mapUsed);
 
             standardSave(mapUsed);
             loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix);
             playerPos.numKeys = 4;
-            printf("Mapa atual: %d\n", mapUsed);
+
             background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
 
             dialogClosed = 0;
@@ -212,15 +212,22 @@ int main()
                 }
                 if(event.timer.source == shurTimer)
                 {
-                    updateShurikenPlayer(&playerPos.shuriken, npcPos, numMobs, mapMatrix);//Player shuriken
+                    updateShurikenPlayer(&playerPos, npcPos, numMobs, mapMatrix);//Player shuriken
                     for (i = 0; i < numMobs; i ++){ //Mob shuriken
-                        if (npcPos[i].shuriken.throwing)
-                            updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
-                        else{
-                            shurikenDir(&npcPos[i], playerPos, throwShur);
+                        if (npcPos[i].alive) {
+                            if (npcPos[i].shuriken.throwing)
+                                updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
+                            else{
+                                shurikenDir(&npcPos[i], playerPos, throwShur);
+                            }
                         }
                     }
                 }
+
+                if(player.xp >= MIN_XP_UP){
+                    levelUp(&playerPos);
+                }
+
                 if(event.timer.source == timer)
                 {
                     createMiniMap(mapMatrix, &miniMap, display, playerPos);
@@ -259,6 +266,7 @@ int main()
 
                     drawMobs(npcPos, numMobs, enemy, enemyback, enemyleft, enemyright, playerPos);
                     drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
+
                     if (playerPos.invulnerable){
                         switch(playerPos.direction){
                             case UP:
@@ -295,12 +303,16 @@ int main()
                                 al_draw_bitmap(naruto, width/2, height/2, 0);
                         }
                     }
+
+
                     //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                     if (playerPos.shuriken.throwing)
                         al_draw_bitmap(shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
                                        *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
                     al_draw_tinted_bitmap(miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
                         //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
+
+
 
                     al_flip_display();
 
