@@ -154,6 +154,7 @@ int main()
     /*_____________________________________________________________*/
 
     do{
+        endOfLevel = 0;
         printf("%d", mapUsed);
         loadMap(mapMatrix, mapUsed);
         playerPos.numKeys = 4;

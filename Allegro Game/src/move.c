@@ -108,14 +108,9 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
-void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int *mapUsed, int *endOfGame)
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int *mapUsed, int *endOfLevel)
 {
     int i = 0;
-    printf("%d", numKeys);
-    printf("%d", player->numKeys);
-    printf("\n%d\n", mapExit->onMap);
-    printf("\n%d %d\n", mapExit->x, mapExit->y);
-
 
 
     for (i = 0; i < numShur + numKeys; i ++){
@@ -182,8 +177,8 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
             chests[i].closed = 0;
         }
         if (mapExit->x == player->x && mapExit->y == player->y && mapExit->onMap == 1){
-            *mapUsed ++;
-            *endOfGame = 1;
+            *mapUsed = *mapUsed + 1;
+            *endOfLevel = 1;
         }
     }
 }
