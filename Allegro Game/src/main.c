@@ -350,11 +350,11 @@ int main()
         printf("playerLogout: %d\n", playerLogout);
     }while(!endOfGame);
 
+    al_destroy_display(display);
     al_uninstall_keyboard();
     al_destroy_timer(timer);
     al_destroy_timer(mobTimer);
     al_destroy_timer(shurTimer);
-    al_destroy_display(display);
     al_destroy_bitmap(naruto);
     al_destroy_bitmap(shurikenDraw);
     al_destroy_bitmap(spikes);
