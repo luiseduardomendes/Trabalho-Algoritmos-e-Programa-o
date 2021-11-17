@@ -86,7 +86,6 @@ void showLoadingScreen (ALLEGRO_FONT* font48, ALLEGRO_BITMAP* loading_screen) {
 }
 
 
-
 void createMiniMap(char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP** miniMap, ALLEGRO_DISPLAY *display, t_player player){
     int i, j;
 

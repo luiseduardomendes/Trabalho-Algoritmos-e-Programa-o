@@ -159,6 +159,8 @@ int main()
         endOfLevel = 0;
         loadMap(mapMatrix, mapUsed);
         playerPos.numKeys = 4;
+        standardSave(mapUsed);
+        loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix);
 
         background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
 
@@ -194,7 +196,7 @@ int main()
                 if(event.timer.source == shurTimer)
                 {
                     updateShurikenPlayer(&playerPos.shuriken, npcPos, numMobs, mapMatrix);//Player shuriken
-                    for (i = 0; i < numMobs; i ++){//Mob shuriken
+                    for (i = 0; i < numMobs; i ++){ //Mob shuriken
                         if (npcPos[i].shuriken.throwing)
                             updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
                         else{
@@ -316,6 +318,7 @@ int main()
                 } while(!endOfGame);
             }
         }
+        saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests);
     }while(!endOfGame);
 
     al_uninstall_keyboard();

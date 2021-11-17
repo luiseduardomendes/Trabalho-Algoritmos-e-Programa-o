@@ -4,7 +4,7 @@ void loadMap (char mapMatrix[SIZEMAP_Y][SIZEMAP_X], int mapUsed){
 
     char buffer[SIZEMAP_X+3];
     char mapFileName[99][50] = {{"arquivos/map64x36.txt"},
-                                {"arquivos/mapa2.64x36.txt"}};
+                                {"arquivos/map3.txt"}};
     int i, j;
 
     map = fopen(mapFileName[mapUsed], "r");

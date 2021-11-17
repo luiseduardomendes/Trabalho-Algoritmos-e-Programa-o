@@ -9,12 +9,12 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
     al_init_ttf_addon();
     ALLEGRO_FONT* font20 = al_load_ttf_font("fonts/fonte.ttf", 40, 0);
 
+
     do{
         ALLEGRO_EVENT ev;
         al_wait_for_event(events_queue, &ev);
         if (joy != NULL)
             al_get_joystick_state(joy, &joyState);
-
 
         al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
         al_draw_rectangle(width*2/5, height*(selectioned*2+4.25)/16, width*3/5, height*(selectioned*2+6)/16, al_map_rgb(0,128,128), 5);
@@ -22,9 +22,9 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Salvar jogo");
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
-
-
         al_flip_display();
+
+
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){
                 case ALLEGRO_KEY_ESCAPE:
@@ -183,12 +183,12 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
     ALLEGRO_FONT* font20 = al_load_ttf_font("fonts/fonte.ttf", 40, 0);
 
 
+
     do{
         ALLEGRO_EVENT ev;
         al_wait_for_event(events_queue, &ev);
         if (joy != NULL)
             al_get_joystick_state(joy, &joyState);
-
 
         al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
         al_draw_rectangle(width*2/5, height*(selectioned*2+4.25)/16, width*3/5, height*(selectioned*2+6)/16, al_map_rgb(0,128,128), 5);
@@ -196,7 +196,7 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Creditos");
         al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
-
+        al_flip_display();
 
         al_flip_display();
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -223,7 +223,7 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
                         case newGame:
                             beginGame = true;
                             *endOfGame = false;
-                            standardSave();
+                            standardSave(0);
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
                             break;
                         case loadGame:
@@ -254,7 +254,7 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
                         case newGame:
                             beginGame = true;
                             *endOfGame = false;
-                            standardSave();
+                            standardSave(0);
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
                             break;
                         case loadGame:
@@ -295,25 +295,37 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
     } while (!beginGame);
 }
 
-void standardSave() {
+void standardSave(int mapUsed){
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     char fileNames[99][49] =   {{"arquivos/map64x36.txt"},
-                                {"arquivos/map2.64x36.txt"}};
-    typeSave save;
+                                {"arquivos/map3.txt"}};
+    typeSave save, bufferSave;
     int i;
-    int numShur, numKeys;
+
+    switch (mapUsed){
+        case 0:
+            save.numKeys = 5;
+            save.numMobs = 5;
+            save.numShur = 5;
+            save.numChest = 5;
+        case 1:
+            save.numKeys = 10;
+            save.numMobs = 8;
+            save.numShur = 8;
+            save.numChest = 10;
+        case 2:
+            save.numKeys = 5;
+            save.numMobs = 5;
+            save.numShur = 5;
+            save.numChest = 5;
+    }
+
     save.player.x = 1;
     save.player.y = 1;
     save.player.direction = TORIGHT;
 
-    loadMap(mapMatrix, 0);
-
-    save.numKeys = 5;
-    save.numMobs = 5;
-    save.numShur = 5;
-    save.numChest = 5;
-
-    save.mapUsed = 0;
+    loadMap(mapMatrix, mapUsed);
+    save.mapUsed = mapUsed;
 
     for (i = 0; i < save.numMobs; i++){
         do{
@@ -355,18 +367,35 @@ void standardSave() {
         save.npc[i].shuriken.x = 0;
         save.npc[i].shuriken.y = 0;
     }
-    save.player.shuriken.throwing = 0;
-    save.player.fullHp = 5;
-    save.player.hp = 5;
-    save.player.armor = 0;
-    save.player.level = 0;
-    save.player.numKeys = 0;
-    save.player.numShur = 5;
-    save.player.xp = 0;
-    save.player.shurikenItem = 0;
-    save.player.invulnerable = 0;
 
-
+    if (mapUsed == 0){
+        save.player.shuriken.throwing = 0;
+        save.player.fullHp = 5;
+        save.player.hp = 5;
+        save.player.armor = 0;
+        save.player.level = 0;
+        save.player.numKeys = 0;
+        save.player.numShur = 5;
+        save.player.xp = 0;
+        save.player.shurikenItem = 0;
+        save.player.invulnerable = 0;
+    }
+    else{
+        if (saveFile = fopen("save.sav", "rb")){
+            fread(&bufferSave, sizeof(typeSave), 1, saveFile);
+            fclose(saveFile);
+            save.player.shuriken.throwing = bufferSave.player.shuriken.throwing;
+            save.player.fullHp = bufferSave.player.fullHp;
+            save.player.hp = bufferSave.player.hp;
+            save.player.armor = bufferSave.player.armor;
+            save.player.level = bufferSave.player.level;
+            save.player.numKeys = bufferSave.player.numKeys;
+            save.player.numShur = bufferSave.player.numShur;
+            save.player.xp = bufferSave.player.xp;
+            save.player.shurikenItem = bufferSave.player.shurikenItem;
+            save.player.invulnerable = bufferSave.player.invulnerable;
+        }
+    }
 
     for(i = 0; i < save.numMobs; i ++) {
         save.npc[i].hp = 1;
@@ -375,4 +404,5 @@ void standardSave() {
     if(saveFile = fopen("save.sav", "wb"))
         fwrite(&save, sizeof(save), 1, saveFile);
         fclose(saveFile);
+
 }
