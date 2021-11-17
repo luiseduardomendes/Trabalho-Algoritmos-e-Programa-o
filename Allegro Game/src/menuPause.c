@@ -1,7 +1,8 @@
 #include "headers.h"
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
-            int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[]) {
+            int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[],
+            int *playerLogout) {
     int selectioned = 0;
     enum options{resumeGame, saveGame, loadGame, exitGame};
 
@@ -56,8 +57,8 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
                             break;
                         case exitGame:
+                            *playerLogout = true;
                             *openMenu = false;
-                            *endOfGame = true;
                             break;
                         }
                     break;
@@ -83,6 +84,7 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
                             break;
                         case exitGame:
+                            *playerLogout = true;
                             *openMenu = false;
                             *endOfGame = true;
                             break;
@@ -401,8 +403,9 @@ void standardSave(int mapUsed){
         save.npc[i].hp = 1;
     }
 
-    if(saveFile = fopen("save.sav", "wb"))
+    if(saveFile = fopen("save.sav", "wb")){
         fwrite(&save, sizeof(save), 1, saveFile);
         fclose(saveFile);
+    }
 
 }

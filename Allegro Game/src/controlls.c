@@ -66,19 +66,18 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
 }
 
 void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur,
-                int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int *mapUsed, int *endOfLevel){
+                int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed, int *endOfLevel){
     al_init_acodec_addon();
     al_install_audio();
     switch (event.joystick.button){
         case CONTROL_BUTTON_A:
             break;
         case CONTROL_BUTTON_B:
-            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, &mapUsed, endOfLevel);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, mapUsed, endOfLevel);
             break;
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
             if (!playerPos->shuriken.throwing && playerPos->numShur > 0) {
-                //al_play_sample_instance(throwShurInst);
                 al_play_sample(throwShur, 0.5, 0.0, 0.75, ALLEGRO_PLAYMODE_ONCE, 0);
                 playerPos->numShur --;
                 playerPos->shuriken.throwing = true;
@@ -116,16 +115,14 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
             *openMenu = true;
             break;
         case CONTROL_BUTTON_L:
-            //printf("botao L3\n");
             break;
         case CONTROL_BUTTON_R:
-            //printf("botao R3\n");
             break;
     }
 }
 
 void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
-                         int numShur, int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int *mapUsed, int *endOfLevel) {
+                         int numShur, int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed, int *endOfLevel) {
     al_init_acodec_addon();
     al_install_audio();
     switch (event.keyboard.keycode){
@@ -217,7 +214,7 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             }
             break;
         case ALLEGRO_KEY_E:
-            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, &mapUsed, endOfLevel);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, mapUsed, endOfLevel);
             break;
     }
 }

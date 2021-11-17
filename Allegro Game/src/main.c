@@ -18,6 +18,7 @@ int main()
     t_chest chests[10];
     t_exit mapExit;
     int numChest;
+    int playerLogout = 0;
     typeSave save;
     typeItem items[MIN_ITEMS];
     int numShur, numKeys;
@@ -146,26 +147,38 @@ int main()
     /*_____________________________________________________________*/
     //menu iniciar
 
-    if(joystickFound){
-        menuIniciar(width, height, &endOfLevel, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
-                    &numKeys, &numChest, items, chests, mapMatrix);
-    }
-    else
-        menuIniciar(width, height, &endOfLevel, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
-                    &numKeys, &numChest, items, chests, mapMatrix);
+
     /*_____________________________________________________________*/
 
     do{
-        endOfLevel = 0;
-        loadMap(mapMatrix, mapUsed);
-        playerPos.numKeys = 4;
-        standardSave(mapUsed);
-        loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix);
+            printf("playerLogout: %d\n", playerLogout);
+        if (playerLogout){
+            al_clear_to_color(al_map_rgb(0,0,0));
+            if(joystickFound){
+                menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+                            &numKeys, &numChest, items, chests, mapMatrix);
+            }
+            else{
+                menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+                            &numKeys, &numChest, items, chests, mapMatrix);
+            }
+        }
+        else{
+            endOfLevel = 0;
+            printf("Mapa atual: %d\n", mapUsed);
+            loadMap(mapMatrix, mapUsed);
 
-        background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
+            standardSave(mapUsed);
+            loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix);
+            playerPos.numKeys = 4;
+            printf("Mapa atual: %d\n", mapUsed);
+            background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
+        }
 
-        while(!endOfLevel)
+
+        while(!endOfLevel && !playerLogout)
         {
+            playerLogout = 0;
             ALLEGRO_EVENT event;
             al_wait_for_event(events_queue, &event);
             //al_get_keyboard_state(&keyState);
@@ -299,10 +312,10 @@ int main()
             if (openMenu) {
                 if (joystickFound)
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos,
-                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
+                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
                 else
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
-                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests);
+                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
             }
             if (playerPos.hp == 0){
                 endOfLevel = 1;
@@ -318,6 +331,7 @@ int main()
             }
         }
         saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests);
+        printf("playerLogout: %d\n", playerLogout);
     }while(!endOfGame);
 
     al_uninstall_keyboard();

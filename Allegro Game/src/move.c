@@ -108,7 +108,7 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
-void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int **mapUsed, int *endOfLevel)
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int mapUsed, int *endOfLevel)
 {
     int i = 0;
 
@@ -118,9 +118,9 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
             switch (items[i].nameItems){
             case keys:
                 player->numKeys ++;
-                if(player->numKeys == numKeys)
+                if(player->numKeys >= numKeys)
                 {
-                    switch(**mapUsed){
+                    switch(mapUsed){
                         case 0:
                             mapExit->y = 20;
                             mapExit->x = 33;
@@ -149,7 +149,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 player->numKeys ++;
                 if(player->numKeys >= numKeys)
                 {
-                    switch(**mapUsed){
+                    switch(mapUsed){
                         case 0:
                             mapExit->y = 20;
                             mapExit->x = 33;
@@ -177,7 +177,6 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
         }
     }
     if (mapExit->x == player->x && mapExit->y == player->y && mapExit->onMap == 1){
-        **mapUsed++;
         *endOfLevel = 1;
     }
 }
@@ -250,7 +249,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
 }*/
 
 
-/* VERIFICA AS FUTURAS POSIÇÕES DA SHURIKEN. CASO O MOB ESTEJA NA MESMA LINHA DE UM PLAYER, E NÃO TIVER NENHUMA PAREDE ENTRE ELES, ELE IRÁ ATIRAR.
+/* VERIFICA AS FUTURAS POSIï¿½ï¿½ES DA SHURIKEN. CASO O MOB ESTEJA NA MESMA LINHA DE UM PLAYER, E Nï¿½O TIVER NENHUMA PAREDE ENTRE ELES, ELE IRï¿½ ATIRAR.
 int verifyShuriken(typePos *shuriken, typePos npcPos, typePos playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
 {
     int validPosition;
