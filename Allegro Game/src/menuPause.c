@@ -342,7 +342,7 @@ void standardSave(int mapUsed){
         do{
             save.npc[i].x = (1 + (rand() % (SIZEMAP_X-2)));
             save.npc[i].y = (1 + (rand() % (SIZEMAP_Y-2)));
-        } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL && ((save.npc[i].x < 7) && (save.npc[i].y < 7)));
+        } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL && ((save.npc[i].x < 10) && (save.npc[i].y < 10)));
         save.npc[i].alive = 1;
     }
 

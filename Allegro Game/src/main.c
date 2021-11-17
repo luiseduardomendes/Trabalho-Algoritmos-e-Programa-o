@@ -87,6 +87,12 @@ int main()
     ALLEGRO_BITMAP *chest = al_load_bitmap("assets/bau.png");
     ALLEGRO_BITMAP *openchest = al_load_bitmap("assets/bauaberto.png");
     ALLEGRO_BITMAP *trapdoor = al_load_bitmap("assets/trapdoor.png");
+    ALLEGRO_BITMAP *XPbarEmptyLeft = al_load_bitmap("assets/EXPbarEmptyLeft.png");
+    ALLEGRO_BITMAP *XPbarEmptyMid = al_load_bitmap("assets/EXPbarEmptyMid.png");
+    ALLEGRO_BITMAP *XPbarEmptyRight = al_load_bitmap("assets/EXPbarEmptyRight.png");
+    ALLEGRO_BITMAP *XPbarFullMid = al_load_bitmap("assets/EXPbarFullMid.png");
+    ALLEGRO_BITMAP *XPbarFullLeft = al_load_bitmap("assets/EXPbarFullLeft.png");
+    ALLEGRO_BITMAP *XPbarFullRight = al_load_bitmap("assets/EXPbarFullRight.png");
     ALLEGRO_BITMAP *miniMap = NULL;
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
@@ -259,6 +265,7 @@ int main()
                             al_draw_bitmap(openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                         }
                     }
+
                     if(mapExit.onMap == 1)
                     {
                         al_draw_bitmap(trapdoor, (mapExit.x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
@@ -312,6 +319,27 @@ int main()
                     al_draw_tinted_bitmap(miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
                         //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
 
+                    for (i = 0; i < playerPos.xp; i++)
+                    {
+                        if(i == 0)
+                            al_draw_bitmap(XPbarFullLeft, (i+1)*MAPSCALE*MULT, height - 40, 0);
+                        else if(i == 24)
+                            al_draw_bitmap(XPbarFullRight, (i+1)*MAPSCALE*MULT, height - 40, 0);
+                        else
+                            al_draw_bitmap(XPbarFullMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
+                    }
+
+                    for (i = playerPos.xp; i < 25; i++)
+                    {
+                        if(i == 0)
+                            al_draw_bitmap(XPbarEmptyLeft, (i+1)*MAPSCALE*MULT, height - 40, 0);
+                        else if(i == 24)
+                            al_draw_bitmap(XPbarEmptyRight, (i+1)*MAPSCALE*MULT, height - 40, 0);
+                        else
+                            al_draw_bitmap(XPbarEmptyMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
+                    }
+
+                    al_draw_textf(font48, al_map_rgb(102, 187, 106), (width - 200)/2, height-70, ALLEGRO_ALIGN_CENTER, "%d", playerPos.level);
 
 
                     al_flip_display();
