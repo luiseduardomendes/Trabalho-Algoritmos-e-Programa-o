@@ -23,7 +23,7 @@ void updateShurikenPlayer(t_player *player, t_npc npc[], int numMobs, char mapMa
         player->shuriken.x += player->shuriken.movex;
         player->shuriken.y += player->shuriken.movey;
         for (i = 0; i < numMobs; i ++){
-            if ((player->shuriken.x == npc[i].x) && (player->shuriken.y == npc[i].y)){
+            if ((player->shuriken.x == npc[i].x) && (player->shuriken.y == npc[i].y) && npc[i].alive){
                 npc[i].hp --;
                 if (npc[i].hp <= 0){
                     npc[i].alive = 0;

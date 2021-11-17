@@ -343,6 +343,7 @@ void standardSave(int mapUsed){
             save.npc[i].x = (7 + (rand() % (SIZEMAP_X-1)));
             save.npc[i].y = (7 + (rand() % (SIZEMAP_Y-1)));
         } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL);
+        save.npc.alive = 1;
     }
 
     for (i = 0; i < save.numShur; i++){

@@ -36,6 +36,7 @@
 #define MINIMAP_SCALE 3
 #define OPACITY 0.75
 #define TIME_INV 50
+#define MIN_XP_UP 25
 /*_____________________________________________________________*/
 
 enum directions{UP, DOWN, LEFT, RIGHT};
@@ -112,7 +113,7 @@ void npcMovement(t_npc infMob[], int numMobs, t_player playerPos, char mapMatrix
 
 void updateShurikenPos(typeShur* shuriken, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void updateShurikenPlayer(typeShur *shuriken, t_npc npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void updateShurikenPlayer(t_player *player, t_npc npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 void shurikenDir(t_npc *npc, t_player playerPos, ALLEGRO_SAMPLE* throwShur);
 
