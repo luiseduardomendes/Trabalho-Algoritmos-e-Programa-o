@@ -35,7 +35,7 @@
 #define MULT 2
 #define MINIMAP_SCALE 3
 #define OPACITY 0.75
-#define TIME_INV 30
+#define TIME_INV 50
 /*_____________________________________________________________*/
 
 enum directions{UP, DOWN, LEFT, RIGHT};
