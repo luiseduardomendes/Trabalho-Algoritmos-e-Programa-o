@@ -26,6 +26,8 @@ int main()
     const int width = SIZEMAP_X*MAPSCALE; //largura
     const int height = SIZEMAP_Y*MAPSCALE; //algura
     bool endOfGame = false, endOfLevel = false, openMenu = false;
+
+    srand(time(NULL));
     /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
