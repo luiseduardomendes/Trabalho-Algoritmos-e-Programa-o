@@ -12,6 +12,7 @@ int main()
     int i, j, k;
     int contador = 0;
     int mapUsed = 0;
+    int dialogClosed = 1;
     int joystickFound = 1;
     t_player playerPos;
     t_npc npcPos[NUM_MOBS];
@@ -151,15 +152,14 @@ int main()
     /*_____________________________________________________________*/
 
     do{
-            printf("playerLogout: %d\n", playerLogout);
         if (playerLogout){
             al_clear_to_color(al_map_rgb(0,0,0));
             if(joystickFound){
-                menuIniciar(width, height, &endOfGame, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+                menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
                             &numKeys, &numChest, items, chests, mapMatrix);
             }
             else{
-                menuIniciar(width, height, &endOfGame, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
+                menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
                             &numKeys, &numChest, items, chests, mapMatrix);
             }
         }
@@ -173,6 +173,8 @@ int main()
             playerPos.numKeys = 4;
             printf("Mapa atual: %d\n", mapUsed);
             background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
+
+            dialogClosed = 0;
         }
 
 
@@ -183,14 +185,16 @@ int main()
             al_wait_for_event(events_queue, &event);
             //al_get_keyboard_state(&keyState);
 
+
+
             if(event.type == ALLEGRO_EVENT_KEY_DOWN)
             {
-                playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, &mapUsed, &endOfLevel);
+                playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
             }
             if(joystickFound) {
                 if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                     //printf("Botao pressionado: %d\n", ev.joystick.button);
-                    buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, &mapUsed, &endOfLevel);
+                    buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
                 }
                 if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                     moveJoystick(event, &playerPos, &openMenu, mapMatrix);
@@ -297,25 +301,34 @@ int main()
                                        *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
                     al_draw_tinted_bitmap(miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
                         //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
-                    if (0){ // dialogo
+
+                    al_flip_display();
+
+                    while (!dialogClosed){ // dialogo
+
+                        if(event.type == ALLEGRO_EVENT_KEY_DOWN)
+                            if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
+                                dialogClosed = 1;
 
                         al_draw_bitmap(dialogBmp, width/5, height*1/2, 0);
                         al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
                         al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");
                         al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "da vila da folha");
                         al_draw_bitmap(narutoDialog, -70, height-433,0);
+                        al_flip_display();
+                        al_wait_for_event(events_queue, &event);
                     }
-                    al_flip_display();
+
                 }
             }
 
             if (openMenu) {
                 if (joystickFound)
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos,
-                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
+                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
                 else
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
-                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
+                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
             }
             if (playerPos.hp == 0){
                 endOfLevel = 1;
@@ -329,6 +342,9 @@ int main()
                     al_flip_display();
                 } while(!endOfGame);
             }
+        }
+        if (!playerLogout){
+            mapUsed ++;
         }
         saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests);
         printf("playerLogout: %d\n", playerLogout);

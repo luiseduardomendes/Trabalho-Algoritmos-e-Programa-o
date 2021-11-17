@@ -174,7 +174,7 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
     }
 }
 
-void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
+void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *playerLogout, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
             int *numShur, int *numKeys, int *numChest, typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int selectioned = 0, beginGame = 0;
@@ -227,11 +227,15 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
                             *endOfGame = false;
                             standardSave(0);
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            *playerLogout = 0;
+                            *endOfLevel = 0;
                             break;
                         case loadGame:
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
                             beginGame = true;
                             *endOfGame = false;
+                            *playerLogout = 0;
+                            *endOfLevel = 0;
                             break;
                         case credits:
                             break;
@@ -258,11 +262,15 @@ void menuIniciar(int width, int height, bool *endOfGame, ALLEGRO_DISPLAY *displa
                             *endOfGame = false;
                             standardSave(0);
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            *playerLogout = 0;
+                            *endOfLevel = 0;
                             break;
                         case loadGame:
                             loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
                             beginGame = true;
                             *endOfGame = false;
+                            *playerLogout = 0;
+                            *endOfLevel = 0;
                             break;
                         case credits:
                             break;

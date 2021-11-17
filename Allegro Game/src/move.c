@@ -118,6 +118,9 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
             switch (items[i].nameItems){
             case keys:
                 player->numKeys ++;
+                printf("numKeys: %d\n", numKeys);
+                printf("PlayerNumKeys: %d\n", player->numKeys);
+                printf("mapUsed: %d", mapUsed);
                 if(player->numKeys >= numKeys)
                 {
                     switch(mapUsed){
@@ -147,7 +150,9 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 break;
             case keys:
                 player->numKeys ++;
-                if(player->numKeys >= numKeys)
+                printf("numKeys: %d\n", numKeys);
+                printf("PlayerNumKeys: %d\n", player->numKeys);
+                if(player->numKeys == numKeys)
                 {
                     switch(mapUsed){
                         case 0:
