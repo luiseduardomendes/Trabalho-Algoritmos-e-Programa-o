@@ -682,10 +682,10 @@
 1636398322 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\teste.c
 	"headers.h"
 
-1636598537 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\src\attacks.c
+1637115239 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\src\attacks.c
 	"headers.h"
 
-1637112829 c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\src\headers.h
+1637115239 c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\src\headers.h
 	<stdio.h>
 	<math.h>
 	<stdlib.h>
@@ -701,7 +701,7 @@
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_audio.h>
 
-1637112829 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\src\controlls.c
+1637115239 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\src\controlls.c
 	"headers.h"
 
 1636587047 source:c:\users\eduar\onedrive\documents\trabalhos ufrgs\algoritmos e programação\trabalhos\trabalho final\trabalho-algoritmos-e-programa-o\allegro game\src\draw.c

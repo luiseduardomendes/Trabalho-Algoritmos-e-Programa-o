@@ -8,9 +8,12 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
             if (verifyPosition(playerPos->x, playerPos->y, TORIGHT, mapMatrix)) {
                 playerPos->x ++;
                 playerPos->direction = RIGHT;
-                if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                    playerPos->hp --;
-                    playerPos->invulnerable = 5;
+                if(mapMatrix[playerPos->y][playerPos->x] == 'X'){
+                    if(playerPos->invulnerable == 0)
+                    {
+                        playerPos->hp --;
+                        playerPos->invulnerable = TIME_INV;
+                    }
                 }
             }
         }
@@ -20,8 +23,11 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
                     playerPos->x --;
                     playerPos->direction = LEFT;
                     if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                        playerPos->hp --;
-                        playerPos->invulnerable = 5;
+                        if(playerPos->invulnerable == 0)
+                        {
+                            playerPos->hp --;
+                            playerPos->invulnerable = TIME_INV;
+                        }
                     }
                 }
 
@@ -34,8 +40,11 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
                     playerPos->y ++;
                     playerPos->direction = DOWN;
                     if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                        playerPos->hp --;
-                        playerPos->invulnerable = 5;
+                        if(playerPos->invulnerable == 0)
+                        {
+                            playerPos->hp --;
+                            playerPos->invulnerable = TIME_INV;
+                        }
                     }
                 }
             break;
@@ -44,8 +53,11 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
                     playerPos->y --;
                     playerPos->direction = UP;
                     if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                        playerPos->hp --;
-                        playerPos->invulnerable = 5;
+                        if(playerPos->invulnerable == 0)
+                        {
+                            playerPos->hp --;
+                            playerPos->invulnerable = TIME_INV;
+                        }
                     }
                 }
             break;
@@ -123,8 +135,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->y --;
                 playerPos->direction = UP;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                    playerPos->hp --;
-                    playerPos->invulnerable = 5;
+                        if(playerPos->invulnerable == 0)
+                        {
+                            playerPos->hp --;
+                            playerPos->invulnerable = TIME_INV;
+                        }
                 }
             }
             break;
@@ -134,8 +149,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->y ++;
                 playerPos->direction = DOWN;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                    playerPos->hp --;
-                    playerPos->invulnerable = 5;
+                        if(playerPos->invulnerable == 0)
+                        {
+                            playerPos->hp --;
+                            playerPos->invulnerable = TIME_INV;
+                        }
                 }
             }
             break;
@@ -145,8 +163,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->x --;
                 playerPos->direction = LEFT;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                    playerPos->hp --;
-                    playerPos->invulnerable = 5;
+                        if(playerPos->invulnerable == 0)
+                        {
+                            playerPos->hp --;
+                            playerPos->invulnerable = TIME_INV;
+                        }
                 }
             }
             break;
@@ -156,8 +177,11 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 playerPos->x ++;
                 playerPos->direction = RIGHT;
                 if(mapMatrix[playerPos->y][playerPos->x] == 'X') {
-                    playerPos->hp --;
-                    playerPos->invulnerable = 5;
+                        if(playerPos->invulnerable == 0)
+                        {
+                            playerPos->hp --;
+                            playerPos->invulnerable = TIME_INV;
+                        }
                 }
             }
             break;
