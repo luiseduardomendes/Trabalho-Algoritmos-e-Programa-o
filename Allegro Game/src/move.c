@@ -108,10 +108,12 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
-void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int *mapUsed, int *endOfLevel)
+int checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int **mapUsed, int *endOfLevel)
 {
     int i = 0;
+    int aux = **mapUsed;
 
+    printf("\n\nc%d\n\n", **mapUsed);
 
     for (i = 0; i < numShur + numKeys; i ++){
         if(items[i].x == player->x && items[i].y == player->y && items[i].onMap == 1){
@@ -121,7 +123,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 player->numKeys ++;
                 if(player->numKeys == numKeys)
                 {
-                    switch(*mapUsed){
+                    switch(**mapUsed){
                         case 0:
                             mapExit->y = 20;
                             mapExit->x = 33;
@@ -150,7 +152,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 {
 
 
-                    switch(*mapUsed){
+                    switch(**mapUsed){
                         case 0:
                             mapExit->y = 20;
                             mapExit->x = 33;
@@ -177,10 +179,12 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
             chests[i].closed = 0;
         }
         if (mapExit->x == player->x && mapExit->y == player->y && mapExit->onMap == 1){
-            *mapUsed = *mapUsed + 1;
+            aux++;
             *endOfLevel = 1;
         }
     }
+    printf("\n\nf%d\n\n", aux);
+    return aux;
 }
 //void playerMovement(typePos *playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound)
 /*{

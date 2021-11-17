@@ -643,7 +643,7 @@
 1636658527 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\attacks.c
 	"headers.h"
 
-1637108384 d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\headers.h
+1637110558 d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\headers.h
 	<stdio.h>
 	<math.h>
 	<stdlib.h>
@@ -659,22 +659,22 @@
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_audio.h>
 
-1637092790 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\controlls.c
+1637110558 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\controlls.c
 	"headers.h"
 
 1636658527 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\draw.c
 	"headers.h"
 
-1637108118 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\main.c
+1637110679 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\main.c
 	"headers.h"
 
-1637024601 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\maps.c
+1637109964 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\maps.c
 	"headers.h"
 
 1637092790 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\menupause.c
 	"headers.h"
 
-1637107938 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\move.c
+1637110558 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\move.c
 	"headers.h"
 
 1636398322 source:d:\documentos\github\trabalho-algoritmos-e-programa-o\allegro game\src\sfx.c
