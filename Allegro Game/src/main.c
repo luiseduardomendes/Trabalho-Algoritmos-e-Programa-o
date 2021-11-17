@@ -181,17 +181,15 @@ int main()
                     moveJoystick(event, &playerPos, &openMenu, mapMatrix);
                 }
             }
-            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
                 endOfGame = true;
+                endOfLevel = true;
+            }
             if(event.type == ALLEGRO_EVENT_TIMER)
             {
                 if(event.timer.source == mobTimer)
                 {
                     npcMovement(npcPos, numMobs, playerPos, mapMatrix);
-                    if(playerPos.invulnerable > 0){
-                        playerPos.invulnerable --;
-                    }
-
                 }
                 if(event.timer.source == shurTimer)
                 {
@@ -209,7 +207,9 @@ int main()
                     createMiniMap(mapMatrix, &miniMap, display, playerPos);
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     al_draw_bitmap(background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
-
+                    if(playerPos.invulnerable > 0){
+                        playerPos.invulnerable --;
+                    }
                     for (i = 0; i < playerPos.hp; i++)
                         al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
                     for (i = playerPos.hp; i < playerPos.fullHp; i ++)

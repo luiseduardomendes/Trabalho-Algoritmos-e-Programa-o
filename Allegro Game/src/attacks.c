@@ -6,7 +6,7 @@ void updateShurikenPos(typeShur *shuriken, t_player *player, char mapMatrix[SIZE
         shuriken->y += shuriken->movey;
         if (shuriken->x == player->x && shuriken->y == player->y && player->invulnerable == 0){
             player->hp --;
-            player->invulnerable = 5;
+            player->invulnerable = 30;
             shuriken->throwing = false;
         }
         if (shuriken->x > SIZEMAP_X || shuriken->x < 0 || shuriken->y > SIZEMAP_Y || shuriken->y < 0)
