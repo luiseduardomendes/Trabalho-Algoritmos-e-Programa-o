@@ -6,21 +6,24 @@ void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP
 
     for (i = 0; i < numMobs; i++)
     {
-        switch(npcPos[i].direction){
-            case UP:
-                al_draw_bitmap(enemyback, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                break;
-            case DOWN:
-                al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                break;
-            case LEFT:
-                al_draw_bitmap(enemyleft, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                break;
-            case RIGHT:
-                al_draw_bitmap(enemyright, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                break;
-            default:
-                al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X)/(2*MULT)*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+        if(npcPos[i].alive)
+        {
+            switch(npcPos[i].direction){
+                case UP:
+                    al_draw_bitmap(enemyback, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    break;
+                case DOWN:
+                    al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    break;
+                case LEFT:
+                    al_draw_bitmap(enemyleft, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    break;
+                case RIGHT:
+                    al_draw_bitmap(enemyright, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    break;
+                default:
+                    al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X)/(2*MULT)*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+            }
         }
     }
 }

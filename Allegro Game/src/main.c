@@ -224,7 +224,7 @@ int main()
                     }
                 }
 
-                if(player.xp >= MIN_XP_UP){
+                if(playerPos.xp >= MIN_XP_UP){
                     levelUp(&playerPos);
                 }
 

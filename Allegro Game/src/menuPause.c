@@ -340,36 +340,36 @@ void standardSave(int mapUsed){
 
     for (i = 0; i < save.numMobs; i++){
         do{
-            save.npc[i].x = (7 + (rand() % (SIZEMAP_X-1)));
-            save.npc[i].y = (7 + (rand() % (SIZEMAP_Y-1)));
-        } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL);
-        save.npc.alive = 1;
+            save.npc[i].x = (1 + (rand() % (SIZEMAP_X-2)));
+            save.npc[i].y = (1 + (rand() % (SIZEMAP_Y-2)));
+        } while (mapMatrix[save.npc[i].y][save.npc[i].x] == WALL && ((save.npc[i].x < 7) && (save.npc[i].y < 7)));
+        save.npc[i].alive = 1;
     }
 
     for (i = 0; i < save.numShur; i++){
         do{
             save.object[i].nameItems = shur;
             save.object[i].onMap = 1;
-            save.object[i].x = (7 + (rand() % (SIZEMAP_X-1)));
-            save.object[i].y = (7 + (rand() % (SIZEMAP_Y-1)));
-        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
+            save.object[i].x = (1 + (rand() % (SIZEMAP_X-2)));
+            save.object[i].y = (1 + (rand() % (SIZEMAP_Y-2)));
+        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL || mapMatrix[save.object[i].y][save.object[i].x] == 'X');
     }
 
     for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
         do{
             save.object[i].nameItems = keys;
             save.object[i].onMap = 1;
-            save.object[i].x = (7 + (rand() % (SIZEMAP_X-1)));
-            save.object[i].y = (7 + (rand() % (SIZEMAP_Y-1)));
-        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
+            save.object[i].x = (1 + (rand() % (SIZEMAP_X-2)));
+            save.object[i].y = (1 + (rand() % (SIZEMAP_Y-2)));
+        } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL || mapMatrix[save.object[i].y][save.object[i].x] == 'X');
     }
     for (i = 0; i < save.numChest; i ++){
         do {
             save.chestItem[i].closed = 1;
             save.chestItem[i].itemStore = (rand() % 4);
-            save.chestItem[i].x = (7 + (rand() % (SIZEMAP_X-1)));
-            save.chestItem[i].y = (7 + (rand() % (SIZEMAP_Y-1)));
-        }while (mapMatrix[save.object[i].y][save.object[i].x] == WALL);
+            save.chestItem[i].x = (1 + (rand() % (SIZEMAP_X-2)));
+            save.chestItem[i].y = (1 + (rand() % (SIZEMAP_Y-2)));
+        }while (mapMatrix[save.chestItem[i].y][save.chestItem[i].x] == WALL || mapMatrix[save.chestItem[i].y][save.chestItem[i].x] == 'X');
     }
 
     for (i = 0; i < save.numMobs; i ++){
