@@ -308,6 +308,7 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
 void standardSave(int mapUsed){
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
     char fileNames[99][49] =   {{"arquivos/map64x36.txt"},
+                                {"arquivos/mapa2.64x36.txt"},
                                 {"arquivos/map3.txt"}};
     typeSave save, bufferSave;
     int i;
