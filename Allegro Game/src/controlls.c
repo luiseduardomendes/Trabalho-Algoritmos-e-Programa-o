@@ -61,7 +61,7 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
         case CONTROL_BUTTON_A:
             break;
         case CONTROL_BUTTON_B:
-            *mapUsed = checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, &mapUsed, endOfLevel);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, &mapUsed, endOfLevel);
             break;
         case CONTROL_BUTTON_X:
             //printf("botao X\n");
@@ -193,7 +193,7 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             }
             break;
         case ALLEGRO_KEY_E:
-            *mapUsed = checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, &mapUsed, endOfLevel);
+            checkKeyShur(playerPos, items, mapMatrix, numShur, numKeys, numChest, chests, mapExit, &mapUsed, endOfLevel);
             break;
     }
 }

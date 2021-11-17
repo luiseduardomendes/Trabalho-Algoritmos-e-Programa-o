@@ -128,7 +128,7 @@ void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_pl
 
 void playerMovement(t_player playerPos, ALLEGRO_EVENT event, char mapMatrix[][SIZEMAP_X], int joystickFound);
 
-int checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int **mapUsed, int *endOfLevel);
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int **mapUsed, int *endOfLevel);
 
 void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft, ALLEGRO_BITMAP *enemyright, t_player playerPos);
 
