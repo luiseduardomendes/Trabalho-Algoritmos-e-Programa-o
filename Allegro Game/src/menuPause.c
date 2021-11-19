@@ -2,7 +2,7 @@
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
             int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[],
-            int *playerLogout) {
+            int *playerLogout, t_boss *boss) {
     int selectioned = 0;
     enum options{resumeGame, saveGame, loadGame, exitGame};
 
@@ -51,10 +51,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, *numChest, items, chests);
+                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, *numChest, items, chests, *boss);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
                             break;
                         case exitGame:
                             *playerLogout = true;
@@ -78,10 +78,10 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, *numChest, items, chests);
+                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, *numChest, items, chests, *boss);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
                             break;
                         case exitGame:
                             *playerLogout = true;
@@ -115,7 +115,7 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
 }
 
 int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, int numChest,
-                  typeItem items[], t_chest chests[]) {
+                  typeItem items[], t_chest chests[], t_boss boss) {
     int k, flag = 1;
     typeSave save;
     save.mapUsed = mapUsed;
@@ -135,6 +135,10 @@ int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, 
 
     save.player = playerPos;
 
+
+    save.boss = boss;
+
+
     saveFile = fopen("save.sav", "wb");
     if (saveFile == NULL)
         flag = 0;
@@ -147,7 +151,7 @@ int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, 
 }
 
 void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, int *numChest,
-              typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+              typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_boss *boss) {
     typeSave save;
     int k;
     loadMap(mapMatrix, *mapUsed);
@@ -170,13 +174,16 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
         for (k = 0; k < *numChest; k ++){
             chests[k] = save.chestItem[k];
         }
+
+        *boss = save.boss;
+
         *playerPos = save.player;
     }
 }
 
 void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *playerLogout, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
-            int *numShur, int *numKeys, int *numChest, typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+            int *numShur, int *numKeys, int *numChest, typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_boss *boss){
     int selectioned = 0, beginGame = 0;
     enum options{newGame, loadGame, credits, exitGame};
 
@@ -226,12 +233,12 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                             beginGame = true;
                             *endOfGame = false;
                             standardSave(0);
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
                             *playerLogout = 0;
                             *endOfLevel = 0;
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
                             beginGame = true;
                             *endOfGame = false;
                             *playerLogout = 0;
@@ -261,12 +268,12 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                             beginGame = true;
                             *endOfGame = false;
                             standardSave(0);
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
                             *playerLogout = 0;
                             *endOfLevel = 0;
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix);
+                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
                             beginGame = true;
                             *endOfGame = false;
                             *playerLogout = 0;
@@ -337,6 +344,19 @@ void standardSave(int mapUsed){
 
     loadMap(mapMatrix, mapUsed);
     save.mapUsed = mapUsed;
+
+    save.boss.alive = 1;
+    save.boss.fullHp = 10;
+    save.boss.hp = 10;
+    save.boss.x = 32;
+    save.boss.y = 18;
+    for (i = 0; i < 8; i ++){
+        save.boss.shurikens[i].movex = 0;
+        save.boss.shurikens[i].movey = 0;
+        save.boss.shurikens[i].throwing = 0;
+        save.boss.shurikens[i].x = 0;
+        save.boss.shurikens[i].y = 0;
+    }
 
     for (i = 0; i < save.numMobs; i++){
         do{

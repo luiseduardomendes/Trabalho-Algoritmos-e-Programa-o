@@ -88,6 +88,13 @@ typedef struct {
     int onMap;
 }t_exit;
 
+typedef struct {
+    int x, y;
+    typeShur shurikens[8];
+    int hp, fullHp;
+    int alive;
+}t_boss;
+
 typedef struct save{
     t_player player;
     t_npc npc[25];
@@ -98,7 +105,10 @@ typedef struct save{
     int numShur;
     int numKeys;
     int numChest;
+    t_boss boss;
 }typeSave;
+
+
 
 
 /*_____________________________________________________________*/
@@ -119,13 +129,14 @@ void shurikenDir(t_npc *npc, t_player playerPos, ALLEGRO_SAMPLE* throwShur);
 
 void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
-            int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[], int *playerLogout);
+            int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[],
+            int *playerLogout, t_boss *boss);
 
 int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, int numChest,
-                  typeItem items[], t_chest chests[]);
+                  typeItem items[], t_chest chests[], t_boss boss);
 
 void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, int *numChest,
-              typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+              typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_boss *boss);
 
 void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_player playerPos);
 

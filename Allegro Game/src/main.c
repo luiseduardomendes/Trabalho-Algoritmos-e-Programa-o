@@ -17,6 +17,7 @@ int main()
     t_player playerPos;
     t_npc npcPos[NUM_MOBS];
     t_chest chests[10];
+    t_boss boss;
     t_exit mapExit;
     int numChest;
     int playerLogout = 0;
@@ -162,11 +163,11 @@ int main()
             al_clear_to_color(al_map_rgb(0,0,0));
             if(joystickFound){
                 menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
-                            &numKeys, &numChest, items, chests, mapMatrix);
+                            &numKeys, &numChest, items, chests, mapMatrix, &boss);
             }
             else{
                 menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
-                            &numKeys, &numChest, items, chests, mapMatrix);
+                            &numKeys, &numChest, items, chests, mapMatrix, &boss);
             }
         }
         else{
@@ -175,7 +176,7 @@ int main()
             loadMap(mapMatrix, mapUsed);
 
             standardSave(mapUsed);
-            loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix);
+            loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix, &boss);
             playerPos.numKeys = 4;
 
             background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
@@ -365,10 +366,10 @@ int main()
             if (openMenu) {
                 if (joystickFound)
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos,
-                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
+                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout, &boss);
                 else
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
-                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout);
+                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout, &boss);
             }
             if (playerPos.hp == 0){
                 endOfLevel = 1;
@@ -386,8 +387,7 @@ int main()
         if (!playerLogout){
             mapUsed ++;
         }
-        saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests);
-        printf("playerLogout: %d\n", playerLogout);
+        saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, boss);
     }while(!endOfGame);
 
     al_destroy_display(display);
