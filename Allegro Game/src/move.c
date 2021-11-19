@@ -80,15 +80,19 @@ void npcMovement(t_npc mobPos[], int numMobs, t_player *playerPos, char mapMatri
                     }
                 } while (!moved);
             }
-            if(mobPos[i].x == playerPos->x && mobPos[i].x == playerPos->x && !playerPos->invulnerable)
-                playerPos->hp --;
+            if(mobPos[i].x == playerPos->x && mobPos[i].y == playerPos->y && !playerPos->invulnerable)
+                if(playerPos->invulnerable == 0)
+                {
+                    playerPos->hp --;
+                    playerPos->invulnerable = TIME_INV;
+                }
         }
     }
 }
 
 void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int flagMov, moved;
-    srand(time(NULL));
+    //srand(time(NULL));
 
     do {
         flagMov = (rand() % 4);
@@ -131,8 +135,12 @@ void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_
                 }
                 break;
         }
-        if(boss->x == player->x && boss->x == player->x && !player->invulnerable)
-            player->hp --;
+        if(boss->x == player->x && boss->y == player->y && !player->invulnerable)
+            if(player->invulnerable == 0)
+            {
+                player->hp --;
+                player->invulnerable = TIME_INV;
+            }
     } while (!moved);
 
 

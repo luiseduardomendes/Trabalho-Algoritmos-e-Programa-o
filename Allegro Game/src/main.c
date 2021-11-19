@@ -218,7 +218,7 @@ int main()
                 if(event.timer.source == mobTimer)
                 {
                     npcMovement(npcPos, numMobs, &playerPos, mapMatrix);
-                    moveBoss(&boss, &playerPos, mapMatrix);
+                    //moveBoss(&boss, &playerPos, mapMatrix);
                 }
 
                 if(event.timer.source == shurTimer)
