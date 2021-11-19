@@ -345,17 +345,35 @@ void standardSave(int mapUsed){
     loadMap(mapMatrix, mapUsed);
     save.mapUsed = mapUsed;
 
-    save.boss.alive = 1;
-    save.boss.fullHp = 10;
-    save.boss.hp = 10;
-    save.boss.x = 32;
-    save.boss.y = 18;
-    for (i = 0; i < 8; i ++){
-        save.boss.shurikens[i].movex = 0;
-        save.boss.shurikens[i].movey = 0;
-        save.boss.shurikens[i].throwing = 0;
-        save.boss.shurikens[i].x = 0;
-        save.boss.shurikens[i].y = 0;
+    if(mapUsed == 2){
+        save.boss.alive = 1;
+        save.boss.fullHp = 10;
+        save.boss.hp = 10;
+        save.boss.x = 32;
+        save.boss.y = 18;
+        save.boss.direction = RIGHT;
+        for (i = 0; i < 8; i ++){
+            save.boss.shurikens[i].movex = 0;
+            save.boss.shurikens[i].movey = 0;
+            save.boss.shurikens[i].throwing = 0;
+            save.boss.shurikens[i].x = 0;
+            save.boss.shurikens[i].y = 0;
+        }
+    }
+    else{
+        save.boss.alive = 0;
+        save.boss.fullHp = 0;
+        save.boss.hp = 0;
+        save.boss.x = 0;
+        save.boss.y = 0;
+        save.boss.direction = RIGHT;
+        for (i = 0; i < 8; i ++){
+            save.boss.shurikens[i].movex = 0;
+            save.boss.shurikens[i].movey = 0;
+            save.boss.shurikens[i].throwing = 0;
+            save.boss.shurikens[i].x = 0;
+            save.boss.shurikens[i].y = 0;
+        }
     }
 
     for (i = 0; i < save.numMobs; i++){

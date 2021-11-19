@@ -90,6 +90,7 @@ typedef struct {
 
 typedef struct {
     int x, y;
+    int direction;
     typeShur shurikens[8];
     int hp, fullHp;
     int alive;
@@ -119,7 +120,7 @@ FILE *saveFile;
 
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void npcMovement(t_npc infMob[], int numMobs, t_player playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void npcMovement(t_npc infMob[], int numMobs, t_player* playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 void updateShurikenPos(typeShur* shuriken, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 

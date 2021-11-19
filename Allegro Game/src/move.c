@@ -1,6 +1,6 @@
 #include "headers.h"
 // Procedure to control the movement of the enemies
-void npcMovement(t_npc mobPos[], int numMobs, t_player playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
+void npcMovement(t_npc mobPos[], int numMobs, t_player *playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
     int flagMov, moved;
     int i;
 
@@ -10,8 +10,8 @@ void npcMovement(t_npc mobPos[], int numMobs, t_player playerPos, char mapMatrix
 
     for (i = 0; i < numMobs; i ++){
         if(mobPos[i].alive){
-            if (fabs(playerPos.x - mobPos[i].x) < RANGEVIEWMOB && fabs(playerPos.y - mobPos[i].y) < RANGEVIEWMOB){
-                if (playerPos.x > mobPos[i].x){
+            if (fabs(playerPos->x - mobPos[i].x) < RANGEVIEWMOB && fabs(playerPos->y - mobPos[i].y) < RANGEVIEWMOB){
+                if (playerPos->x > mobPos[i].x){
                     if (verifyPosition(mobPos[i].x, mobPos[i].y, TORIGHT, mapMatrix)) {
                         mobPos[i].x ++;
                         mobPos[i].direction = RIGHT;
@@ -23,7 +23,7 @@ void npcMovement(t_npc mobPos[], int numMobs, t_player playerPos, char mapMatrix
                         mobPos[i].direction = LEFT;
                     }
                 }
-                if (playerPos.y > mobPos[i].y){
+                if (playerPos->y > mobPos[i].y){
                     if (verifyPosition(mobPos[i].x, mobPos[i].y, TODOWN, mapMatrix)) {
                         mobPos[i].y ++;
                         mobPos[i].direction = DOWN;
@@ -80,8 +80,63 @@ void npcMovement(t_npc mobPos[], int numMobs, t_player playerPos, char mapMatrix
                     }
                 } while (!moved);
             }
+            if(mobPos[i].x == playerPos->x && mobPos[i].x == playerPos->x && !playerPos->invulnerable)
+                playerPos->hp --;
         }
     }
+}
+
+void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+    int flagMov, moved;
+    srand(time(NULL));
+
+    do {
+        flagMov = (rand() % 4);
+        moved = 1;
+        switch (flagMov) {
+            case 0:
+                if (verifyPosition(boss->x, boss->y, TORIGHT, mapMatrix)){
+                    boss->x ++;
+                    boss->direction = RIGHT;
+                }
+                else{
+                    moved = 0;
+                }
+                break;
+            case 1:
+                if (verifyPosition(boss->x, boss->y, TOUP, mapMatrix)){
+                    boss->y --;
+                    boss->direction = UP;
+                }
+                else{
+                    moved = 0;
+                }
+                break;
+            case 2:
+                if (verifyPosition(boss->x, boss->y, TOLEFT, mapMatrix)){
+                    boss->x --;
+                    boss->direction = LEFT;
+                }
+                else{
+                    moved = 0;
+                }
+                break;
+            case 3:
+                if (verifyPosition(boss->x, boss->y, TODOWN, mapMatrix)){
+                    boss->y ++;
+                    boss->direction = DOWN;
+                }
+                else{
+                    moved = 0;
+                }
+                break;
+        }
+        if(boss->x == player->x && boss->x == player->x && !player->invulnerable)
+            player->hp --;
+    } while (!moved);
+
+
+
 }
 
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {

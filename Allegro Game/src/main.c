@@ -194,6 +194,7 @@ int main()
 
 
 
+
             if(event.type == ALLEGRO_EVENT_KEY_DOWN)
             {
                 playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
@@ -211,12 +212,15 @@ int main()
                 endOfGame = true;
                 endOfLevel = true;
             }
+
             if(event.type == ALLEGRO_EVENT_TIMER)
             {
                 if(event.timer.source == mobTimer)
                 {
-                    npcMovement(npcPos, numMobs, playerPos, mapMatrix);
+                    npcMovement(npcPos, numMobs, &playerPos, mapMatrix);
+                    moveBoss(&boss, &playerPos, mapMatrix);
                 }
+
                 if(event.timer.source == shurTimer)
                 {
                     updateShurikenPlayer(&playerPos, npcPos, numMobs, mapMatrix);//Player shuriken
@@ -235,6 +239,7 @@ int main()
                     levelUp(&playerPos);
                 }
 
+
                 if(event.timer.source == timer)
                 {
                     createMiniMap(mapMatrix, &miniMap, display, playerPos);
@@ -243,6 +248,10 @@ int main()
                     if(playerPos.invulnerable > 0){
                         playerPos.invulnerable --;
                     }
+                    if (boss.alive){
+                        al_draw_filled_rectangle((boss.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, (boss.x - playerPos.x +1+ SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y+1 + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, al_map_rgb(255,255,0));
+                    }
+
                     for (i = 0; i < playerPos.hp; i++)
                         al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
                     for (i = playerPos.hp; i < playerPos.fullHp; i ++)
@@ -271,6 +280,7 @@ int main()
                     {
                         al_draw_bitmap(trapdoor, (mapExit.x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                     }
+
 
                     drawMobs(npcPos, numMobs, enemy, enemyback, enemyleft, enemyright, playerPos);
                     drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
@@ -371,6 +381,7 @@ int main()
                     showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
                             &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout, &boss);
             }
+
             if (playerPos.hp == 0){
                 endOfLevel = 1;
                 do{
