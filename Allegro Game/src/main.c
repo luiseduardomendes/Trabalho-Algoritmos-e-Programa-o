@@ -9,6 +9,7 @@ int main()
     int numMobs = 4;
     int mobRate = 2;
     int shurRate = 12;
+    int throwShurRate = 2;
     int i, j, k;
     int contador = 0;
     int mapUsed = 0;
@@ -129,13 +130,15 @@ int main()
     /*_____________________________________________________________*/
     // controle de tempo
 
-    ALLEGRO_TIMER *timer, *mobTimer, *shurTimer;
+    ALLEGRO_TIMER *timer, *mobTimer, *shurTimer, *throwShurTimer;
     timer = al_create_timer(1.0/frameRate);
     al_start_timer(timer);
     mobTimer = al_create_timer(1.0/mobRate);
     al_start_timer(mobTimer);
     shurTimer = al_create_timer(1.0/shurRate);
     al_start_timer(shurTimer);
+    throwShurTimer = al_create_timer(1.0/throwShurRate);
+    al_start_timer(throwShurTimer);
     /*_____________________________________________________________*/
 
 
@@ -149,6 +152,7 @@ int main()
     al_register_event_source(events_queue, al_get_timer_event_source(timer));
     al_register_event_source(events_queue, al_get_timer_event_source(mobTimer));
     al_register_event_source(events_queue, al_get_timer_event_source(shurTimer));
+    al_register_event_source(events_queue, al_get_timer_event_source(throwShurTimer));
     al_register_event_source(events_queue, al_get_joystick_event_source());
     /*_____________________________________________________________*/
 
@@ -221,6 +225,14 @@ int main()
                     //moveBoss(&boss, &playerPos, mapMatrix);
                 }
 
+                if(event.timer.source == throwShurTimer)
+                {
+                    for (i = 0; i < numMobs; i ++){
+                        if (npcPos[i].alive)
+                            if (!npcPos[i].shuriken.throwing)
+                                shurikenDir(&npcPos[i], playerPos, throwShur);
+                    }
+                }
                 if(event.timer.source == shurTimer)
                 {
                     updateShurikenPlayer(&playerPos, npcPos, numMobs, mapMatrix);//Player shuriken
@@ -228,9 +240,6 @@ int main()
                         if (npcPos[i].alive) {
                             if (npcPos[i].shuriken.throwing)
                                 updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
-                            else{
-                                shurikenDir(&npcPos[i], playerPos, throwShur);
-                            }
                         }
                     }
                 }
@@ -406,6 +415,7 @@ int main()
     al_destroy_timer(timer);
     al_destroy_timer(mobTimer);
     al_destroy_timer(shurTimer);
+    al_destroy_timer(throwShurTimer);
     al_destroy_bitmap(naruto);
     al_destroy_bitmap(shurikenDraw);
     al_destroy_bitmap(spikes);
