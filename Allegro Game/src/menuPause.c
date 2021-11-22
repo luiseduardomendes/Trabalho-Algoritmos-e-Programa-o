@@ -248,6 +248,7 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                             }
                             break;
                         case credits:
+                            creditFunction(width, height, display, events_queue, joy);
                             break;
                         case exitGame:
                             beginGame = true;
@@ -286,6 +287,7 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                             }
                             break;
                         case credits:
+                            creditFunction();
                             break;
                         case exitGame:
                             beginGame = true;
@@ -462,4 +464,30 @@ void standardSave(int mapUsed){
         fclose(saveFile);
     }
 
+}
+
+void creditFunction(int width, int height, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy){
+
+    int creditScreen = 0;
+    ALLEGRO_EVENT ev;
+    al_init_font_addon();
+    al_init_ttf_addon();
+    ALLEGRO_FONT* font20 = al_load_ttf_font("fonts/fonte.ttf", 40, 0);
+
+    al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
+    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*4.5/16, ALLEGRO_ALIGN_CENTER, "Creditos");
+    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Luis Eduardo Mendes");
+    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Eduardo Bolson");
+    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Vinicius Boff Alves");
+    //al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*12.5/16, ALLEGRO_ALIGN_CENTER, "O Mestre rlam12"); Salvador do nosso código e sanidade via stack overflow.
+
+    al_flip_display();
+
+    do{
+        al_wait_for_event(events_queue, &ev);
+
+        if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
+            if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER)
+                    creditScreen = 1;
+    }while(creditScreen != 1);
 }
