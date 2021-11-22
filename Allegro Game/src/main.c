@@ -175,6 +175,7 @@ int main()
                 menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
                             &numKeys, &numChest, items, chests, mapMatrix, &boss);
             }
+            loadMap(mapMatrix, mapUsed);
             background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
         }
         else{
