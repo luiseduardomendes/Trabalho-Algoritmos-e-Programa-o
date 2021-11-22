@@ -94,29 +94,29 @@ void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_
 
     if(boss->alive) {
         if (player->x > boss->x){
-                if (verifyPosition(boss->x, boss->y, TORIGHT, mapMatrix)) {
-                    boss->x ++;
-                    boss->direction = RIGHT;
-                }
+            if (verifyPosition(boss->x, boss->y, TORIGHT, mapMatrix)) {
+                boss->x ++;
+                boss->direction = RIGHT;
             }
-            else {
-                if (verifyPosition(boss->x, boss->y, TOLEFT, mapMatrix)) {
-                    boss->x --;
-                    boss->direction = LEFT;
-                }
+        }
+        else {
+            if (verifyPosition(boss->x, boss->y, TOLEFT, mapMatrix)) {
+                boss->x --;
+                boss->direction = LEFT;
             }
-            if (player->y > boss->y){
-                if (verifyPosition(boss->x, boss->y, TODOWN, mapMatrix)) {
-                    boss->y ++;
-                    boss->direction = DOWN;
-                }
+        }
+        if (player->y > boss->y){
+            if (verifyPosition(boss->x, boss->y, TODOWN, mapMatrix)) {
+                boss->y ++;
+                boss->direction = DOWN;
             }
-            else {
-                if (verifyPosition(boss->x, boss->y, TOUP, mapMatrix)) {
-                    boss->y --;
-                    boss->direction = UP;
-                }
+        }
+        else {
+            if (verifyPosition(boss->x, boss->y, TOUP, mapMatrix)) {
+                boss->y --;
+                boss->direction = UP;
             }
+        }
     }
     if(boss->x == player->x && boss->y == player->y && !player->invulnerable)
         if(player->invulnerable == 0)
@@ -162,7 +162,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
             case keys:
                 player->numKeys ++;
 
-                if(player->numKeys >= numKeys)
+                if(player->numKeys >= numKeys && mapUsed != 2)
                 {
                     mapExit->y = 20;
                     mapExit->x = 33;
@@ -183,7 +183,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 break;
             case keys:
                 player->numKeys ++;
-                if(player->numKeys == numKeys)
+                if(player->numKeys == numKeys && mapUsed != 2)
                 {
                     mapExit->y = 20;
                     mapExit->x = 33;
@@ -195,7 +195,8 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 player->hp ++;
                 break;
             case lamen:
-                player->hp ++;
+                if (player->hp < player->fullHp)
+                    player->hp ++;
                 break;
             }
             chests[i].closed = 0;

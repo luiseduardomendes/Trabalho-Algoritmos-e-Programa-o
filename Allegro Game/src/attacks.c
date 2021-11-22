@@ -16,7 +16,7 @@ void updateShurikenPos(typeShur *shuriken, t_player *player, char mapMatrix[SIZE
     }
 }
 
-void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_exit *mapExit){
     int i;
 
     if(player->shuriken.throwing){
@@ -43,6 +43,9 @@ void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMo
                 {
                     boss->alive = 0;
                     player->xp += 25;
+                    mapExit->y = 20;
+                    mapExit->x = 33;
+                    mapExit->onMap = 1;
 
                 }
                 player->shuriken.throwing = false;

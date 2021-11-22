@@ -253,6 +253,7 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                         case exitGame:
                             beginGame = true;
                             *endOfGame = true;
+
                             break;
                         }
                     break;
@@ -287,7 +288,7 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                             }
                             break;
                         case credits:
-                            creditFunction();
+                            creditFunction(width, height, display, events_queue, joy);
                             break;
                         case exitGame:
                             beginGame = true;
@@ -486,8 +487,8 @@ void creditFunction(int width, int height, ALLEGRO_DISPLAY *display, ALLEGRO_EVE
     do{
         al_wait_for_event(events_queue, &ev);
 
-        if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
-            if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER)
-                    creditScreen = 1;
+        if((ev.type == ALLEGRO_EVENT_KEY_DOWN && ev.keyboard.keycode == ALLEGRO_KEY_ENTER ) ||
+                       (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN && ev.joystick.button == CONTROL_BUTTON_A))
+                creditScreen = 1;
     }while(creditScreen != 1);
 }

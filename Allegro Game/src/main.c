@@ -16,6 +16,7 @@ int main()
     int dialogClosed = 1;
     int joystickFound = 1;
     int throwingBoss;
+    int closeCongrats;
     t_player playerPos;
     t_npc npcPos[NUM_MOBS];
     t_chest chests[10];
@@ -194,7 +195,8 @@ int main()
 
             dialogClosed = 0;
         }
-
+        playerPos.numKeys=4;
+        boss.hp = 1;
 
         while(!endOfLevel && !playerLogout)
         {
@@ -255,7 +257,7 @@ int main()
                 if(event.timer.source == shurTimer)
                 {
 
-                    updateShurikenPlayer(&playerPos, npcPos, &boss, numMobs, mapMatrix);//Player shuriken
+                    updateShurikenPlayer(&playerPos, npcPos, &boss, numMobs, mapMatrix, &mapExit);//Player shuriken
                     for (i = 0; i < numMobs; i ++){ //Mob shuriken
                         if (npcPos[i].alive) {
                             if (npcPos[i].shuriken.throwing)
@@ -382,6 +384,28 @@ int main()
                             al_draw_bitmap(XPbarEmptyMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
                     }
 
+                    if (mapUsed == 2){
+                        for (i = 0; i < boss.hp; i ++){
+
+                            if(i == 0)
+                                al_draw_tinted_bitmap(XPbarFullLeft, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+                            else if(i == boss.fullHp-1)
+                                al_draw_tinted_bitmap(XPbarFullRight, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+                            else
+                                al_draw_tinted_bitmap(XPbarFullMid, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+                        }
+                        for (i = boss.hp; i < boss.fullHp; i ++){
+
+                            if(i == 0)
+                                al_draw_tinted_bitmap(XPbarEmptyLeft, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+                            else if(i == boss.fullHp-1)
+                                al_draw_tinted_bitmap(XPbarEmptyRight, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+                            else
+                                al_draw_tinted_bitmap(XPbarEmptyMid, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+                        }
+                        al_draw_text(font36, al_map_rgb(255,50,0), width/2 - 15, 105, ALLEGRO_ALIGN_CENTER, "Orochimaru");
+                    }
+
                     for (i = 0; i < playerPos.hp; i++)
                         al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
                     for (i = playerPos.hp; i < playerPos.fullHp; i ++)
@@ -398,18 +422,38 @@ int main()
 
                     while (!dialogClosed){ // dialogo
 
-                        if(event.type == ALLEGRO_EVENT_KEY_DOWN)
-                            if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
-                                dialogClosed = 1;
-
                         al_draw_bitmap(dialogBmp, width*1.15/4, height*1/2, 0);
-                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
-                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o ");
-                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "futuro hokageda vila da folha!");
-                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "To certo!");
+                        switch(mapUsed){
+                        case 0:
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o ");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "futuro hokageda vila da folha!");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "To certo!");
+                            break;
+                        case 1:
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao desistem mesmo");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "devolvam o pergaminho da");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "vila da folha! Ou terei que");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "derrotar todos voces!");
+                            break;
+                        case 2:
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "OROCHIMARU! Eu sabia que voce");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "estaria por tras de tudo isso!");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "Eu vou derrotar voce!");
+                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "Dattebayo!");
+                            break;
+                        }
+
+
+
                         al_draw_bitmap(narutoDialog, -70, height-433,0);
                         al_flip_display();
                         al_wait_for_event(events_queue, &event);
+
+
+                        if((event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER ) ||
+                        (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN && event.joystick.button == CONTROL_BUTTON_A))
+                                dialogClosed = 1;
                     }
 
 
@@ -435,14 +479,17 @@ int main()
                     al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce morreu!");
                     al_flip_display();
 
-                    if(event.type == ALLEGRO_EVENT_KEY_DOWN){
-                        if (event.keyboard.keycode == ALLEGRO_KEY_ENTER){
+
+                    if((event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER ) ||
+                       (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN && event.joystick.button == CONTROL_BUTTON_A)){
+
 
                             standardSave(0);
                             loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix, &boss);
                             endOfLevel = 1;
                             playerLogout = 1;
-                        }
+                            saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, boss);
+
                     }
                 } while(!endOfLevel);
             }
@@ -450,9 +497,36 @@ int main()
         }
 
         if (!playerLogout){
-            mapUsed ++;
+            if (mapUsed != 2)
+                mapUsed ++;
+            else {
+                closeCongrats = 0;
+                do{
+
+                    ALLEGRO_EVENT event;
+                    al_wait_for_event(events_queue, &event);
+                    if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+                        endOfGame = true;
+                    al_clear_to_color(al_map_rgb(0,0,0));
+                    al_draw_bitmap(loading_screen, 0,0,0);
+                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, (height-120)/2, 1, "Parabens!");
+                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce derrotou Orochimaru e recuperou");
+                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, (height+120)/2, 1, "o pergaminho roubado da vila da folha!");
+                    al_flip_display();
+
+
+                    if((event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER ) ||
+                       (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN && event.joystick.button == CONTROL_BUTTON_A)){
+                        closeCongrats = 1;
+                    }
+                    endOfLevel = 1;
+                    playerLogout = 1;
+                } while(!closeCongrats);
+            }
+
+            saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, boss);
         }
-        saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, boss);
+
     }while(!endOfGame);
 
     al_destroy_display(display);

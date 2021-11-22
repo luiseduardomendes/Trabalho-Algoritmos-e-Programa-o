@@ -112,3 +112,5 @@ void createMiniMap(char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP** miniMap, ALLEGR
 
     al_set_target_bitmap(al_get_backbuffer(display));
 }
+
+

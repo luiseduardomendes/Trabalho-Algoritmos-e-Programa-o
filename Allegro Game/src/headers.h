@@ -114,7 +114,7 @@ FILE *saveFile;
 
 // attacks.c
 void updateShurikenPos(typeShur *shuriken, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
-void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_exit *mapExit);
 void shurikenDir(t_npc *npc, t_player playerPos, ALLEGRO_SAMPLE* throwShur);
 void shurikenDirBoss(t_boss *boss, t_player playerPos, ALLEGRO_SAMPLE* throwShur);
 void updateShurikenBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
