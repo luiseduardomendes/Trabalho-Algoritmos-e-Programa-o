@@ -426,7 +426,6 @@ int main()
             }
 
             if (playerPos.hp == 0){
-                endOfLevel = 1;
                 do{
                     al_wait_for_event(events_queue, &event);
                     if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -435,7 +434,17 @@ int main()
                     al_draw_bitmap(loading_screen, 0,0,0);
                     al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce morreu!");
                     al_flip_display();
-                } while(!endOfGame);
+
+                    if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                        if (event.keyboard.keycode == ALLEGRO_KEY_ENTER){
+
+                            standardSave(0);
+                            loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix, &boss);
+                            endOfLevel = 1;
+                            playerLogout = 1;
+                        }
+                    }
+                } while(!endOfLevel);
             }
 
         }
