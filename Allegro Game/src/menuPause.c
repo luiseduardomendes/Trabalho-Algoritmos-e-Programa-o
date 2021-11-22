@@ -348,7 +348,7 @@ void standardSave(int mapUsed){
     if(mapUsed == 2){
         save.boss.alive = 1;
         save.boss.fullHp = 5;
-        save.boss.hp = 10;
+        save.boss.hp = 5;
         save.boss.x = 32;
         save.boss.y = 18;
         save.boss.direction = RIGHT;

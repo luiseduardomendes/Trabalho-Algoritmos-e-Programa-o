@@ -91,48 +91,39 @@ void npcMovement(t_npc mobPos[], int numMobs, t_player *playerPos, char mapMatri
 }
 
 void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
-    int flagMov, moved;
-    //srand(time(NULL));
 
-    do {
-        flagMov = (rand() % 4);
-        moved = 1;
-        if(boss->alive) {
-            if (player->x > boss->x){
-                    if (verifyPosition(boss->x, boss->y, TORIGHT, mapMatrix)) {
-                        boss->x ++;
-                        boss->direction = RIGHT;
-                    }
+    if(boss->alive) {
+        if (player->x > boss->x){
+                if (verifyPosition(boss->x, boss->y, TORIGHT, mapMatrix)) {
+                    boss->x ++;
+                    boss->direction = RIGHT;
                 }
-                else {
-                    if (verifyPosition(boss->x, boss->y, TOLEFT, mapMatrix)) {
-                        boss->x --;
-                        boss->direction = LEFT;
-                    }
-                }
-                if (player->y > boss->y){
-                    if (verifyPosition(boss->x, boss->y, TODOWN, mapMatrix)) {
-                        boss->y ++;
-                        boss->direction = DOWN;
-                    }
-                }
-                else {
-                    if (verifyPosition(boss->x, boss->y, TOUP, mapMatrix)) {
-                        boss->y --;
-                        boss->direction = UP;
-                    }
-                }
-        }
-        if(boss->x == player->x && boss->y == player->y && !player->invulnerable)
-            if(player->invulnerable == 0)
-            {
-                player->hp --;
-                player->invulnerable = TIME_INV;
             }
-    } while (!moved);
-
-
-
+            else {
+                if (verifyPosition(boss->x, boss->y, TOLEFT, mapMatrix)) {
+                    boss->x --;
+                    boss->direction = LEFT;
+                }
+            }
+            if (player->y > boss->y){
+                if (verifyPosition(boss->x, boss->y, TODOWN, mapMatrix)) {
+                    boss->y ++;
+                    boss->direction = DOWN;
+                }
+            }
+            else {
+                if (verifyPosition(boss->x, boss->y, TOUP, mapMatrix)) {
+                    boss->y --;
+                    boss->direction = UP;
+                }
+            }
+    }
+    if(boss->x == player->x && boss->y == player->y && !player->invulnerable)
+        if(player->invulnerable == 0)
+        {
+            player->hp --;
+            player->invulnerable = TIME_INV;
+        }
 }
 
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]) {
