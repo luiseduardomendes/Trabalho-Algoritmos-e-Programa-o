@@ -178,6 +178,7 @@ int main()
             }
             loadMap(mapMatrix, mapUsed);
             background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
+            dialogClosed = 0;
         }
         else{
             endOfLevel = 0;
@@ -403,10 +404,11 @@ int main()
                             if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
                                 dialogClosed = 1;
 
-                        al_draw_bitmap(dialogBmp, width/5, height*1/2, 0);
+                        al_draw_bitmap(dialogBmp, width*1.15/4, height*1/2, 0);
                         al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
-                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o futuro hokage");
-                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "da vila da folha");
+                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o ");
+                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "futuro hokageda vila da folha!");
+                        al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "To certo!");
                         al_draw_bitmap(narutoDialog, -70, height-433,0);
                         al_flip_display();
                         al_wait_for_event(events_queue, &event);
