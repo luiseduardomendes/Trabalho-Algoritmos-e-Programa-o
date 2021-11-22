@@ -16,7 +16,7 @@ void updateShurikenPos(typeShur *shuriken, t_player *player, char mapMatrix[SIZE
     }
 }
 
-void updateShurikenPlayer(t_player *player, t_npc npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
     int i;
 
     if(player->shuriken.throwing){
@@ -34,6 +34,8 @@ void updateShurikenPlayer(t_player *player, t_npc npc[], int numMobs, char mapMa
         }
 
         if (player->shuriken.x > SIZEMAP_X || player->shuriken.x < 0 || player->shuriken.y > SIZEMAP_Y || player->shuriken.y < 0)
+            player->shuriken.throwing = false;
+        if ((player->shuriken.x == boss->x) && (player->shuriken.y == boss->y) && boss[i].alive)
             player->shuriken.throwing = false;
         if (mapMatrix[player->shuriken.y][player->shuriken.x] == WALL)
             player->shuriken.throwing = false;
@@ -82,6 +84,77 @@ void shurikenDir(t_npc *npc, t_player playerPos, ALLEGRO_SAMPLE* throwShur)
                 }
                 npc->shuriken.throwing = true;
             }
+        }
+    }
+}
+
+void shurikenDirBoss(t_boss *boss, t_player playerPos, ALLEGRO_SAMPLE* throwShur)
+{
+    al_init_acodec_addon();
+    al_install_audio();
+    int i;
+    int throwingBoss = 0;
+    for (i = 0; i < 8; i ++){
+        if (boss->alive){
+            if (boss->shurikens[i].throwing)
+                throwingBoss = 1;
+        }
+    }
+    if(!throwingBoss) {
+        boss->shurikens[i].x = boss->x;
+        boss->shurikens[i].y = boss->y;
+        if(playerPos.y == boss->y || playerPos.x == boss->x)
+        {
+
+            al_play_sample(throwShur, 0.5, 0.0, 0.75, ALLEGRO_PLAYMODE_ONCE, 0);
+
+            boss->shurikens[0].movex = -1;//Move down
+            boss->shurikens[0].movey = 0;
+
+            boss->shurikens[1].movex = -1;//Move up
+            boss->shurikens[1].movey = 1;
+
+            boss->shurikens[2].movex = 0;//Move down
+            boss->shurikens[2].movey = 1;
+
+            boss->shurikens[3].movex = 1;//Move up
+            boss->shurikens[3].movey = 1;
+
+            boss->shurikens[4].movex = 1;//Move down
+            boss->shurikens[4].movey = 0;
+
+            boss->shurikens[5].movex = 1;//Move up
+            boss->shurikens[5].movey = -1;
+
+            boss->shurikens[6].movex = 0;//Move down
+            boss->shurikens[6].movey = -1;
+
+            boss->shurikens[7].movex = -1;//Move up
+            boss->shurikens[7].movey = -1;
+
+            for(i = 0; i < 8; i ++)
+                boss->shurikens[i].throwing = true;
+
+        }
+    }
+}
+
+void updateShurikenBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]){
+    int i;
+
+    for (i = 0; i < 8; i ++){
+        if(boss->shurikens[i].throwing){
+            boss->shurikens[i].x += boss->shurikens[i].movex;
+            boss->shurikens[i].y += boss->shurikens[i].movey;
+            if (boss->shurikens[i].x == player->x && boss->shurikens[i].y == player->y && player->invulnerable == 0){
+                player->hp --;
+                player->invulnerable = TIME_INV;
+                boss->shurikens[i].throwing = false;
+            }
+            if (boss->shurikens[i].x > SIZEMAP_X || boss->shurikens[i].x < 0 || boss->shurikens[i].y > SIZEMAP_Y || boss->shurikens[i].y < 0)
+                boss->shurikens[i].throwing = false;
+            if (mapMatrix[boss->shurikens[i].y][boss->shurikens[i].x] == WALL)
+                boss->shurikens[i].throwing = false;
         }
     }
 }

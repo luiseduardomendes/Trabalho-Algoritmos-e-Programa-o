@@ -124,7 +124,7 @@ void npcMovement(t_npc infMob[], int numMobs, t_player* playerPos, char mapMatri
 
 void updateShurikenPos(typeShur* shuriken, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
-void updateShurikenPlayer(t_player *player, t_npc npc[], int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
+void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 void shurikenDir(t_npc *npc, t_player playerPos, ALLEGRO_SAMPLE* throwShur);
 

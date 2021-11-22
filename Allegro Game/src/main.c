@@ -15,6 +15,7 @@ int main()
     int mapUsed = 0;
     int dialogClosed = 1;
     int joystickFound = 1;
+    int throwingBoss;
     t_player playerPos;
     t_npc npcPos[NUM_MOBS];
     t_chest chests[10];
@@ -161,8 +162,9 @@ int main()
 
 
     /*_____________________________________________________________*/
-
+    playerLogout = 1;
     do{
+
         if (playerLogout){
             al_clear_to_color(al_map_rgb(0,0,0));
             if(joystickFound){
@@ -217,12 +219,14 @@ int main()
                 endOfLevel = true;
             }
 
+
+
             if(event.type == ALLEGRO_EVENT_TIMER)
             {
                 if(event.timer.source == mobTimer)
                 {
                     npcMovement(npcPos, numMobs, &playerPos, mapMatrix);
-                    //moveBoss(&boss, &playerPos, mapMatrix);
+                    moveBoss(&boss, &playerPos, mapMatrix);
                 }
 
                 if(event.timer.source == throwShurTimer)
@@ -232,14 +236,27 @@ int main()
                             if (!npcPos[i].shuriken.throwing)
                                 shurikenDir(&npcPos[i], playerPos, throwShur);
                     }
+                    throwingBoss = 0;
+                    for (i = 0; i < 8; i ++){
+                        if (boss.alive){
+                            if (boss.shurikens[i].throwing)
+                                throwingBoss = 1;
+                        }
+                    }
+                    if(!throwingBoss) {
+                        shurikenDirBoss(&boss, playerPos, throwShur);
+                    }
                 }
                 if(event.timer.source == shurTimer)
                 {
-                    updateShurikenPlayer(&playerPos, npcPos, numMobs, mapMatrix);//Player shuriken
+                    updateShurikenPlayer(&playerPos, npcPos, &boss, numMobs, mapMatrix);//Player shuriken
                     for (i = 0; i < numMobs; i ++){ //Mob shuriken
                         if (npcPos[i].alive) {
                             if (npcPos[i].shuriken.throwing)
                                 updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
+                        }
+                        if(boss.alive){
+                            updateShurikenBoss(&boss, &playerPos, mapMatrix);
                         }
                     }
                 }
@@ -283,6 +300,10 @@ int main()
                         else {
                             al_draw_bitmap(openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                         }
+                    }
+
+                    for (i = 0; i < 8; i ++){
+                        al_draw_bitmap(shurikenDraw, (boss.shurikens[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                     }
 
                     if(mapExit.onMap == 1)
@@ -403,7 +424,9 @@ int main()
                     al_flip_display();
                 } while(!endOfGame);
             }
+
         }
+
         if (!playerLogout){
             mapUsed ++;
         }

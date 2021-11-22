@@ -97,43 +97,31 @@ void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_
     do {
         flagMov = (rand() % 4);
         moved = 1;
-        switch (flagMov) {
-            case 0:
-                if (verifyPosition(boss->x, boss->y, TORIGHT, mapMatrix)){
-                    boss->x ++;
-                    boss->direction = RIGHT;
+        if(boss->alive) {
+            if (player->x > boss->x){
+                    if (verifyPosition(boss->x, boss->y, TORIGHT, mapMatrix)) {
+                        boss->x ++;
+                        boss->direction = RIGHT;
+                    }
                 }
-                else{
-                    moved = 0;
+                else {
+                    if (verifyPosition(boss->x, boss->y, TOLEFT, mapMatrix)) {
+                        boss->x --;
+                        boss->direction = LEFT;
+                    }
                 }
-                break;
-            case 1:
-                if (verifyPosition(boss->x, boss->y, TOUP, mapMatrix)){
-                    boss->y --;
-                    boss->direction = UP;
+                if (player->y > boss->y){
+                    if (verifyPosition(boss->x, boss->y, TODOWN, mapMatrix)) {
+                        boss->y ++;
+                        boss->direction = DOWN;
+                    }
                 }
-                else{
-                    moved = 0;
+                else {
+                    if (verifyPosition(boss->x, boss->y, TOUP, mapMatrix)) {
+                        boss->y --;
+                        boss->direction = UP;
+                    }
                 }
-                break;
-            case 2:
-                if (verifyPosition(boss->x, boss->y, TOLEFT, mapMatrix)){
-                    boss->x --;
-                    boss->direction = LEFT;
-                }
-                else{
-                    moved = 0;
-                }
-                break;
-            case 3:
-                if (verifyPosition(boss->x, boss->y, TODOWN, mapMatrix)){
-                    boss->y ++;
-                    boss->direction = DOWN;
-                }
-                else{
-                    moved = 0;
-                }
-                break;
         }
         if(boss->x == player->x && boss->y == player->y && !player->invulnerable)
             if(player->invulnerable == 0)

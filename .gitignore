@@ -3,3 +3,11 @@ Allegro Game/Allegro Game.depend
 Allegro Game/Allegro Game.layout
 Allegro Game/allegro.log
 Allegro Game/save.sav
+Allegro Game/Allegro Game.depend
+*.depend
+*.layout
+*.log
+*.exe
+*.o
+*.o
+*.sav
