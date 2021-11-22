@@ -101,7 +101,8 @@ void shurikenDirBoss(t_boss *boss, t_player playerPos, ALLEGRO_SAMPLE* throwShur
         }
     }
     if(!throwingBoss) {
-        for (i = 0; i < 8; i ++){
+        for(i = 0; i < 8; i++)
+        {
             boss->shurikens[i].x = boss->x;
             boss->shurikens[i].y = boss->y;
         }
@@ -134,9 +135,9 @@ void shurikenDirBoss(t_boss *boss, t_player playerPos, ALLEGRO_SAMPLE* throwShur
             boss->shurikens[7].movex = -1;//Move up
             boss->shurikens[7].movey = -1;
 
-            for(i = 0; i < 8; i ++){
+            for(i = 0; i < 8; i ++)
                 boss->shurikens[i].throwing = true;
-            }
+
         }
     }
 }

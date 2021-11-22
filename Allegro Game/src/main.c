@@ -262,9 +262,9 @@ int main()
                             if (npcPos[i].shuriken.throwing)
                                 updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
                         }
-                        if(boss.alive){
-                            updateShurikenBoss(&boss, &playerPos, mapMatrix);
-                        }
+                    }
+                    if(boss.alive){
+                        updateShurikenBoss(&boss, &playerPos, mapMatrix);
                     }
                 }
 
@@ -283,14 +283,6 @@ int main()
                         playerPos.invulnerable --;
                     }
 
-                    for (i = 0; i < playerPos.hp; i++)
-                        al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
-                    for (i = playerPos.hp; i < playerPos.fullHp; i ++)
-                        al_draw_tinted_bitmap(voidheart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
-                    for (i = 0; i < playerPos.numShur; i ++)
-                        al_draw_tinted_bitmap(shurikenDraw, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (1)*MAPSCALE*MULT, 0);
-                    for (i = 0; i < playerPos.numKeys; i ++)
-                        al_draw_tinted_bitmap(keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
                     for (i = 0; i < numShur + numKeys; i ++)
                         if (items[i].onMap == 1)
                             if (items[i].nameItems == 1)
@@ -310,7 +302,6 @@ int main()
                         for (i = 0; i < 8; i ++)
                             if(boss.shurikens[i].throwing)
                                 al_draw_bitmap(shurikenDraw, (boss.shurikens[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-
 
 
                     if(mapExit.onMap == 1)
@@ -392,6 +383,15 @@ int main()
                             al_draw_bitmap(XPbarEmptyMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
                     }
 
+                    for (i = 0; i < playerPos.hp; i++)
+                        al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
+                    for (i = playerPos.hp; i < playerPos.fullHp; i ++)
+                        al_draw_tinted_bitmap(voidheart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
+                    for (i = 0; i < playerPos.numShur; i ++)
+                        al_draw_tinted_bitmap(shurikenDraw, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (1)*MAPSCALE*MULT, 0);
+                    for (i = 0; i < playerPos.numKeys; i ++)
+                        al_draw_tinted_bitmap(keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
+
                     al_draw_textf(font48, al_map_rgb(102, 187, 106), (width - 200)/2, height-70, ALLEGRO_ALIGN_CENTER, "%d", playerPos.level);
 
 
@@ -433,7 +433,7 @@ int main()
                         endOfGame = true;
                     al_clear_to_color(al_map_rgb(0,0,0));
                     al_draw_bitmap(loading_screen, 0,0,0);
-                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Você morreu!");
+                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce morreu!");
                     al_flip_display();
                 } while(!endOfGame);
             }
