@@ -175,6 +175,7 @@ int main()
                 menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
                             &numKeys, &numChest, items, chests, mapMatrix, &boss);
             }
+            background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
         }
         else{
             endOfLevel = 0;
@@ -221,6 +222,7 @@ int main()
 
 
 
+
             if(event.type == ALLEGRO_EVENT_TIMER)
             {
                 if(event.timer.source == mobTimer)
@@ -236,19 +238,22 @@ int main()
                             if (!npcPos[i].shuriken.throwing)
                                 shurikenDir(&npcPos[i], playerPos, throwShur);
                     }
-                    throwingBoss = 0;
-                    for (i = 0; i < 8; i ++){
-                        if (boss.alive){
+
+                    if (boss.alive){
+                        throwingBoss = 0;
+                        for (i = 0; i < 8; i ++){
                             if (boss.shurikens[i].throwing)
                                 throwingBoss = 1;
                         }
+                        if(!throwingBoss) {
+                            shurikenDirBoss(&boss, playerPos, throwShur);
+                        }
                     }
-                    if(!throwingBoss) {
-                        shurikenDirBoss(&boss, playerPos, throwShur);
-                    }
+
                 }
                 if(event.timer.source == shurTimer)
                 {
+
                     updateShurikenPlayer(&playerPos, npcPos, &boss, numMobs, mapMatrix);//Player shuriken
                     for (i = 0; i < numMobs; i ++){ //Mob shuriken
                         if (npcPos[i].alive) {
@@ -268,6 +273,7 @@ int main()
 
                 if(event.timer.source == timer)
                 {
+
                     createMiniMap(mapMatrix, &miniMap, display, playerPos);
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     al_draw_bitmap(background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
@@ -399,6 +405,7 @@ int main()
                         al_flip_display();
                         al_wait_for_event(events_queue, &event);
                     }
+
 
                 }
             }

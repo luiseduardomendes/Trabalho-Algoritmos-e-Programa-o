@@ -11,3 +11,7 @@ Allegro Game/Allegro Game.depend
 *.o
 *.o
 *.sav
+*.log
+*.exe
+*.o
+*.sav
