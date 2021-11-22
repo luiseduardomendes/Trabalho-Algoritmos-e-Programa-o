@@ -101,8 +101,11 @@ void shurikenDirBoss(t_boss *boss, t_player playerPos, ALLEGRO_SAMPLE* throwShur
         }
     }
     if(!throwingBoss) {
-        boss->shurikens[i].x = boss->x;
-        boss->shurikens[i].y = boss->y;
+        for(i = 0; i < 8; i++)
+        {
+            boss->shurikens[i].x = boss->x;
+            boss->shurikens[i].y = boss->y;
+        }
         if(playerPos.y == boss->y || playerPos.x == boss->x)
         {
 

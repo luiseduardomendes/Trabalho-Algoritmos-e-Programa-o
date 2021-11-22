@@ -262,9 +262,9 @@ int main()
                             if (npcPos[i].shuriken.throwing)
                                 updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
                         }
-                        if(boss.alive){
-                            updateShurikenBoss(&boss, &playerPos, mapMatrix);
-                        }
+                    }
+                    if(boss.alive){
+                        updateShurikenBoss(&boss, &playerPos, mapMatrix);
                     }
                 }
 
@@ -433,7 +433,7 @@ int main()
                         endOfGame = true;
                     al_clear_to_color(al_map_rgb(0,0,0));
                     al_draw_bitmap(loading_screen, 0,0,0);
-                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Você morreu!");
+                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce morreu!");
                     al_flip_display();
                 } while(!endOfGame);
             }
