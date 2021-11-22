@@ -186,7 +186,8 @@ int main()
 
             standardSave(mapUsed);
             loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix, &boss);
-            playerPos.numKeys = 4;
+            playerPos.numKeys = 0;
+            mapExit.onMap = 0;
 
             background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
 
@@ -221,9 +222,6 @@ int main()
                 endOfGame = true;
                 endOfLevel = true;
             }
-
-
-
 
             if(event.type == ALLEGRO_EVENT_TIMER)
             {

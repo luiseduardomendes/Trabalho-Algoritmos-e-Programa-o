@@ -238,11 +238,14 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                             *endOfLevel = 0;
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
-                            beginGame = true;
-                            *endOfGame = false;
-                            *playerLogout = 0;
-                            *endOfLevel = 0;
+                            saveFile = fopen("save.sav", "rb");
+                            if (saveFile != NULL){
+                                loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
+                                beginGame = true;
+                                *endOfGame = false;
+                                *playerLogout = 0;
+                                *endOfLevel = 0;
+                            }
                             break;
                         case credits:
                             break;
@@ -348,7 +351,7 @@ void standardSave(int mapUsed){
     if(mapUsed == 2){
         save.boss.alive = 1;
         save.boss.fullHp = 5;
-        save.boss.hp = 10;
+        save.boss.hp = 5;
         save.boss.x = 32;
         save.boss.y = 18;
         save.boss.direction = RIGHT;

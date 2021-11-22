@@ -35,8 +35,20 @@ void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMo
 
         if (player->shuriken.x > SIZEMAP_X || player->shuriken.x < 0 || player->shuriken.y > SIZEMAP_Y || player->shuriken.y < 0)
             player->shuriken.throwing = false;
-        if ((player->shuriken.x == boss->x) && (player->shuriken.y == boss->y) && boss[i].alive)
-            player->shuriken.throwing = false;
+        if(boss->alive)
+        {
+            if ((player->shuriken.x == boss->x) && (player->shuriken.y == boss->y)){
+                boss->hp--;
+                if(boss->hp == 0)
+                {
+                    boss->alive = 0;
+                    player->xp += 25;
+
+                }
+                player->shuriken.throwing = false;
+            }
+
+        }
         if (mapMatrix[player->shuriken.y][player->shuriken.x] == WALL)
             player->shuriken.throwing = false;
     }

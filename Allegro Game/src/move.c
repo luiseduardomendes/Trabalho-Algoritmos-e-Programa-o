@@ -180,8 +180,14 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                             mapExit->onMap = 1;
                             break;
                         case 1:
+                            mapExit->y = 20;
+                            mapExit->x = 33;
+                            mapExit->onMap = 1;
                             break;
                         case 2:
+                            mapExit->y = 20;
+                            mapExit->x = 33;
+                            mapExit->onMap = 1;
                             break;
                     }
                 }
@@ -209,8 +215,14 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                             mapExit->onMap = 1;
                             break;
                         case 1:
+                            mapExit->y = 20;
+                            mapExit->x = 33;
+                            mapExit->onMap = 1;
                             break;
                         case 2:
+                            mapExit->y = 20;
+                            mapExit->x = 33;
+                            mapExit->onMap = 1;
                             break;
                     }
 
