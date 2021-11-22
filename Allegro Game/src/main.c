@@ -96,6 +96,7 @@ int main()
     ALLEGRO_BITMAP *XPbarFullMid = al_load_bitmap("assets/EXPbarFullMid.png");
     ALLEGRO_BITMAP *XPbarFullLeft = al_load_bitmap("assets/EXPbarFullLeft.png");
     ALLEGRO_BITMAP *XPbarFullRight = al_load_bitmap("assets/EXPbarFullRight.png");
+    ALLEGRO_BITMAP *enemyBoss = al_load_bitmap("assets/orochimaru.png");
     ALLEGRO_BITMAP *miniMap = NULL;
     al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
 
@@ -281,9 +282,6 @@ int main()
                     if(playerPos.invulnerable > 0){
                         playerPos.invulnerable --;
                     }
-                    if (boss.alive){
-                        al_draw_filled_rectangle((boss.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, (boss.x - playerPos.x +1+ SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y+1 + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, al_map_rgb(255,255,0));
-                    }
 
                     for (i = 0; i < playerPos.hp; i++)
                         al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
@@ -359,6 +357,11 @@ int main()
                             default:
                                 al_draw_bitmap(naruto, width/2, height/2, 0);
                         }
+                    }
+
+                    if(boss.alive)
+                    {
+                        al_draw_bitmap(enemyBoss, (boss.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                     }
 
 

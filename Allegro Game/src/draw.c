@@ -1,7 +1,7 @@
 #include "headers.h"
 
 void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft,
-            ALLEGRO_BITMAP *enemyright, t_player playerPos);
+            ALLEGRO_BITMAP *enemyright, t_player playerPos)
 {
     int i;
 
