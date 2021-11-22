@@ -42,7 +42,7 @@
 enum directions{UP, DOWN, LEFT, RIGHT};
 enum control_buttons{CONTROL_BUTTON_A, CONTROL_BUTTON_B, CONTROL_BUTTON_X, CONTROL_BUTTON_Y, CONTROL_BUTTON_LB, CONTROL_BUTTON_RB,
     CONTROL_BUTTON_OPTIONS, CONTROL_BUTTON_START, CONTROL_BUTTON_L, CONTROL_BUTTON_R};
-enum itemsID{shur, keys, armorBuff, shurikenBuff, lamen};
+enum itemsID{shur, keys, armorBuff, lamen};
 
 /*___________________________STRUCTS___________________________*/
 typedef struct shuriken{

@@ -164,23 +164,9 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
 
                 if(player->numKeys >= numKeys)
                 {
-                    switch(mapUsed){
-                        case 0:
-                            mapExit->y = 20;
-                            mapExit->x = 33;
-                            mapExit->onMap = 1;
-                            break;
-                        case 1:
-                            mapExit->y = 20;
-                            mapExit->x = 33;
-                            mapExit->onMap = 1;
-                            break;
-                        case 2:
-                            mapExit->y = 20;
-                            mapExit->x = 33;
-                            mapExit->onMap = 1;
-                            break;
-                    }
+                    mapExit->y = 20;
+                    mapExit->x = 33;
+                    mapExit->onMap = 1;
                 }
                 break;
             case shur:
@@ -199,35 +185,18 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 player->numKeys ++;
                 if(player->numKeys == numKeys)
                 {
-                    switch(mapUsed){
-                        case 0:
-                            mapExit->y = 20;
-                            mapExit->x = 33;
-                            mapExit->onMap = 1;
-                            break;
-                        case 1:
-                            mapExit->y = 20;
-                            mapExit->x = 33;
-                            mapExit->onMap = 1;
-                            break;
-                        case 2:
-                            mapExit->y = 20;
-                            mapExit->x = 33;
-                            mapExit->onMap = 1;
-                            break;
-                    }
-
+                    mapExit->y = 20;
+                    mapExit->x = 33;
+                    mapExit->onMap = 1;
                 }
-                    break;
-                case armorBuff:
-                    player->fullHp ++;
-                    player->hp ++;
-                    break;
-                case shurikenBuff:
-                    break;
-                case lamen:
-                    player->hp ++;
-                    break;
+            break;
+            case armorBuff:
+                player->fullHp ++;
+                player->hp ++;
+                break;
+            case lamen:
+                player->hp ++;
+                break;
             }
             chests[i].closed = 0;
         }
