@@ -1,6 +1,7 @@
 #include "headers.h"
 
-void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft, ALLEGRO_BITMAP *enemyright, t_player playerPos)
+void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft,
+            ALLEGRO_BITMAP *enemyright, t_player playerPos);
 {
     int i;
 
@@ -79,13 +80,6 @@ ALLEGRO_BITMAP* createBackground(ALLEGRO_BITMAP* background, ALLEGRO_BITMAP* wal
     }
     al_set_target_bitmap(al_get_backbuffer(display));
     return background;
-}
-
-void showLoadingScreen (ALLEGRO_FONT* font48, ALLEGRO_BITMAP* loading_screen) {
-    al_clear_to_color(al_map_rgb(0,0,0));
-    al_draw_bitmap(loading_screen, 0,0,0);
-    al_draw_text(font48, al_map_rgb(255, 255, 255), 10, 10, 0, "CARREGANDO...");
-    al_flip_display();
 }
 
 
