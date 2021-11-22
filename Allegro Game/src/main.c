@@ -308,10 +308,12 @@ int main()
                             al_draw_bitmap(openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                         }
                     }
+                    if(boss.alive)
+                        for (i = 0; i < 8; i ++)
+                            if(boss.shurikens[i].throwing)
+                                al_draw_bitmap(shurikenDraw, (boss.shurikens[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
 
-                    for (i = 0; i < 8; i ++){
-                        al_draw_bitmap(shurikenDraw, (boss.shurikens[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                    }
+
 
                     if(mapExit.onMap == 1)
                     {

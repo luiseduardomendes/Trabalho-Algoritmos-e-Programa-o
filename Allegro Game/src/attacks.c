@@ -94,8 +94,8 @@ void shurikenDirBoss(t_boss *boss, t_player playerPos, ALLEGRO_SAMPLE* throwShur
     al_install_audio();
     int i;
     int throwingBoss = 0;
-    for (i = 0; i < 8; i ++){
-        if (boss->alive){
+    if (boss->alive){
+        for (i = 0; i < 8; i ++){
             if (boss->shurikens[i].throwing)
                 throwingBoss = 1;
         }
