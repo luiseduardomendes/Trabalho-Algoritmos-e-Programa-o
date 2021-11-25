@@ -1,7 +1,6 @@
 #include "headers.h"
 
-void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft,
-            ALLEGRO_BITMAP *enemyright, t_player playerPos)
+void drawMobs(t_npc npcPos[], int numMobs, bitmaps bmps, t_player playerPos)
 {
     int i;
 
@@ -11,19 +10,19 @@ void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP
         {
             switch(npcPos[i].direction){
                 case UP:
-                    al_draw_bitmap(enemyback, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.enemyback, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                     break;
                 case DOWN:
-                    al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                     break;
                 case LEFT:
-                    al_draw_bitmap(enemyleft, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.enemyleft, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                     break;
                 case RIGHT:
-                    al_draw_bitmap(enemyright, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.enemyright, (npcPos[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                     break;
                 default:
-                    al_draw_bitmap(enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X)/(2*MULT)*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.enemy, (npcPos[i].x - playerPos.x + SIZEMAP_X)/(2*MULT)*MAPSCALE*MULT, (npcPos[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
             }
         }
     }
@@ -42,35 +41,33 @@ void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_pl
     }
 }
 
-ALLEGRO_BITMAP* createBackground(ALLEGRO_BITMAP* background, ALLEGRO_BITMAP* wall, ALLEGRO_BITMAP* spikes, ALLEGRO_BITMAP* keys,
-                                 ALLEGRO_BITMAP* grass, ALLEGRO_BITMAP* darkGrass, ALLEGRO_BITMAP* lightGrass, ALLEGRO_DISPLAY* display,
-                                 char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
+ALLEGRO_BITMAP* createBackground(bitmaps bmps, ALLEGRO_DISPLAY* display, char mapMatrix[SIZEMAP_Y][SIZEMAP_X])
 {
-    background = al_create_bitmap(MAPSCALE * SIZEMAP_X * MULT, MAPSCALE * SIZEMAP_Y * MULT);
-    al_set_target_bitmap(background);
+    bmps.background = al_create_bitmap(MAPSCALE * SIZEMAP_X * MULT, MAPSCALE * SIZEMAP_Y * MULT);
+    al_set_target_bitmap(bmps.background);
     int i, j, flag;
 
     for(i = 0; i < SIZEMAP_Y; i++){
         for(j = 0; j < SIZEMAP_X; j++){
 
             if(mapMatrix[i][j] == WALL){
-                al_draw_bitmap(wall, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                al_draw_bitmap(bmps.wall, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
                 }
             else if(mapMatrix[i][j] == 'X'){
-                al_draw_bitmap(spikes, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                al_draw_bitmap(bmps.spikes, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
                 //al_draw_filled_rectangle(j*MAPSCALE, i*MAPSCALE, (j*MAPSCALE)+MAPSCALE, (i*MAPSCALE)+MAPSCALE ,al_map_rgb(100,50,50));
             }
             else {
                 flag = rand() % 20;
                 switch (flag) {
                 case 8:
-                    al_draw_bitmap(lightGrass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.lightGrass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
                     break;
                 case 9:
-                    al_draw_bitmap(darkGrass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.darkGrass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
                     break;
                 default:
-                    al_draw_bitmap(grass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
+                    al_draw_bitmap(bmps.grass, j*MAPSCALE*MULT, i*MAPSCALE*MULT, 0);
                     break;
                 }
             }
@@ -79,9 +76,133 @@ ALLEGRO_BITMAP* createBackground(ALLEGRO_BITMAP* background, ALLEGRO_BITMAP* wal
         }
     }
     al_set_target_bitmap(al_get_backbuffer(display));
-    return background;
+    return bmps.background;
 }
 
+void drawNaruto(bitmaps bmps, t_player player, int width, int height){
+    if (player.invulnerable){
+        switch(player.direction){
+            case UP:
+                al_draw_tinted_bitmap(bmps.narutoback, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width/2, height/2, 0);
+                break;
+            case DOWN:
+                al_draw_tinted_bitmap(bmps.naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                break;
+            case LEFT:
+                al_draw_tinted_bitmap(bmps.narutoleft, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                break;
+            case RIGHT:
+                al_draw_tinted_bitmap(bmps.narutoright, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+                break;
+            default:
+                al_draw_tinted_bitmap(bmps.naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
+        }
+    }
+    else{
+        switch(player.direction){
+            case UP:
+                al_draw_bitmap(bmps.narutoback, width/2, height/2, 0);
+                break;
+            case DOWN:
+                al_draw_bitmap(bmps.naruto, width/2, height/2, 0);
+                break;
+            case LEFT:
+                al_draw_bitmap(bmps.narutoleft, width/2, height/2, 0);
+                break;
+            case RIGHT:
+                al_draw_bitmap(bmps.narutoright, width/2, height/2, 0);
+                break;
+            default:
+                al_draw_bitmap(bmps.naruto, width/2, height/2, 0);
+        }
+    }
+}
+
+void drawInterface(bitmaps bmps, t_player player, t_boss boss, int width, int height, int mapUsed, t_fonts fonts){
+    int i;
+    for (i = 0; i < player.xp; i++)
+    {
+        if(i == 0)
+            al_draw_bitmap(bmps.XPbarFullLeft, (i+1)*MAPSCALE*MULT, height - 40, 0);
+        else if(i == 24)
+            al_draw_bitmap(bmps.XPbarFullRight, (i+1)*MAPSCALE*MULT, height - 40, 0);
+        else
+            al_draw_bitmap(bmps.XPbarFullMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
+    }
+
+    for (i = player.xp; i < 25; i++)
+    {
+        if(i == 0)
+            al_draw_bitmap(bmps.XPbarEmptyLeft, (i+1)*MAPSCALE*MULT, height - 40, 0);
+        else if(i == 24)
+            al_draw_bitmap(bmps.XPbarEmptyRight, (i+1)*MAPSCALE*MULT, height - 40, 0);
+        else
+            al_draw_bitmap(bmps.XPbarEmptyMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
+    }
+
+    if (mapUsed == 2){
+        for (i = 0; i < boss.hp; i ++){
+
+            if(i == 0)
+                al_draw_tinted_bitmap(bmps.XPbarFullLeft, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+            else if(i == boss.fullHp-1)
+                al_draw_tinted_bitmap(bmps.XPbarFullRight, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+            else
+                al_draw_tinted_bitmap(bmps.XPbarFullMid, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+        }
+        for (i = boss.hp; i < boss.fullHp; i ++){
+
+            if(i == 0)
+                al_draw_tinted_bitmap(bmps.XPbarEmptyLeft, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+            else if(i == boss.fullHp-1)
+                al_draw_tinted_bitmap(bmps.XPbarEmptyRight, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+            else
+                al_draw_tinted_bitmap(bmps.XPbarEmptyMid, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
+        }
+        al_draw_text(fonts.font36, al_map_rgb(255,50,0), width/2 - 15, 105, ALLEGRO_ALIGN_CENTER, "Orochimaru");
+    }
+
+    for (i = 0; i < player.hp; i++)
+        al_draw_tinted_bitmap(bmps.heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
+    for (i = player.hp; i < player.fullHp; i ++)
+        al_draw_tinted_bitmap(bmps.voidheart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
+    for (i = 0; i < player.numShur; i ++)
+        al_draw_tinted_bitmap(bmps.shurikenDraw, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (1)*MAPSCALE*MULT, 0);
+    for (i = 0; i < player.numKeys; i ++)
+        al_draw_tinted_bitmap(bmps.keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
+
+    al_draw_textf(fonts.font48, al_map_rgb(102, 187, 106), (width - 200)/2, height-70, ALLEGRO_ALIGN_CENTER, "%d", player.level);
+
+}
+
+void drawDialog(bitmaps bmps, int width, int height, int mapUsed, t_fonts fonts){
+    al_draw_bitmap(bmps.dialogBmp, width*1.15/4, height*1/2, 0);
+    switch(mapUsed){
+    case 0:
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o ");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "futuro hokageda vila da folha!");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "To certo!");
+        break;
+    case 1:
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao desistem mesmo");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "devolvam o pergaminho da");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "vila da folha! Ou terei que");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "derrotar todos voces!");
+        break;
+    case 2:
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "OROCHIMARU! Eu sabia que voce");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "estaria por tras de tudo isso!");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "Eu vou derrotar voce!");
+        al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "Dattebayo!");
+        break;
+    }
+
+
+
+    al_draw_bitmap(bmps.narutoDialog, -70, height-433,0);
+    al_flip_display();
+}
 
 void createMiniMap(char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP** miniMap, ALLEGRO_DISPLAY *display, t_player player){
     int i, j;

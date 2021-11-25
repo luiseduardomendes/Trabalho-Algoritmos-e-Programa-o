@@ -109,6 +109,46 @@ typedef struct save{
     t_boss boss;
 }typeSave;
 
+typedef struct{
+    ALLEGRO_FONT* font48;
+    ALLEGRO_FONT* font36;
+}t_fonts;
+
+typedef struct{
+    ALLEGRO_BITMAP *naruto;
+    ALLEGRO_BITMAP *shurikenDraw;
+    ALLEGRO_BITMAP *spikes;
+    ALLEGRO_BITMAP *keys;
+    ALLEGRO_BITMAP *enemy;
+    ALLEGRO_BITMAP *wall;
+    ALLEGRO_BITMAP *grass;
+    ALLEGRO_BITMAP *darkGrass;
+    ALLEGRO_BITMAP *lightGrass;
+    ALLEGRO_BITMAP *heart;
+    ALLEGRO_BITMAP *voidheart;
+    ALLEGRO_BITMAP *narutoDialog;
+    ALLEGRO_BITMAP *loading_screen;
+    ALLEGRO_BITMAP *background;
+    ALLEGRO_BITMAP *dialogBmp;
+    ALLEGRO_BITMAP *narutoback;
+    ALLEGRO_BITMAP *narutoleft;
+    ALLEGRO_BITMAP *narutoright;
+    ALLEGRO_BITMAP *enemyback;
+    ALLEGRO_BITMAP *enemyleft;
+    ALLEGRO_BITMAP *enemyright;
+    ALLEGRO_BITMAP *chest;
+    ALLEGRO_BITMAP *openchest;
+    ALLEGRO_BITMAP *trapdoor;
+    ALLEGRO_BITMAP *XPbarEmptyLeft;
+    ALLEGRO_BITMAP *XPbarEmptyMid;
+    ALLEGRO_BITMAP *XPbarEmptyRight;
+    ALLEGRO_BITMAP *XPbarFullMid;
+    ALLEGRO_BITMAP *XPbarFullLeft;
+    ALLEGRO_BITMAP *XPbarFullRight;
+    ALLEGRO_BITMAP *enemyBoss;
+    ALLEGRO_BITMAP *miniMap;
+}bitmaps;
+
 FILE *map;
 FILE *saveFile;
 
@@ -127,11 +167,9 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
                 int numShur, int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed, int *endOfLevel);
 
 // draw.c
-void drawMobs(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *enemy, ALLEGRO_BITMAP *enemyback, ALLEGRO_BITMAP *enemyleft,
-            ALLEGRO_BITMAP *enemyright, t_player playerPos);
+void drawMobs(t_npc npcPos[], int numMobs, bitmaps bmps, t_player playerPos);
 void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_player playerPos);
-            ALLEGRO_BITMAP* createBackground(ALLEGRO_BITMAP* background, ALLEGRO_BITMAP* wall, ALLEGRO_BITMAP* spikes, ALLEGRO_BITMAP* keys,
-            ALLEGRO_BITMAP* grass, ALLEGRO_BITMAP* darkGrass, ALLEGRO_BITMAP* lightGrass, ALLEGRO_DISPLAY* display,
+ALLEGRO_BITMAP* createBackground(bitmaps bmps, ALLEGRO_DISPLAY* display,
             char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 void createMiniMap(char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP** miniMap, ALLEGRO_DISPLAY *display, t_player player);
 

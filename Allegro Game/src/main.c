@@ -64,42 +64,47 @@ int main()
     al_init_font_addon();
     al_init_ttf_addon();
 
+    bitmaps bmps;
 
-    ALLEGRO_FONT* font48 = al_load_ttf_font("fonts/fonte.ttf", 48, 0);
-    ALLEGRO_FONT* font36 = al_load_ttf_font("fonts/fonte.ttf", 36, 0);
-    ALLEGRO_BITMAP *naruto = al_load_bitmap("assets/naruto.png");
-    ALLEGRO_BITMAP *shurikenDraw = al_load_bitmap("assets/shuriken2.png");
-    ALLEGRO_BITMAP *spikes = al_load_bitmap("assets/spikes.png");
-    ALLEGRO_BITMAP *keys = al_load_bitmap("assets/chave.png");
-    ALLEGRO_BITMAP *enemy = al_load_bitmap("assets/akatsuki.png");
-    ALLEGRO_BITMAP *wall = al_load_bitmap("assets/wall.png");
-    ALLEGRO_BITMAP *grass = al_load_bitmap("assets/grass.png");
-    ALLEGRO_BITMAP *darkGrass = al_load_bitmap("assets/darkGrass.png");
-    ALLEGRO_BITMAP *lightgrass = al_load_bitmap("assets/lightGrass.png");
-    ALLEGRO_BITMAP *heart = al_load_bitmap("assets/heart.png");
-    ALLEGRO_BITMAP *voidheart = al_load_bitmap("assets/voidheart.png");
-    ALLEGRO_BITMAP *narutoDialog = al_load_bitmap("assets/narutodialog.png");
-    ALLEGRO_BITMAP *loading_screen = al_load_bitmap("assets/loading_screen.png");
-    ALLEGRO_BITMAP *background = NULL;
-    ALLEGRO_BITMAP *dialogBmp = al_load_bitmap("assets/dialogChat.png");
-    ALLEGRO_BITMAP *narutoback = al_load_bitmap("assets/narutoback.png");
-    ALLEGRO_BITMAP *narutoleft = al_load_bitmap("assets/narutoleft.png");
-    ALLEGRO_BITMAP *narutoright = al_load_bitmap("assets/narutoright.png");
-    ALLEGRO_BITMAP *enemyback = al_load_bitmap("assets/akatsukiback.png");
-    ALLEGRO_BITMAP *enemyleft = al_load_bitmap("assets/akatsukileft.png");
-    ALLEGRO_BITMAP *enemyright = al_load_bitmap("assets/akatsukiright.png");
-    ALLEGRO_BITMAP *chest = al_load_bitmap("assets/bau.png");
-    ALLEGRO_BITMAP *openchest = al_load_bitmap("assets/bauaberto.png");
-    ALLEGRO_BITMAP *trapdoor = al_load_bitmap("assets/trapdoor.png");
-    ALLEGRO_BITMAP *XPbarEmptyLeft = al_load_bitmap("assets/EXPbarEmptyLeft.png");
-    ALLEGRO_BITMAP *XPbarEmptyMid = al_load_bitmap("assets/EXPbarEmptyMid.png");
-    ALLEGRO_BITMAP *XPbarEmptyRight = al_load_bitmap("assets/EXPbarEmptyRight.png");
-    ALLEGRO_BITMAP *XPbarFullMid = al_load_bitmap("assets/EXPbarFullMid.png");
-    ALLEGRO_BITMAP *XPbarFullLeft = al_load_bitmap("assets/EXPbarFullLeft.png");
-    ALLEGRO_BITMAP *XPbarFullRight = al_load_bitmap("assets/EXPbarFullRight.png");
-    ALLEGRO_BITMAP *enemyBoss = al_load_bitmap("assets/orochimaru.png");
-    ALLEGRO_BITMAP *miniMap = NULL;
-    al_convert_mask_to_alpha(narutoDialog, al_map_rgb(255,0,255));
+    t_fonts fonts;
+
+    fonts.font48 = al_load_ttf_font("fonts/fonte.ttf", 48, 0);
+    fonts.font36 = al_load_ttf_font("fonts/fonte.ttf", 36, 0);
+    bmps.naruto = al_load_bitmap("assets/naruto.png");
+    bmps.shurikenDraw = al_load_bitmap("assets/shuriken2.png");
+    bmps.spikes = al_load_bitmap("assets/spikes.png");
+    bmps.keys = al_load_bitmap("assets/chave.png");
+    bmps.enemy = al_load_bitmap("assets/akatsuki.png");
+    bmps.wall = al_load_bitmap("assets/wall.png");
+    bmps.grass = al_load_bitmap("assets/grass.png");
+    bmps.darkGrass = al_load_bitmap("assets/darkGrass.png");
+    bmps.lightGrass = al_load_bitmap("assets/lightGrass.png");
+    bmps.heart = al_load_bitmap("assets/heart.png");
+    bmps.voidheart = al_load_bitmap("assets/voidheart.png");
+    bmps.narutoDialog = al_load_bitmap("assets/narutodialog.png");
+    bmps.loading_screen = al_load_bitmap("assets/loading_screen.png");
+    bmps.background = NULL;
+    bmps.dialogBmp = al_load_bitmap("assets/dialogChat.png");
+    bmps.narutoback = al_load_bitmap("assets/narutoback.png");
+    bmps.narutoleft = al_load_bitmap("assets/narutoleft.png");
+    bmps.narutoright = al_load_bitmap("assets/narutoright.png");
+    bmps.enemyback = al_load_bitmap("assets/akatsukiback.png");
+    bmps.enemyleft = al_load_bitmap("assets/akatsukileft.png");
+    bmps.enemyright = al_load_bitmap("assets/akatsukiright.png");
+    bmps.chest = al_load_bitmap("assets/bau.png");
+    bmps.openchest = al_load_bitmap("assets/bauaberto.png");
+    bmps.trapdoor = al_load_bitmap("assets/trapdoor.png");
+    bmps.XPbarEmptyLeft = al_load_bitmap("assets/EXPbarEmptyLeft.png");
+    bmps.XPbarEmptyMid = al_load_bitmap("assets/EXPbarEmptyMid.png");
+    bmps.XPbarEmptyRight = al_load_bitmap("assets/EXPbarEmptyRight.png");
+    bmps.XPbarFullMid = al_load_bitmap("assets/EXPbarFullMid.png");
+    bmps.XPbarFullLeft = al_load_bitmap("assets/EXPbarFullLeft.png");
+    bmps.XPbarFullRight = al_load_bitmap("assets/EXPbarFullRight.png");
+    bmps.enemyBoss = al_load_bitmap("assets/orochimaru.png");
+    bmps.miniMap = NULL;
+    al_convert_mask_to_alpha(bmps.narutoDialog, al_map_rgb(255,0,255));
+
+
 
     /*_____________________________________________________________*/
 
@@ -177,26 +182,19 @@ int main()
                 menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
                             &numKeys, &numChest, items, chests, mapMatrix, &boss);
             }
-            loadMap(mapMatrix, mapUsed);
-            background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
-            dialogClosed = 0;
+
         }
         else{
             endOfLevel = 0;
-
-            loadMap(mapMatrix, mapUsed);
 
             standardSave(mapUsed);
             loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix, &boss);
             playerPos.numKeys = 0;
             mapExit.onMap = 0;
-
-            background = createBackground(background, wall, spikes, keys, grass, darkGrass, lightgrass, display, mapMatrix);
-
-            dialogClosed = 0;
         }
-        playerPos.numKeys=4;
-        boss.hp = 1;
+        dialogClosed = 0;
+        loadMap(mapMatrix, mapUsed);
+        bmps.background = createBackground(bmps, display, mapMatrix);
 
         while(!endOfLevel && !playerLogout)
         {
@@ -204,9 +202,6 @@ int main()
             ALLEGRO_EVENT event;
             al_wait_for_event(events_queue, &event);
             //al_get_keyboard_state(&keyState);
-
-
-
 
             if(event.type == ALLEGRO_EVENT_KEY_DOWN)
             {
@@ -276,178 +271,58 @@ int main()
 
                 if(event.timer.source == timer)
                 {
-
-                    createMiniMap(mapMatrix, &miniMap, display, playerPos);
-                    al_clear_to_color(al_map_rgb(0, 0, 0));
-                    al_draw_bitmap(background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
-                    if(playerPos.invulnerable > 0){
+                    if(playerPos.invulnerable > 0)
                         playerPos.invulnerable --;
-                    }
+
+
+                    createMiniMap(mapMatrix, &bmps.miniMap, display, playerPos);
+                    al_clear_to_color(al_map_rgb(0, 0, 0));
+                    al_draw_bitmap(bmps.background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
 
                     for (i = 0; i < numShur + numKeys; i ++)
                         if (items[i].onMap == 1)
                             if (items[i].nameItems == 1)
-                                al_draw_bitmap(keys, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                                al_draw_bitmap(bmps.keys, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                             else if (items[i].nameItems == 0)
-                                al_draw_bitmap(shurikenDraw, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                                al_draw_bitmap(bmps.shurikenDraw, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
 
                     for (i = 0; i < numChest; i ++){
                         if (chests[i].closed){
-                            al_draw_bitmap(chest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+                            al_draw_bitmap(bmps.chest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                         }
                         else {
-                            al_draw_bitmap(openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+                            al_draw_bitmap(bmps.openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                         }
                     }
                     if(boss.alive)
                         for (i = 0; i < 8; i ++)
                             if(boss.shurikens[i].throwing)
-                                al_draw_bitmap(shurikenDraw, (boss.shurikens[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+                                al_draw_bitmap(bmps.shurikenDraw, (boss.shurikens[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
 
 
                     if(mapExit.onMap == 1)
-                    {
-                        al_draw_bitmap(trapdoor, (mapExit.x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
-                    }
+                        al_draw_bitmap(bmps.trapdoor, (mapExit.x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
 
-
-                    drawMobs(npcPos, numMobs, enemy, enemyback, enemyleft, enemyright, playerPos);
-                    drawMobShur(npcPos, numMobs, shurikenDraw, playerPos);
-
-                    if (playerPos.invulnerable){
-                        switch(playerPos.direction){
-                            case UP:
-                                al_draw_tinted_bitmap(narutoback, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width/2, height/2, 0);
-                                break;
-                            case DOWN:
-                                al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                                break;
-                            case LEFT:
-                                al_draw_tinted_bitmap(narutoleft, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                                break;
-                            case RIGHT:
-                                al_draw_tinted_bitmap(narutoright, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                                break;
-                            default:
-                                al_draw_tinted_bitmap(naruto, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),width/2, height/2, 0);
-                        }
-                    }
-                    else{
-                        switch(playerPos.direction){
-                            case UP:
-                                al_draw_bitmap(narutoback, width/2, height/2, 0);
-                                break;
-                            case DOWN:
-                                al_draw_bitmap(naruto, width/2, height/2, 0);
-                                break;
-                            case LEFT:
-                                al_draw_bitmap(narutoleft, width/2, height/2, 0);
-                                break;
-                            case RIGHT:
-                                al_draw_bitmap(narutoright, width/2, height/2, 0);
-                                break;
-                            default:
-                                al_draw_bitmap(naruto, width/2, height/2, 0);
-                        }
-                    }
+                    drawMobs(npcPos, numMobs, bmps, playerPos);
+                    drawMobShur(npcPos, numMobs, bmps.shurikenDraw, playerPos);
+                    drawNaruto(bmps, playerPos, width, height);
 
                     if(boss.alive)
-                    {
-                        al_draw_bitmap(enemyBoss, (boss.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                    }
+                        al_draw_bitmap(bmps.enemyBoss, (boss.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
 
-
-                    //al_draw_filled_rectangle(playerPos.x*MAPSCALE, playerPos.y*MAPSCALE, (playerPos.x*MAPSCALE)+MAPSCALE, (playerPos.y*MAPSCALE)+MAPSCALE ,al_map_rgb(255,255,0));//Temp because naruto.png assertion is failling
                     if (playerPos.shuriken.throwing)
-                        al_draw_bitmap(shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
-                                       *MAPSCALE*MULT, 0);//Temp because shuriken.png assertion is failling
-                    al_draw_tinted_bitmap(miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
-                        //al_draw_filled_rectangle(playerPos.shuriken.x*MAPSCALE, playerPos.shuriken.y*MAPSCALE, (playerPos.shuriken.x*MAPSCALE)+MAPSCALE, (playerPos.shuriken.y*MAPSCALE)+MAPSCALE ,al_map_rgb(0,0,255));
+                        al_draw_bitmap(bmps.shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
+                                       *MAPSCALE*MULT, 0);
 
-                    for (i = 0; i < playerPos.xp; i++)
-                    {
-                        if(i == 0)
-                            al_draw_bitmap(XPbarFullLeft, (i+1)*MAPSCALE*MULT, height - 40, 0);
-                        else if(i == 24)
-                            al_draw_bitmap(XPbarFullRight, (i+1)*MAPSCALE*MULT, height - 40, 0);
-                        else
-                            al_draw_bitmap(XPbarFullMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
-                    }
+                    al_draw_tinted_bitmap(bmps.miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
 
-                    for (i = playerPos.xp; i < 25; i++)
-                    {
-                        if(i == 0)
-                            al_draw_bitmap(XPbarEmptyLeft, (i+1)*MAPSCALE*MULT, height - 40, 0);
-                        else if(i == 24)
-                            al_draw_bitmap(XPbarEmptyRight, (i+1)*MAPSCALE*MULT, height - 40, 0);
-                        else
-                            al_draw_bitmap(XPbarEmptyMid, (i+1)*MAPSCALE*MULT, height - 40, 0);
-                    }
-
-                    if (mapUsed == 2){
-                        for (i = 0; i < boss.hp; i ++){
-
-                            if(i == 0)
-                                al_draw_tinted_bitmap(XPbarFullLeft, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
-                            else if(i == boss.fullHp-1)
-                                al_draw_tinted_bitmap(XPbarFullRight, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
-                            else
-                                al_draw_tinted_bitmap(XPbarFullMid, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
-                        }
-                        for (i = boss.hp; i < boss.fullHp; i ++){
-
-                            if(i == 0)
-                                al_draw_tinted_bitmap(XPbarEmptyLeft, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
-                            else if(i == boss.fullHp-1)
-                                al_draw_tinted_bitmap(XPbarEmptyRight, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
-                            else
-                                al_draw_tinted_bitmap(XPbarEmptyMid, al_map_rgb(255,0,0), (i+13)*MAPSCALE*MULT, 80, 0);
-                        }
-                        al_draw_text(font36, al_map_rgb(255,50,0), width/2 - 15, 105, ALLEGRO_ALIGN_CENTER, "Orochimaru");
-                    }
-
-                    for (i = 0; i < playerPos.hp; i++)
-                        al_draw_tinted_bitmap(heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
-                    for (i = playerPos.hp; i < playerPos.fullHp; i ++)
-                        al_draw_tinted_bitmap(voidheart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
-                    for (i = 0; i < playerPos.numShur; i ++)
-                        al_draw_tinted_bitmap(shurikenDraw, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (1)*MAPSCALE*MULT, 0);
-                    for (i = 0; i < playerPos.numKeys; i ++)
-                        al_draw_tinted_bitmap(keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
-
-                    al_draw_textf(font48, al_map_rgb(102, 187, 106), (width - 200)/2, height-70, ALLEGRO_ALIGN_CENTER, "%d", playerPos.level);
-
+                    drawInterface(bmps, playerPos, boss, width, height, mapUsed, fonts);
 
                     al_flip_display();
 
                     while (!dialogClosed){ // dialogo
 
-                        al_draw_bitmap(dialogBmp, width*1.15/4, height*1/2, 0);
-                        switch(mapUsed){
-                        case 0:
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao vao se sair bem dessa");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "Voces estao enfrentando o ");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "futuro hokageda vila da folha!");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "To certo!");
-                            break;
-                        case 1:
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "Voces nao desistem mesmo");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "devolvam o pergaminho da");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "vila da folha! Ou terei que");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "derrotar todos voces!");
-                            break;
-                        case 2:
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.5/4, ALLEGRO_ALIGN_CENTER, "OROCHIMARU! Eu sabia que voce");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*2.75/4, ALLEGRO_ALIGN_CENTER, "estaria por tras de tudo isso!");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.0/4, ALLEGRO_ALIGN_CENTER, "Eu vou derrotar voce!");
-                            al_draw_text(font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "Dattebayo!");
-                            break;
-                        }
-
-
-
-                        al_draw_bitmap(narutoDialog, -70, height-433,0);
-                        al_flip_display();
+                        drawDialog(bmps, width, height, mapUsed, fonts);
                         al_wait_for_event(events_queue, &event);
 
 
@@ -475,8 +350,8 @@ int main()
                     if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
                         endOfGame = true;
                     al_clear_to_color(al_map_rgb(0,0,0));
-                    al_draw_bitmap(loading_screen, 0,0,0);
-                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce morreu!");
+                    al_draw_bitmap(bmps.loading_screen, 0,0,0);
+                    al_draw_text(fonts.font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce morreu!");
                     al_flip_display();
 
 
@@ -508,10 +383,10 @@ int main()
                     if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
                         endOfGame = true;
                     al_clear_to_color(al_map_rgb(0,0,0));
-                    al_draw_bitmap(loading_screen, 0,0,0);
-                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, (height-120)/2, 1, "Parabens!");
-                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce derrotou Orochimaru e recuperou");
-                    al_draw_text(font48, al_map_rgb(255, 255, 255), width/2, (height+120)/2, 1, "o pergaminho roubado da vila da folha!");
+                    al_draw_bitmap(bmps.loading_screen, 0,0,0);
+                    al_draw_text(fonts.font48, al_map_rgb(255, 255, 255), width/2, (height-120)/2, 1, "Parabens!");
+                    al_draw_text(fonts.font48, al_map_rgb(255, 255, 255), width/2, height/2, 1, "Voce derrotou Orochimaru e recuperou");
+                    al_draw_text(fonts.font48, al_map_rgb(255, 255, 255), width/2, (height+120)/2, 1, "o pergaminho roubado da vila da folha!");
                     al_flip_display();
 
 
@@ -535,16 +410,16 @@ int main()
     al_destroy_timer(mobTimer);
     al_destroy_timer(shurTimer);
     al_destroy_timer(throwShurTimer);
-    al_destroy_bitmap(naruto);
-    al_destroy_bitmap(shurikenDraw);
-    al_destroy_bitmap(spikes);
-    al_destroy_bitmap(keys);
-    al_destroy_bitmap(enemy);
-    al_destroy_bitmap(wall);
-    al_destroy_bitmap(grass);
-    al_destroy_bitmap(heart);
-    al_destroy_bitmap(voidheart);
-    al_destroy_bitmap(narutoDialog);
+    al_destroy_bitmap(bmps.naruto);
+    al_destroy_bitmap(bmps.shurikenDraw);
+    al_destroy_bitmap(bmps.spikes);
+    al_destroy_bitmap(bmps.keys);
+    al_destroy_bitmap(bmps.enemy);
+    al_destroy_bitmap(bmps.wall);
+    al_destroy_bitmap(bmps.grass);
+    al_destroy_bitmap(bmps.heart);
+    al_destroy_bitmap(bmps.voidheart);
+    al_destroy_bitmap(bmps.narutoDialog);
     al_destroy_display(display);
 
     return 0;
