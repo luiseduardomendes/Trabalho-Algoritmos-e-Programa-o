@@ -6,7 +6,7 @@ int main()
     //variaveis para allegro
 
     float frameRate = 30;
-    int numMobs = 4;
+
     int mobRate = 2;
     int shurRate = 12;
     int throwShurRate = 2;
@@ -22,11 +22,14 @@ int main()
     t_chest chests[10];
     t_boss boss;
     t_exit mapExit;
-    int numChest;
-    int playerLogout = 0;
+    t_counting *counting;
+
+
+
+    int openMainMenu = 1;
     typeSave save;
     typeItem items[MIN_ITEMS];
-    int numShur, numKeys;
+
     char mapMatrix[SIZEMAP_Y][SIZEMAP_X];
 
     const int width = SIZEMAP_X*MAPSCALE; //largura
@@ -40,7 +43,7 @@ int main()
     //inicializacao allegro
 
     if(!al_init()){
-        al_show_native_message_box(NULL, "AVISO!", "Erro de execu��o!", "Allegro n�o inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execucao!", "Allegro nao inicializada", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }
     /*_____________________________________________________________*/
@@ -51,7 +54,7 @@ int main()
     ALLEGRO_DISPLAY *display = NULL;
     display = al_create_display(width, height);
     if (!display){
-        al_show_native_message_box(NULL, "AVISO!", "Erro de execu��o!", "O display n�o pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        al_show_native_message_box(NULL, "AVISO!", "Erro de execucao!", "O display nao pode ser criado!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }
     /*_____________________________________________________________*/
@@ -70,6 +73,8 @@ int main()
 
     fonts.font48 = al_load_ttf_font("fonts/fonte.ttf", 48, 0);
     fonts.font36 = al_load_ttf_font("fonts/fonte.ttf", 36, 0);
+
+
     bmps.naruto = al_load_bitmap("assets/naruto.png");
     bmps.shurikenDraw = al_load_bitmap("assets/shuriken2.png");
     bmps.spikes = al_load_bitmap("assets/spikes.png");
@@ -113,14 +118,11 @@ int main()
     //Audio
 
     ALLEGRO_SAMPLE *throwShur = NULL;
-    //ALLEGRO_SAMPLE_INSTANCE *throwShurInst = NULL;
 
     al_init_acodec_addon();
     al_install_audio();
     al_reserve_samples(true);
     throwShur = al_load_sample("sfx/throwShur.wav");
-    //throwShurInst = al_create_sample_instance(throwShur);
-    //al_attach_sample_instance_to_mixer(throwShurInst, al_get_default_mixer());
     /*_____________________________________________________________*/
 
     /*_____________________________________________________________*/
@@ -167,28 +169,27 @@ int main()
     /*_____________________________________________________________*/
     //menu iniciar
 
-
+    openMainMenu = 1;
     /*_____________________________________________________________*/
-    playerLogout = 1;
     do{
 
-        if (playerLogout){
+        if (openMainMenu){
             al_clear_to_color(al_map_rgb(0,0,0));
             if(joystickFound){
-                menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, joy, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
-                            &numKeys, &numChest, items, chests, mapMatrix, &boss);
+
+                menuIniciar(width, height, &endOfGame, &endOfLevel, &openMainMenu, display, events_queue, joy, joyState,
+                            npcPos, &playerPos, &mapUsed, counting, items, chests, mapMatrix, &boss, fonts, bmps);
             }
             else{
-                menuIniciar(width, height, &endOfGame, &endOfLevel, &playerLogout, display, events_queue, NULL, joyState, npcPos, &numMobs, &playerPos, &mapUsed, &numShur,
-                            &numKeys, &numChest, items, chests, mapMatrix, &boss);
+                menuIniciar(width, height, &endOfGame, &endOfLevel, &openMainMenu, display, events_queue, NULL, joyState,
+                            npcPos, &playerPos, &mapUsed, counting, items, chests, mapMatrix, &boss, fonts, bmps);
             }
-
         }
         else{
             endOfLevel = 0;
 
             standardSave(mapUsed);
-            loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix, &boss);
+            loadSave(npcPos, &playerPos, &mapUsed, counting, items, chests, mapMatrix, &boss);
             playerPos.numKeys = 0;
             mapExit.onMap = 0;
         }
@@ -196,21 +197,18 @@ int main()
         loadMap(mapMatrix, mapUsed);
         bmps.background = createBackground(bmps, display, mapMatrix);
 
-        while(!endOfLevel && !playerLogout)
+        while(!endOfLevel)
         {
-            playerLogout = 0;
             ALLEGRO_EVENT event;
             al_wait_for_event(events_queue, &event);
-            //al_get_keyboard_state(&keyState);
 
             if(event.type == ALLEGRO_EVENT_KEY_DOWN)
-            {
-                playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
-            }
+                playerInputKeyboard(event, &playerPos, &openMenu, mapMatrix, items, *counting, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
+
             if(joystickFound) {
                 if (event.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN) {
                     //printf("Botao pressionado: %d\n", ev.joystick.button);
-                    buttonDown(event, &playerPos, &openMenu, mapMatrix, items, numShur, numKeys, numChest, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
+                    buttonDown(event, &playerPos, &openMenu, mapMatrix, items, *counting, chests, throwShur, &mapExit, mapUsed, &endOfLevel);
                 }
                 if(event.type == ALLEGRO_EVENT_JOYSTICK_AXIS) {
                     moveJoystick(event, &playerPos, &openMenu, mapMatrix);
@@ -220,18 +218,17 @@ int main()
                 endOfGame = true;
                 endOfLevel = true;
             }
-
             if(event.type == ALLEGRO_EVENT_TIMER)
             {
                 if(event.timer.source == mobTimer)
                 {
-                    npcMovement(npcPos, numMobs, &playerPos, mapMatrix);
+                    npcMovement(npcPos, counting->numMobs, &playerPos, mapMatrix);
                     moveBoss(&boss, &playerPos, mapMatrix);
                 }
 
                 if(event.timer.source == throwShurTimer)
                 {
-                    for (i = 0; i < numMobs; i ++){
+                    for (i = 0; i < counting->numMobs; i ++){
                         if (npcPos[i].alive)
                             if (!npcPos[i].shuriken.throwing)
                                 shurikenDir(&npcPos[i], playerPos, throwShur);
@@ -252,8 +249,8 @@ int main()
                 if(event.timer.source == shurTimer)
                 {
 
-                    updateShurikenPlayer(&playerPos, npcPos, &boss, numMobs, mapMatrix, &mapExit);//Player shuriken
-                    for (i = 0; i < numMobs; i ++){ //Mob shuriken
+                    updateShurikenPlayer(&playerPos, npcPos, &boss, counting->numMobs, mapMatrix, &mapExit);//Player shuriken
+                    for (i = 0; i < counting->numMobs; i ++){ //Mob shuriken
                         if (npcPos[i].alive) {
                             if (npcPos[i].shuriken.throwing)
                                 updateShurikenPos(&npcPos[i].shuriken, &playerPos, mapMatrix);
@@ -274,19 +271,18 @@ int main()
                     if(playerPos.invulnerable > 0)
                         playerPos.invulnerable --;
 
-
                     createMiniMap(mapMatrix, &bmps.miniMap, display, playerPos);
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     al_draw_bitmap(bmps.background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
 
-                    for (i = 0; i < numShur + numKeys; i ++)
+                    for (i = 0; i < counting->numShur + counting->numKeys; i ++)
                         if (items[i].onMap == 1)
                             if (items[i].nameItems == 1)
                                 al_draw_bitmap(bmps.keys, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
                             else if (items[i].nameItems == 0)
                                 al_draw_bitmap(bmps.shurikenDraw, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
 
-                    for (i = 0; i < numChest; i ++){
+                    for (i = 0; i < counting->numChests; i ++){
                         if (chests[i].closed){
                             al_draw_bitmap(bmps.chest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
                         }
@@ -303,8 +299,8 @@ int main()
                     if(mapExit.onMap == 1)
                         al_draw_bitmap(bmps.trapdoor, (mapExit.x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
 
-                    drawMobs(npcPos, numMobs, bmps, playerPos);
-                    drawMobShur(npcPos, numMobs, bmps.shurikenDraw, playerPos);
+                    drawMobs(npcPos, counting->numMobs, bmps, playerPos);
+                    drawMobShur(npcPos, counting->numMobs, bmps.shurikenDraw, playerPos);
                     drawNaruto(bmps, playerPos, width, height);
 
                     if(boss.alive)
@@ -337,11 +333,11 @@ int main()
 
             if (openMenu) {
                 if (joystickFound)
-                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, joy, joyState, npcPos,
-                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout, &boss);
+                    showMenu(width, height, &endOfLevel, &openMenu, display, events_queue, joy, joyState, npcPos,
+                             &playerPos, &mapUsed, counting, items, mapMatrix, chests, &openMainMenu, &boss, fonts, bmps);
                 else
-                    showMenu(width, height, &endOfGame, &openMenu, display, events_queue, NULL, joyState, npcPos,
-                            &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, mapMatrix, chests, &playerLogout, &boss);
+                    showMenu(width, height, &endOfLevel, &openMenu, display, events_queue, NULL, joyState, npcPos,
+                             &playerPos, &mapUsed, counting, items, mapMatrix, chests, &openMainMenu, &boss, fonts, bmps);
             }
 
             if (playerPos.hp == 0){
@@ -360,10 +356,10 @@ int main()
 
 
                             standardSave(0);
-                            loadSave(npcPos, &numMobs, &playerPos, &mapUsed, &numShur, &numKeys, &numChest, items, chests, mapMatrix, &boss);
+                            loadSave(npcPos, &playerPos, &mapUsed, counting, items, chests, mapMatrix, &boss);
                             endOfLevel = 1;
-                            playerLogout = 1;
-                            saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, boss);
+                            openMainMenu = 1;
+                            saveFunction(npcPos, playerPos, mapUsed, counting, items, chests, boss);
 
                     }
                 } while(!endOfLevel);
@@ -371,7 +367,7 @@ int main()
 
         }
 
-        if (!playerLogout){
+        if (!openMainMenu){
             if (mapUsed != 2)
                 mapUsed ++;
             else {
@@ -395,11 +391,11 @@ int main()
                         closeCongrats = 1;
                     }
                     endOfLevel = 1;
-                    playerLogout = 1;
+                    openMainMenu = 1;
                 } while(!closeCongrats);
             }
 
-            saveFunction(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, boss);
+            saveFunction(npcPos, playerPos, mapUsed, counting, items, chests, boss);
         }
 
     }while(!endOfGame);

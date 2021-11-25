@@ -234,4 +234,22 @@ void createMiniMap(char mapMatrix[][SIZEMAP_X], ALLEGRO_BITMAP** miniMap, ALLEGR
     al_set_target_bitmap(al_get_backbuffer(display));
 }
 
+void drawMainMenu(bitmaps bmps, int width, int height, int selected, t_fonts fonts){
+    al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
+    al_draw_rectangle(width*2/5, height*(selected*2+4.25)/16, width*3/5, height*(selected*2+6)/16, al_map_rgb(0,128,128), 5);
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*4.5/16, ALLEGRO_ALIGN_CENTER, "Novo Jogo");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Creditos");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
+    al_flip_display();
+}
 
+void drawInGameMenu(bitmaps bmps, int width, int height, int selected, t_fonts fonts){
+    al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
+    al_draw_rectangle(width*2/5, height*(selected*2+4.25)/16, width*3/5, height*(selected*2+6)/16, al_map_rgb(0,128,128), 5);
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*4.5/16, ALLEGRO_ALIGN_CENTER, "Continuar");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Salvar jogo");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
+    al_flip_display();
+}

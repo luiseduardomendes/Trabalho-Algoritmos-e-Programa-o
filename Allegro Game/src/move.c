@@ -151,18 +151,18 @@ int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEM
     return validPosition;
 }
 
-void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[], t_exit *mapExit, int mapUsed, int *endOfLevel)
+void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], t_counting counting, t_chest chests[], t_exit *mapExit, int mapUsed, int *endOfLevel)
 {
     int i = 0;
 
-    for (i = 0; i < numShur + numKeys; i ++){
+    for (i = 0; i < counting.numShur + counting.numKeys; i ++){
         if(items[i].x == player->x && items[i].y == player->y && items[i].onMap == 1){
             items[i].onMap = 0;
             switch (items[i].nameItems){
             case keys:
                 player->numKeys ++;
 
-                if(player->numKeys >= numKeys && mapUsed != 2)
+                if(player->numKeys >= counting.numKeys && mapUsed != 2)
                 {
                     mapExit->y = 20;
                     mapExit->x = 33;
@@ -183,7 +183,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
                 break;
             case keys:
                 player->numKeys ++;
-                if(player->numKeys == numKeys && mapUsed != 2)
+                if(player->numKeys == counting.numKeys && mapUsed != 2)
                 {
                     mapExit->y = 20;
                     mapExit->x = 33;

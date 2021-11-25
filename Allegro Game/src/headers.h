@@ -96,16 +96,17 @@ typedef struct {
     int alive;
 }t_boss;
 
+typedef struct{
+    int numMobs, numShur, numKeys, numChests;
+}t_counting;
+
 typedef struct save{
     t_player player;
     t_npc npc[25];
     typeItem object[25];
     t_chest chestItem[10];
-    int numMobs;
     int mapUsed;
-    int numShur;
-    int numKeys;
-    int numChest;
+    t_counting counting;
     t_boss boss;
 }typeSave;
 
@@ -115,39 +116,11 @@ typedef struct{
 }t_fonts;
 
 typedef struct{
-    ALLEGRO_BITMAP *naruto;
-    ALLEGRO_BITMAP *shurikenDraw;
-    ALLEGRO_BITMAP *spikes;
-    ALLEGRO_BITMAP *keys;
-    ALLEGRO_BITMAP *enemy;
-    ALLEGRO_BITMAP *wall;
-    ALLEGRO_BITMAP *grass;
-    ALLEGRO_BITMAP *darkGrass;
-    ALLEGRO_BITMAP *lightGrass;
-    ALLEGRO_BITMAP *heart;
-    ALLEGRO_BITMAP *voidheart;
-    ALLEGRO_BITMAP *narutoDialog;
-    ALLEGRO_BITMAP *loading_screen;
-    ALLEGRO_BITMAP *background;
-    ALLEGRO_BITMAP *dialogBmp;
-    ALLEGRO_BITMAP *narutoback;
-    ALLEGRO_BITMAP *narutoleft;
-    ALLEGRO_BITMAP *narutoright;
-    ALLEGRO_BITMAP *enemyback;
-    ALLEGRO_BITMAP *enemyleft;
-    ALLEGRO_BITMAP *enemyright;
-    ALLEGRO_BITMAP *chest;
-    ALLEGRO_BITMAP *openchest;
-    ALLEGRO_BITMAP *trapdoor;
-    ALLEGRO_BITMAP *XPbarEmptyLeft;
-    ALLEGRO_BITMAP *XPbarEmptyMid;
-    ALLEGRO_BITMAP *XPbarEmptyRight;
-    ALLEGRO_BITMAP *XPbarFullMid;
-    ALLEGRO_BITMAP *XPbarFullLeft;
-    ALLEGRO_BITMAP *XPbarFullRight;
-    ALLEGRO_BITMAP *enemyBoss;
-    ALLEGRO_BITMAP *miniMap;
-}bitmaps;
+    ALLEGRO_BITMAP *naruto,*shurikenDraw,*spikes,*keys,*enemy,*wall,*grass,*darkGrass,*lightGrass,*heart,*voidheart,*narutoDialog,
+    *loading_screen,*background,*dialogBmp,*narutoback,*narutoleft,*narutoright,*enemyback,*enemyleft,*enemyright,*chest,*openchest,
+    *trapdoor,*XPbarEmptyLeft,*XPbarEmptyMid,*XPbarEmptyRight,*XPbarFullMid,*XPbarFullLeft,*XPbarFullRight,*enemyBoss,*miniMap;
+}bitmaps, t_bitmaps;
+
 
 FILE *map;
 FILE *saveFile;
@@ -160,12 +133,13 @@ void shurikenDirBoss(t_boss *boss, t_player playerPos, ALLEGRO_SAMPLE* throwShur
 void updateShurikenBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 
 // controlls.c
+/*
 void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], int numShur,
                 int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed, int *endOfLevel);
 void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], typeItem items[],
                 int numShur, int numKeys, int numChest, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed, int *endOfLevel);
-
+*/
 // draw.c
 void drawMobs(t_npc npcPos[], int numMobs, bitmaps bmps, t_player playerPos);
 void drawMobShur(t_npc npcPos[], int numMobs, ALLEGRO_BITMAP *shurikenDraw, t_player playerPos);
@@ -180,7 +154,7 @@ void levelUp(t_player *player);
 void loadMap (char mapMatrix[SIZEMAP_Y][SIZEMAP_X], int mapUsed);
 
 //menuPause.c
-void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
+/*void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
             ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
             int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[],
             int *playerLogout, t_boss *boss);
@@ -192,11 +166,11 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
             ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
             int *numShur, int *numKeys, int *numChest, typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_boss *boss);
 void standardSave(int mapUsed);
-
+*/
 // move.c
 void npcMovement(t_npc mobPos[], int numMobs, t_player *playerPos, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
-void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[],
-                t_exit *mapExit, int mapUsed, int *endOfLevel);
+//void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[],
+//                t_exit *mapExit, int mapUsed, int *endOfLevel);
 

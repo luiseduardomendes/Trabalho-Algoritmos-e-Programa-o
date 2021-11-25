@@ -1,14 +1,12 @@
 #include "headers.h"
-void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-            ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
-            int *numShur, int *numKeys, int *numChest, typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[],
-            int *playerLogout, t_boss *boss) {
-    int selectioned = 0;
+void showMenu(int width, int height, bool *endOfLevel, bool *openMenu, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
+            ALLEGRO_JOYSTICK *joy,ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], t_player *playerPos, int *mapUsed, t_counting *counting,
+            typeItem items[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_chest chests[], int *playerLogout, t_boss *boss, t_fonts fonts, t_bitmaps bmps) {
+    int selected = 0;
     enum options{resumeGame, saveGame, loadGame, exitGame};
 
     al_init_font_addon();
     al_init_ttf_addon();
-    ALLEGRO_FONT* font20 = al_load_ttf_font("fonts/fonte.ttf", 40, 0);
 
 
     do{
@@ -17,14 +15,7 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
         if (joy != NULL)
             al_get_joystick_state(joy, &joyState);
 
-        al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
-        al_draw_rectangle(width*2/5, height*(selectioned*2+4.25)/16, width*3/5, height*(selectioned*2+6)/16, al_map_rgb(0,128,128), 5);
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*4.5/16, ALLEGRO_ALIGN_CENTER, "Continuar");
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Salvar jogo");
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
-        al_flip_display();
-
+        drawInGameMenu(bmps, width, height, selected, fonts);
 
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){
@@ -33,32 +24,33 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                     break;
                 case ALLEGRO_KEY_UP:
                 case ALLEGRO_KEY_W:
-                    if (selectioned - 1 >= 0)
-                        selectioned --;
+                    if (selected - 1 >= 0)
+                        selected --;
                     else
-                        selectioned = 3;
+                        selected = 3;
                     break;
                 case ALLEGRO_KEY_DOWN:
                 case ALLEGRO_KEY_S:
-                    if (selectioned + 1 <= 3)
-                        selectioned ++;
+                    if (selected + 1 <= 3)
+                        selected ++;
                     else
-                        selectioned = 0;
+                        selected = 0;
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    switch (selectioned){
+                    switch (selected){
                         case resumeGame:
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, *numChest, items, chests, *boss);
+                            saveFunction(npcPos, *playerPos, *mapUsed, *counting, items, chests, *boss);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
+                            loadSave(npcPos, playerPos, mapUsed, counting, items, chests, mapMatrix, boss);
                             break;
                         case exitGame:
                             *playerLogout = true;
                             *openMenu = false;
+                            *endOfLevel = 1;
                             break;
                         }
                     break;
@@ -73,20 +65,20 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                     *openMenu = false;
                     break;
                 case 0: //Xbox_A
-                    switch (selectioned){
+                    switch (selected){
                         case resumeGame:
                             *openMenu = false;
                             break;
                         case saveGame:
-                            saveFunction(npcPos, *numMobs, *playerPos, *mapUsed, *numShur, *numKeys, *numChest, items, chests, *boss);
+                            saveFunction(npcPos, *playerPos, *mapUsed, *counting, items, chests, *boss);
                             break;
                         case loadGame:
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
+                            loadSave(npcPos, playerPos, mapUsed, counting, items, chests, mapMatrix, boss);
                             break;
                         case exitGame:
                             *playerLogout = true;
                             *openMenu = false;
-                            *endOfGame = true;
+                            *endOfLevel = 1;
                             break;
                         }
                     break;
@@ -96,16 +88,16 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
                 if(ev.joystick.axis == 1){
                     switch((int)round(ev.joystick.pos)){
                         case 1:
-                        if (selectioned + 1 <= 3)
-                            selectioned ++;
+                        if (selected + 1 <= 3)
+                            selected ++;
                         else
-                            selectioned = 0;
+                            selected = 0;
                         break;
                         case -1:
-                        if (selectioned - 1 >= 0)
-                            selectioned --;
+                        if (selected - 1 >= 0)
+                            selected --;
                         else
-                            selectioned = 3;
+                            selected = 3;
                         break;
                     }
                 }
@@ -114,22 +106,21 @@ void showMenu(int width, int height, bool *endOfGame, bool *openMenu, ALLEGRO_DI
     } while (*openMenu);
 }
 
-int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, int numShur, int numKeys, int numChest,
+int saveFunction (t_npc npcPos[], t_player playerPos, int mapUsed, t_counting counting,
                   typeItem items[], t_chest chests[], t_boss boss) {
     int k, flag = 1;
     typeSave save;
+
     save.mapUsed = mapUsed;
-    save.numMobs = numMobs;
-    save.numShur = numShur;
-    save.numKeys = numKeys;
-    save.numChest = numChest;
-    for(k = 0; k < save.numMobs; k ++) {
+    save.counting = counting;
+
+    for(k = 0; k < save.counting.numMobs; k ++) {
         save.npc[k] = npcPos[k];
     }
-    for (k = 0; k < save.numKeys + save.numShur; k ++) {
+    for (k = 0; k < save.counting.numKeys + save.counting.numShur; k ++) {
         save.object[k] = items[k];
     }
-    for (k = 0; k < numChest; k ++){
+    for (k = 0; k < save.counting.numChests; k ++){
         save.chestItem[k] = chests[k];
     }
 
@@ -150,7 +141,7 @@ int saveFunction (t_npc npcPos[], int numMobs, t_player playerPos, int mapUsed, 
     return flag;
 }
 
-void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, int *numShur, int *numKeys, int *numChest,
+void loadSave(t_npc npcPos[], t_player *playerPos, int *mapUsed, t_counting *counting,
               typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_boss *boss) {
     typeSave save;
     int k;
@@ -160,18 +151,18 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
     if (saveFile != NULL){
         fread(&save, sizeof(save), 1, saveFile);
         fclose(saveFile);
-        *numMobs = save.numMobs;
-        *mapUsed = save.mapUsed;
-        *numShur = save.numShur;
-        *numKeys = save.numKeys;
-        *numChest = save.numChest;
-        for(k = 0; k < *numMobs; k ++) {
+
+        mapUsed = save.mapUsed;
+
+        *counting = save.counting;
+
+        for(k = 0; k < counting->numMobs; k ++) {
             npcPos[k] = save.npc[k];
         }
-        for (k = 0; k < *numKeys + *numShur; k ++) {
+        for (k = 0; k < counting->numKeys + counting->numShur; k ++) {
             items[k] = save.object[k];
         }
-        for (k = 0; k < *numChest; k ++){
+        for (k = 0; k < counting->numChests; k ++){
             chests[k] = save.chestItem[k];
         }
 
@@ -182,16 +173,14 @@ void loadSave(t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed, i
 }
 
 void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *playerLogout, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue,
-            ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], int *numMobs, t_player *playerPos, int *mapUsed,
-            int *numShur, int *numKeys, int *numChest, typeItem items[], t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_boss *boss){
-    int selectioned = 0, beginGame = 0;
-    enum options{newGame, loadGame, credits, exitGame};
+            ALLEGRO_JOYSTICK *joy, ALLEGRO_JOYSTICK_STATE joyState, t_npc npcPos[], t_player *playerPos, int *mapUsed, t_counting *counting, typeItem items[],
+            t_chest chests[], char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_boss *boss, t_fonts fonts, t_bitmaps bmps){
+    int selected = 0, closeMenu = 0;
+
+    enum {newGame, loadGame, credits, exitGame};
 
     al_init_font_addon();
     al_init_ttf_addon();
-    ALLEGRO_FONT* font20 = al_load_ttf_font("fonts/fonte.ttf", 40, 0);
-
-
 
     do{
         ALLEGRO_EVENT ev;
@@ -199,15 +188,9 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
         if (joy != NULL)
             al_get_joystick_state(joy, &joyState);
 
-        al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
-        al_draw_rectangle(width*2/5, height*(selectioned*2+4.25)/16, width*3/5, height*(selectioned*2+6)/16, al_map_rgb(0,128,128), 5);
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*4.5/16, ALLEGRO_ALIGN_CENTER, "Novo Jogo");
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Creditos");
-        al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
-        al_flip_display();
+        drawMainMenu(bmps, width, height, selected, fonts);
 
-        al_flip_display();
+
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (ev.keyboard.keycode){
                 case ALLEGRO_KEY_ESCAPE:
@@ -215,43 +198,43 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                     break;
                 case ALLEGRO_KEY_UP:
                 case ALLEGRO_KEY_W:
-                    if (selectioned - 1 >= 0)
-                        selectioned --;
+                    if (selected - 1 >= 0)
+                        selected --;
                     else
-                        selectioned = 3;
+                        selected = 3;
                     break;
                 case ALLEGRO_KEY_DOWN:
                 case ALLEGRO_KEY_S:
-                    if (selectioned + 1 <= 3)
-                        selectioned ++;
+                    if (selected + 1 <= 3)
+                        selected ++;
                     else
-                        selectioned = 0;
+                        selected = 0;
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    switch (selectioned){
+                    switch (selected){
                         case newGame:
-                            beginGame = true;
+                            closeMenu = true;
                             *endOfGame = false;
                             standardSave(0);
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
+                            loadSave(npcPos, playerPos, mapUsed, counting, items, chests, mapMatrix, boss);
                             *playerLogout = 0;
                             *endOfLevel = 0;
                             break;
                         case loadGame:
                             saveFile = fopen("save.sav", "rb");
                             if (saveFile != NULL){
-                                loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
-                                beginGame = true;
+                                loadSave(npcPos, playerPos, mapUsed, counting, items, chests, mapMatrix, boss);
+                                closeMenu = true;
                                 *endOfGame = false;
                                 *playerLogout = 0;
                                 *endOfLevel = 0;
                             }
                             break;
                         case credits:
-                            creditFunction(width, height, display, events_queue, joy);
+                            creditFunction(width, height, display, events_queue, joy, fonts);
                             break;
                         case exitGame:
-                            beginGame = true;
+                            closeMenu = true;
                             *endOfGame = true;
 
                             break;
@@ -268,20 +251,20 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                 case 1: // Xbox_B
                     break;
                 case 0: //Xbox_A
-                    switch (selectioned){
+                    switch (selected){
                         case newGame:
-                            beginGame = true;
+                            closeMenu = true;
                             *endOfGame = false;
                             standardSave(0);
-                            loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
+                            loadSave(npcPos, playerPos, mapUsed, counting, items, chests, mapMatrix, boss);
                             *playerLogout = 0;
                             *endOfLevel = 0;
                             break;
                         case loadGame:
                             saveFile = fopen("save.sav", "rb");
                             if (saveFile != NULL){
-                                loadSave(npcPos, numMobs, playerPos, mapUsed, numShur, numKeys, numChest, items, chests, mapMatrix, boss);
-                                beginGame = true;
+                                loadSave(npcPos, playerPos, mapUsed, counting, items, chests, mapMatrix, boss);
+                                closeMenu = true;
                                 *endOfGame = false;
                                 *playerLogout = 0;
                                 *endOfLevel = 0;
@@ -291,7 +274,7 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                             creditFunction(width, height, display, events_queue, joy);
                             break;
                         case exitGame:
-                            beginGame = true;
+                            closeMenu = true;
                             *endOfGame = true;
                             break;
                         }
@@ -303,22 +286,22 @@ void menuIniciar(int width, int height, bool *endOfGame, int *endOfLevel, int *p
                 if(ev.joystick.axis == 1){
                     switch((int)round(ev.joystick.pos)){
                         case 1:
-                        if (selectioned + 1 <= 3)
-                            selectioned ++;
+                        if (selected + 1 <= 3)
+                            selected ++;
                         else
-                            selectioned = 0;
+                            selected = 0;
                         break;
                         case -1:
-                        if (selectioned - 1 >= 0)
-                            selectioned --;
+                        if (selected - 1 >= 0)
+                            selected --;
                         else
-                            selectioned = 3;
+                            selected = 3;
                         break;
                     }
                 }
             }
         }
-    } while (!beginGame);
+    } while (!closeMenu);
 }
 
 void standardSave(int mapUsed){
@@ -331,20 +314,20 @@ void standardSave(int mapUsed){
 
     switch (mapUsed){
         case 0:
-            save.numKeys = 5;
-            save.numMobs = 5;
-            save.numShur = 5;
-            save.numChest = 2;
+            save.counting.numKeys = 5;
+            save.counting.numMobs = 5;
+            save.counting.numShur = 5;
+            save.counting.numChests = 2;
         case 1:
-            save.numKeys = 10;
-            save.numMobs = 8;
-            save.numShur = 8;
-            save.numChest = 10;
+            save.counting.numKeys = 10;
+            save.counting.numMobs = 8;
+            save.counting.numShur = 8;
+            save.counting.numChests = 10;
         case 2:
-            save.numKeys = 5;
-            save.numMobs = 5;
-            save.numShur = 5;
-            save.numChest = 5;
+            save.counting.numKeys = 5;
+            save.counting.numMobs = 5;
+            save.counting.numShur = 5;
+            save.counting.numChests = 5;
     }
 
     save.player.x = 1;
@@ -385,7 +368,7 @@ void standardSave(int mapUsed){
         }
     }
 
-    for (i = 0; i < save.numMobs; i++){
+    for (i = 0; i < save.counting.numMobs; i++){
         do{
             save.npc[i].x = (1 + (rand() % (SIZEMAP_X-2)));
             save.npc[i].y = (1 + (rand() % (SIZEMAP_Y-2)));
@@ -393,7 +376,7 @@ void standardSave(int mapUsed){
         save.npc[i].alive = 1;
     }
 
-    for (i = 0; i < save.numShur; i++){
+    for (i = 0; i < save.counting.numShur; i++){
         do{
             save.object[i].nameItems = shur;
             save.object[i].onMap = 1;
@@ -402,7 +385,7 @@ void standardSave(int mapUsed){
         } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL || mapMatrix[save.object[i].y][save.object[i].x] == 'X');
     }
 
-    for (i = save.numShur; i < (save.numShur + save.numKeys); i++){
+    for (i = save.counting.numShur; i < (save.counting.numShur + save.counting.numKeys); i++){
         do{
             save.object[i].nameItems = keys;
             save.object[i].onMap = 1;
@@ -410,7 +393,7 @@ void standardSave(int mapUsed){
             save.object[i].y = (1 + (rand() % (SIZEMAP_Y-2)));
         } while (mapMatrix[save.object[i].y][save.object[i].x] == WALL || mapMatrix[save.object[i].y][save.object[i].x] == 'X');
     }
-    for (i = 0; i < save.numChest; i ++){
+    for (i = 0; i < save.counting.numChests; i ++){
         do {
             save.chestItem[i].closed = 1;
             save.chestItem[i].itemStore = (rand() % 4);
@@ -419,7 +402,7 @@ void standardSave(int mapUsed){
         }while (mapMatrix[save.chestItem[i].y][save.chestItem[i].x] == WALL || mapMatrix[save.chestItem[i].y][save.chestItem[i].x] == 'X');
     }
 
-    for (i = 0; i < save.numMobs; i ++){
+    for (i = 0; i < save.counting.numMobs; i ++){
         save.npc[i].shuriken.throwing = 0;
         save.npc[i].shuriken.movex = 0;
         save.npc[i].shuriken.movey = 0;
@@ -456,7 +439,7 @@ void standardSave(int mapUsed){
         }
     }
 
-    for(i = 0; i < save.numMobs; i ++) {
+    for(i = 0; i < save.counting.numMobs; i ++) {
         save.npc[i].hp = 1;
     }
 
@@ -467,20 +450,20 @@ void standardSave(int mapUsed){
 
 }
 
-void creditFunction(int width, int height, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy){
+void creditFunction(int width, int height, ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *events_queue, ALLEGRO_JOYSTICK *joy, t_fonts fonts){
 
     int creditScreen = 0;
     ALLEGRO_EVENT ev;
     al_init_font_addon();
     al_init_ttf_addon();
-    ALLEGRO_FONT* font20 = al_load_ttf_font("fonts/fonte.ttf", 40, 0);
+
 
     al_draw_filled_rounded_rectangle(width*2.5/8, height/4, width*5.5/8, height*3/4, width*0.5/16, height*1/16, al_map_rgb(255,255, 0));
-    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*4.5/16, ALLEGRO_ALIGN_CENTER, "Creditos");
-    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Luis Eduardo Mendes");
-    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Eduardo Bolson");
-    al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Vinicius Boff Alves");
-    //al_draw_text(font20, al_map_rgb(0,0,0), width/2, height*12.5/16, ALLEGRO_ALIGN_CENTER, "O Mestre rlam12"); Salvador do nosso código e sanidade via stack overflow.
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*4.5/16, ALLEGRO_ALIGN_CENTER, "Creditos");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*6.5/16, ALLEGRO_ALIGN_CENTER, "Luis Eduardo Mendes");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Eduardo Bolson");
+    al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Vinicius Boff Alves");
+    //al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*12.5/16, ALLEGRO_ALIGN_CENTER, "O Mestre rlam12"); Salvador do nosso código e sanidade via stack overflow.
 
     al_flip_display();
 
