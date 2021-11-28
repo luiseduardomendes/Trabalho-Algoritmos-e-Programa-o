@@ -275,42 +275,7 @@ int main()
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     al_draw_bitmap(bmps.background, (SIZEMAP_X/(2*MULT) - playerPos.x)*MAPSCALE*MULT, (SIZEMAP_Y/(2*MULT) - playerPos.y)*MAPSCALE*MULT, 0);
 
-                    for (i = 0; i < counting->numShur + counting->numKeys; i ++)
-                        if (items[i].onMap == 1)
-                            if (items[i].nameItems == 1)
-                                al_draw_bitmap(bmps.keys, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-                            else if (items[i].nameItems == 0)
-                                al_draw_bitmap(bmps.shurikenDraw, (items[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-
-                    for (i = 0; i < counting->numChests; i ++){
-                        if (chests[i].closed){
-                            al_draw_bitmap(bmps.chest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
-                        }
-                        else {
-                            al_draw_bitmap(bmps.openchest, (chests[i].x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
-                        }
-                    }
-                    if(boss.alive)
-                        for (i = 0; i < 8; i ++)
-                            if(boss.shurikens[i].throwing)
-                                al_draw_bitmap(bmps.shurikenDraw, (boss.shurikens[i].x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-
-
-                    if(mapExit.onMap == 1)
-                        al_draw_bitmap(bmps.trapdoor, (mapExit.x - playerPos.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - playerPos.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
-
-                    drawMobs(npcPos, counting->numMobs, bmps, playerPos);
-                    drawMobShur(npcPos, counting->numMobs, bmps.shurikenDraw, playerPos);
-                    drawNaruto(bmps, playerPos, width, height);
-
-                    if(boss.alive)
-                        al_draw_bitmap(bmps.enemyBoss, (boss.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - playerPos.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
-
-                    if (playerPos.shuriken.throwing)
-                        al_draw_bitmap(bmps.shurikenDraw, (playerPos.shuriken.x - playerPos.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (playerPos.shuriken.y - playerPos.y + SIZEMAP_Y/(2*MULT))
-                                       *MAPSCALE*MULT, 0);
-
-                    al_draw_tinted_bitmap(bmps.miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
+                    drawMapElements(npcPos, items, chests, mapExit, playerPos, boss, *counting, bmps, width, height);
 
                     drawInterface(bmps, playerPos, boss, width, height, mapUsed, fonts);
 
@@ -359,7 +324,8 @@ int main()
                             loadSave(npcPos, &playerPos, &mapUsed, counting, items, chests, mapMatrix, &boss);
                             endOfLevel = 1;
                             openMainMenu = 1;
-                            saveFunction(npcPos, playerPos, mapUsed, counting, items, chests, boss);
+                            saveFunction(npcPos, playerPos, mapUsed, *counting, items, chests, boss);
+
 
                     }
                 } while(!endOfLevel);
@@ -395,7 +361,7 @@ int main()
                 } while(!closeCongrats);
             }
 
-            saveFunction(npcPos, playerPos, mapUsed, counting, items, chests, boss);
+            saveFunction(npcPos, playerPos, mapUsed, *counting, items, chests, boss);
         }
 
     }while(!endOfGame);
@@ -416,7 +382,6 @@ int main()
     al_destroy_bitmap(bmps.heart);
     al_destroy_bitmap(bmps.voidheart);
     al_destroy_bitmap(bmps.narutoDialog);
-    al_destroy_display(display);
 
     return 0;
 }

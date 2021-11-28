@@ -172,7 +172,7 @@ void drawInterface(bitmaps bmps, t_player player, t_boss boss, int width, int he
         al_draw_tinted_bitmap(bmps.keys, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, (2)*MAPSCALE*MULT, 0);
 
     al_draw_textf(fonts.font48, al_map_rgb(102, 187, 106), (width - 200)/2, height-70, ALLEGRO_ALIGN_CENTER, "%d", player.level);
-
+    al_draw_tinted_bitmap(bmps.miniMap, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), width - (SIZEMAP_X + 3)*MINIMAP_SCALE, height - (SIZEMAP_Y + 3)*MINIMAP_SCALE, 0);
 }
 
 void drawDialog(bitmaps bmps, int width, int height, int mapUsed, t_fonts fonts){
@@ -197,6 +197,7 @@ void drawDialog(bitmaps bmps, int width, int height, int mapUsed, t_fonts fonts)
         al_draw_text(fonts.font36, al_map_rgb(0,0,0), width*1.7/3, height*3.25/4, ALLEGRO_ALIGN_CENTER, "Dattebayo!");
         break;
     }
+
 
 
 
@@ -252,4 +253,51 @@ void drawInGameMenu(bitmaps bmps, int width, int height, int selected, t_fonts f
     al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*8.5/16, ALLEGRO_ALIGN_CENTER, "Carregar jogo");
     al_draw_text(fonts.font36, al_map_rgb(0,0,0), width/2, height*10.5/16, ALLEGRO_ALIGN_CENTER, "Sair");
     al_flip_display();
+}
+
+void drawItems(typeItem items[],t_chest chests[], t_exit mapExit, t_player player, t_counting counting, t_bitmaps bmps){
+    int i;
+    for (i = 0; i < counting.numShur + counting.numKeys; i ++)
+        if (items[i].onMap == 1)
+            if (items[i].nameItems == 1)
+                al_draw_bitmap(bmps.keys, (items[i].x - player.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - player.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+            else if (items[i].nameItems == 0)
+                al_draw_bitmap(bmps.shurikenDraw, (items[i].x - player.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (items[i].y - player.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+
+    for (i = 0; i < counting.numChests; i ++){
+        if (chests[i].closed){
+            al_draw_bitmap(bmps.chest, (chests[i].x - player.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - player.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+        }
+        else {
+            al_draw_bitmap(bmps.openchest, (chests[i].x - player.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (chests[i].y - player.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+        }
+    }
+    if(mapExit.onMap == 1)
+        al_draw_bitmap(bmps.trapdoor, (mapExit.x - player.x + SIZEMAP_X/(2*MULT)) * MAPSCALE*MULT, (mapExit.y - player.y + SIZEMAP_Y/(2*MULT)) * MAPSCALE*MULT, 0);
+
+}
+
+void drawEnemies(t_player player,t_npc npc[], t_boss boss,t_counting counting,t_bitmaps bmps){
+    int i;
+    if(boss.alive)
+        for (i = 0; i < 8; i ++)
+            if(boss.shurikens[i].throwing)
+                al_draw_bitmap(bmps.shurikenDraw, (boss.shurikens[i].x - player.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.shurikens[i].y - player.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+
+    drawMobs(npc, counting.numMobs, bmps, player);
+    drawMobShur(npc, counting.numMobs, bmps.shurikenDraw, player);
+    if(boss.alive)
+        al_draw_bitmap(bmps.enemyBoss, (boss.x - player.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - player.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+    if (player.shuriken.throwing)
+        al_draw_bitmap(bmps.shurikenDraw, (player.shuriken.x - player.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (player.shuriken.y - player.y + SIZEMAP_Y/(2*MULT))
+                       *MAPSCALE*MULT, 0);
+
+}
+
+void drawMapElements(t_npc npc[], typeItem items[], t_chest chests[], t_exit mapExit, t_player player,t_boss boss,t_counting counting,t_bitmaps bmps, int width, int height){
+    drawItems(items, chests, mapExit, player, counting, bmps);
+
+    drawEnemies(player, npc, boss, counting, bmps);
+
+    drawNaruto(bmps, player, width, height);
 }
