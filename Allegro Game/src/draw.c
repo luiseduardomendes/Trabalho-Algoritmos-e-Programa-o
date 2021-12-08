@@ -162,6 +162,25 @@ void drawInterface(bitmaps bmps, t_player player, t_boss boss, int width, int he
         al_draw_text(fonts.font36, al_map_rgb(255,50,0), width/2 - 15, 105, ALLEGRO_ALIGN_CENTER, "Orochimaru");
     }
 
+    for (i = 0; i < player.ultBar; i++)
+    {
+        if(i == 0)
+            al_draw_tinted_bitmap(bmps.XPbarFullLeft, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+        else if(i == 24)
+            al_draw_tinted_bitmap(bmps.XPbarFullRight, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 10, 0);
+        else
+            al_draw_tinted_bitmap(bmps.XPbarFullMid, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+    }
+    for (i = player.ultBar; i < player.fullUltBar; i++)
+    {
+        if(i == 0)
+            al_draw_tinted_bitmap(bmps.XPbarEmptyLeft, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+        else if(i == player.fullUltBar - 1)
+            al_draw_tinted_bitmap(bmps.XPbarEmptyRight, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+        else
+            al_draw_tinted_bitmap(bmps.XPbarEmptyMid, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+    }
+
     for (i = 0; i < player.hp; i++)
         al_draw_tinted_bitmap(bmps.heart, al_map_rgba_f(OPACITY, OPACITY, OPACITY, OPACITY), (i+1)*MAPSCALE*MULT, 0, 0);
     for (i = player.hp; i < player.fullHp; i ++)

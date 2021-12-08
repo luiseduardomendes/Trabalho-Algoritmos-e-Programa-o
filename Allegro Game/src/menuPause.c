@@ -334,6 +334,9 @@ void standardSave(int mapUsed){
     save.player.y = 1;
     save.player.direction = TORIGHT;
 
+    save.player.ultBar = 0;
+    save.player.fullUltBar = 25;
+
     loadMap(mapMatrix, mapUsed);
     save.mapUsed = mapUsed;
 

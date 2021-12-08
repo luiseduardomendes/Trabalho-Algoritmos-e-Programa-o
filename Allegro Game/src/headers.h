@@ -54,6 +54,7 @@ typedef struct shuriken{
 typedef struct position{
     int x,y;
     int hp, fullHp;
+    int ultBar, fullUltBar;
     int direction;
     int numShur, numKeys;
     int xp;
