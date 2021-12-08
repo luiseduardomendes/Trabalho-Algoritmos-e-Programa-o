@@ -140,7 +140,7 @@ int main()
     /*_____________________________________________________________*/
     // controle de tempo
 
-    ALLEGRO_TIMER *timer, *mobTimer, *shurTimer, *throwShurTimer;
+    ALLEGRO_TIMER *timer, *mobTimer, *shurTimer, *throwShurTimer, *ultTimer;
     timer = al_create_timer(1.0/frameRate);
     al_start_timer(timer);
     mobTimer = al_create_timer(1.0/mobRate);
@@ -149,6 +149,8 @@ int main()
     al_start_timer(shurTimer);
     throwShurTimer = al_create_timer(1.0/throwShurRate);
     al_start_timer(throwShurTimer);
+    ultTimer = al_create_timer(1.0);
+    al_start_timer(ultTimer);
     /*_____________________________________________________________*/
 
 
@@ -163,6 +165,7 @@ int main()
     al_register_event_source(events_queue, al_get_timer_event_source(mobTimer));
     al_register_event_source(events_queue, al_get_timer_event_source(shurTimer));
     al_register_event_source(events_queue, al_get_timer_event_source(throwShurTimer));
+    al_register_event_source(events_queue, al_get_timer_event_source(ultTimer));
     al_register_event_source(events_queue, al_get_joystick_event_source());
     /*_____________________________________________________________*/
 
@@ -263,6 +266,11 @@ int main()
 
                 if(playerPos.xp >= MIN_XP_UP){
                     levelUp(&playerPos);
+                }
+
+                if(event.timer.source == ultTimer){
+                    if(playerPos.ultBar < playerPos.fullUltBar)
+                        playerPos.ultBar ++;
                 }
 
 

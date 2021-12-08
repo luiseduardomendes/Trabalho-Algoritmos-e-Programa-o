@@ -317,9 +317,9 @@ void standardSave(int mapUsed){
             save.counting.numKeys = 5;
             save.counting.numMobs = 5;
             save.counting.numShur = 5;
-            save.counting.numChests = 2;
+            save.counting.numChests = 5;
         case 1:
-            save.counting.numKeys = 10;
+            save.counting.numKeys = 5;
             save.counting.numMobs = 8;
             save.counting.numShur = 8;
             save.counting.numChests = 10;
@@ -413,11 +413,13 @@ void standardSave(int mapUsed){
     }
 
     save.player.ultimate.actived = false;
-    save.player.ultimate.maxRadius = 8;
-
+    save.player.ultimate.maxRadius = 5;
+    save.player.ultimate.radius = 0;
+    save.player.ultimate.x = 0;
+    save.player.ultimate.y = 0;
+    save.player.shuriken.throwing = 0;
 
     if (mapUsed == 0){
-        save.player.shuriken.throwing = 0;
         save.player.fullHp = 5;
         save.player.hp = 5;
         save.player.armor = 0;
@@ -434,7 +436,6 @@ void standardSave(int mapUsed){
         if (saveFile = fopen("save.sav", "rb")){
             fread(&bufferSave, sizeof(typeSave), 1, saveFile);
             fclose(saveFile);
-            save.player.shuriken.throwing = bufferSave.player.shuriken.throwing;
             save.player.fullHp = bufferSave.player.fullHp;
             save.player.hp = bufferSave.player.hp;
             save.player.armor = bufferSave.player.armor;
