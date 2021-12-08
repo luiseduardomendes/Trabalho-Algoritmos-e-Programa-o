@@ -380,6 +380,7 @@ int main()
     al_destroy_timer(mobTimer);
     al_destroy_timer(shurTimer);
     al_destroy_timer(throwShurTimer);
+    al_destroy_timer(ultTimer);
     al_destroy_bitmap(bmps.naruto);
     al_destroy_bitmap(bmps.shurikenDraw);
     al_destroy_bitmap(bmps.spikes);

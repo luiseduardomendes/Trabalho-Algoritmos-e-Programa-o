@@ -165,20 +165,20 @@ void drawInterface(bitmaps bmps, t_player player, t_boss boss, int width, int he
     for (i = 0; i < player.ultBar; i++)
     {
         if(i == 0)
-            al_draw_tinted_bitmap(bmps.XPbarFullLeft, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
-        else if(i == 24)
-            al_draw_tinted_bitmap(bmps.XPbarFullRight, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 10, 0);
+            al_draw_tinted_bitmap(bmps.XPbarFullLeft, al_map_rgb(65,105,225), (i+1)*MAPSCALE*MULT, height - 120, 0);
+        else if(i == player.fullUltBar-1)
+            al_draw_tinted_bitmap(bmps.XPbarFullRight, al_map_rgb(65,105,225), (i+1)*MAPSCALE*MULT, height - 120, 0);
         else
-            al_draw_tinted_bitmap(bmps.XPbarFullMid, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+            al_draw_tinted_bitmap(bmps.XPbarFullMid, al_map_rgb(65,105,225), (i+1)*MAPSCALE*MULT, height - 120, 0);
     }
     for (i = player.ultBar; i < player.fullUltBar; i++)
     {
         if(i == 0)
-            al_draw_tinted_bitmap(bmps.XPbarEmptyLeft, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
-        else if(i == player.fullUltBar - 1)
-            al_draw_tinted_bitmap(bmps.XPbarEmptyRight, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+            al_draw_tinted_bitmap(bmps.XPbarEmptyLeft, al_map_rgb(65,105,225), (i+1)*MAPSCALE*MULT, height - 120, 0);
+        else if(i == player.fullUltBar-1)
+            al_draw_tinted_bitmap(bmps.XPbarEmptyRight, al_map_rgb(65,105,225), (i+1)*MAPSCALE*MULT, height - 120, 0);
         else
-            al_draw_tinted_bitmap(bmps.XPbarEmptyMid, al_map_rgb(00,00,255), (i+1)*MAPSCALE*MULT, height - 120, 0);
+            al_draw_tinted_bitmap(bmps.XPbarEmptyMid, al_map_rgb(65,105,225), (i+1)*MAPSCALE*MULT, height - 120, 0);
     }
 
     for (i = 0; i < player.hp; i++)
