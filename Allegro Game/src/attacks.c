@@ -181,13 +181,13 @@ void updateShurikenBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y
 
 void playerUltimate(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_exit *mapExit){
     int i;
-    float dist
+    float dist;
 
     for(i = 0; i < numMobs; i++){
-        if(npc.alive)
+        if(npc->alive)
         {
-            dist = ultDist(player, npc[i], boss);
-            if(abs(dist - raio) <= 0.5){
+            dist = ultDist(*player, npc[i], *boss);
+            if(abs(dist - player->ultimate.radius) <= 0.5){
                 npc[i].hp --;
                 if (npc[i].hp <= 0){
                     npc[i].alive = 0;
@@ -199,8 +199,8 @@ void playerUltimate(t_player *player, t_npc npc[], t_boss *boss, int numMobs, ch
     }
 
     if(boss->alive){
-        dist = ultDist(player, npc[i], boss);
-        if(abs(dist - raio) <= 0.5){
+        dist = ultDist(*player, npc[i], *boss);
+        if(abs(dist - player->ultimate.radius) <= 0.5){
             boss->hp--;
             if(boss->hp == 0)
             {

@@ -106,6 +106,7 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
         case CONTROL_BUTTON_Y:
             if(playerPos->ultBar == playerPos->fullUltBar)
                 playerPos->ultimate.actived = true;
+                playerPos->ultBar = 0;
             break;
         case CONTROL_BUTTON_LB:
             break;
@@ -221,6 +222,7 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
         case ALLEGRO_KEY_R:
             if(playerPos->ultBar == playerPos->fullUltBar)
                 playerPos->ultimate.actived = true;
+                playerPos->ultBar = 0;
             break;
     }
 }

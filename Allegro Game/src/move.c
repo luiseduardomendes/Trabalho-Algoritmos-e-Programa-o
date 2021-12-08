@@ -210,7 +210,7 @@ void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X
 float ultDist(t_player player, t_npc npc, t_boss boss){
     float dist;
 
-    dist = sqrt(pow(npc[i].x - player->x, 2) + pow(npc[i].y - player->y, 2));
+    dist = sqrt(pow(npc.x - player.x, 2) + pow(npc.y - player.y, 2));
 
     return dist;
 }

@@ -55,7 +55,6 @@ typedef struct {
     int x, y;
     int radius;
     int maxRadius;
-    bool in;
     bool actived;
 }t_ultimate;
 
@@ -128,7 +127,8 @@ typedef struct{
 typedef struct{
     ALLEGRO_BITMAP *naruto,*shurikenDraw,*spikes,*keys,*enemy,*wall,*grass,*darkGrass,*lightGrass,*heart,*voidheart,*narutoDialog,
     *loading_screen,*background,*dialogBmp,*narutoback,*narutoleft,*narutoright,*enemyback,*enemyleft,*enemyright,*chest,*openchest,
-    *trapdoor,*XPbarEmptyLeft,*XPbarEmptyMid,*XPbarEmptyRight,*XPbarFullMid,*XPbarFullLeft,*XPbarFullRight,*enemyBoss,*miniMap;
+    *trapdoor,*XPbarEmptyLeft,*XPbarEmptyMid,*XPbarEmptyRight,*XPbarFullMid,*XPbarFullLeft,*XPbarFullRight,*enemyBoss,*miniMap,
+    *ultimate;
 }bitmaps, t_bitmaps;
 
 
@@ -183,4 +183,4 @@ void moveBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y][SIZEMAP_
 int verifyPosition(int x, int y, char direction, char mapMatrix[SIZEMAP_Y][SIZEMAP_X]);
 //void checkKeyShur(t_player *player, typeItem items[], char mapMatrix[][SIZEMAP_X], int numShur, int numKeys, int numChest, t_chest chests[],
 //                t_exit *mapExit, int mapUsed, int *endOfLevel);
-
+float ultDist(t_player player, t_npc npc, t_boss boss);

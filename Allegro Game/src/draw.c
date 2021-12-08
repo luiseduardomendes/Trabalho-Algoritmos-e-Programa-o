@@ -306,11 +306,21 @@ void drawEnemies(t_player player,t_npc npc[], t_boss boss,t_counting counting,t_
     drawMobs(npc, counting.numMobs, bmps, player);
     drawMobShur(npc, counting.numMobs, bmps.shurikenDraw, player);
     if(boss.alive)
-        al_draw_bitmap(bmps.enemyBoss, (boss.x - player.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (boss.y - player.y + SIZEMAP_Y/(2*MULT))*MAPSCALE*MULT, 0);
+        al_draw_bitmap(bmps.enemyBoss, (boss.x - player.x + SIZEMAP_X/(2*MULT))
+                       *MAPSCALE*MULT, (boss.y - player.y + SIZEMAP_Y/(2*MULT))
+                       *MAPSCALE*MULT, 0);
     if (player.shuriken.throwing)
         al_draw_bitmap(bmps.shurikenDraw, (player.shuriken.x - player.x + SIZEMAP_X/(2*MULT))*MAPSCALE*MULT, (player.shuriken.y - player.y + SIZEMAP_Y/(2*MULT))
                        *MAPSCALE*MULT, 0);
 
+    if (player.ultimate.actived) {
+        for (i = player.ultimate.x-5; i < player.ultimate.x+5; i++)
+            for (int j = player.ultimate.y-5; i < player.ultimate.y+5; j++)
+                if (abs(ultDist(player, npc[i], boss)) <= 0.5)
+                    al_draw_bitmap(bmps.ultimate, (i - player.x + SIZEMAP_X/(2*MULT))
+                       *MAPSCALE*MULT, (j - player.y + SIZEMAP_Y/(2*MULT))
+                       *MAPSCALE*MULT, 0);
+    }
 }
 
 void drawMapElements(t_npc npc[], typeItem items[], t_chest chests[], t_exit mapExit, t_player player,t_boss boss,t_counting counting,t_bitmaps bmps, int width, int height){

@@ -106,6 +106,7 @@ int main()
     bmps.XPbarFullLeft = al_load_bitmap("assets/EXPbarFullLeft.png");
     bmps.XPbarFullRight = al_load_bitmap("assets/EXPbarFullRight.png");
     bmps.enemyBoss = al_load_bitmap("assets/orochimaru.png");
+    bmps.ultimate = al_load_bitmap("assets/ultimate.png");
     bmps.miniMap = NULL;
     al_convert_mask_to_alpha(bmps.narutoDialog, al_map_rgb(255,0,255));
 
