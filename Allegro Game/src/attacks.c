@@ -28,6 +28,7 @@ void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMo
                 if (npc[i].hp <= 0){
                     npc[i].alive = 0;
                     player->xp += 5;
+                    player->ultBar ++;
                 }
                 player->shuriken.throwing = false;
             }
@@ -46,6 +47,7 @@ void updateShurikenPlayer(t_player *player, t_npc npc[], t_boss *boss, int numMo
                     mapExit->y = 20;
                     mapExit->x = 33;
                     mapExit->onMap = 1;
+                    player->ultBar ++;
 
                 }
                 player->shuriken.throwing = false;
@@ -173,6 +175,42 @@ void updateShurikenBoss(t_boss *boss, t_player *player, char mapMatrix[SIZEMAP_Y
                 boss->shurikens[i].throwing = false;
             if (mapMatrix[boss->shurikens[i].y][boss->shurikens[i].x] == WALL)
                 boss->shurikens[i].throwing = false;
+        }
+    }
+}
+
+void playerUltimate(t_player *player, t_npc npc[], t_boss *boss, int numMobs, char mapMatrix[SIZEMAP_Y][SIZEMAP_X], t_exit *mapExit){
+    int i;
+    float dist
+
+    for(i = 0; i < numMobs; i++){
+        if(npc.alive)
+        {
+            dist = ultDist(player, npc[i], boss);
+            if(abs(dist - raio) <= 0.5){
+                npc[i].hp --;
+                if (npc[i].hp <= 0){
+                    npc[i].alive = 0;
+                    player->xp += 5;
+                    player->ultBar ++;
+                }
+            }
+        }
+    }
+
+    if(boss->alive){
+        dist = ultDist(player, npc[i], boss);
+        if(abs(dist - raio) <= 0.5){
+            boss->hp--;
+            if(boss->hp == 0)
+            {
+                boss->alive = 0;
+                player->xp += 25;
+                mapExit->y = 20;
+                mapExit->x = 33;
+                mapExit->onMap = 1;
+                player->ultBar ++;
+            }
         }
     }
 }

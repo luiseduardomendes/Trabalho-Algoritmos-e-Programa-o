@@ -65,7 +65,8 @@ void moveJoystick(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char 
     }
 }
 
-void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], t_counting counting, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed, int *endOfLevel){
+void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char mapMatrix[][SIZEMAP_X], typeItem items[], t_counting counting, t_chest chests[], ALLEGRO_SAMPLE* throwShur, t_exit *mapExit, int mapUsed,
+                int *endOfLevel){
     al_init_acodec_addon();
     al_install_audio();
     switch (event.joystick.button){
@@ -103,6 +104,8 @@ void buttonDown(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu, char ma
             }
             break;
         case CONTROL_BUTTON_Y:
+            if(playerPos->ultBar == playerPos->fullUltBar)
+                playerPos->ultimate.actived = true;
             break;
         case CONTROL_BUTTON_LB:
             break;
@@ -214,6 +217,10 @@ void playerInputKeyboard(ALLEGRO_EVENT event, t_player *playerPos, int *openMenu
             break;
         case ALLEGRO_KEY_E:
             checkKeyShur(playerPos, items, mapMatrix, counting, chests, mapExit, mapUsed, endOfLevel);
+            break;
+        case ALLEGRO_KEY_R:
+            if(playerPos->ultBar == playerPos->fullUltBar)
+                playerPos->ultimate.actived = true;
             break;
     }
 }
