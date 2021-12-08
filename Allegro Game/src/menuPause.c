@@ -334,8 +334,7 @@ void standardSave(int mapUsed){
     save.player.y = 1;
     save.player.direction = TORIGHT;
 
-    save.player.ultBar = 0;
-    save.player.fullUltBar = 25;
+
 
     loadMap(mapMatrix, mapUsed);
     save.mapUsed = mapUsed;
@@ -413,6 +412,10 @@ void standardSave(int mapUsed){
         save.npc[i].shuriken.y = 0;
     }
 
+    save.player.ultimate.actived = false;
+    save.player.ultimate.maxRadius = 8;
+
+
     if (mapUsed == 0){
         save.player.shuriken.throwing = 0;
         save.player.fullHp = 5;
@@ -424,6 +427,8 @@ void standardSave(int mapUsed){
         save.player.xp = 0;
         save.player.shurikenItem = 0;
         save.player.invulnerable = 0;
+        save.player.ultBar = 0;
+        save.player.fullUltBar = 25;
     }
     else{
         if (saveFile = fopen("save.sav", "rb")){
@@ -439,6 +444,8 @@ void standardSave(int mapUsed){
             save.player.xp = bufferSave.player.xp;
             save.player.shurikenItem = bufferSave.player.shurikenItem;
             save.player.invulnerable = bufferSave.player.invulnerable;
+            save.player.ultBar = bufferSave.player.ultBar;
+            save.player.fullUltBar = bufferSave.player.fullUltBar;
         }
     }
 

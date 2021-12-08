@@ -51,6 +51,13 @@ typedef struct shuriken{
     bool throwing;
 }typeShur;
 
+typedef struct {
+    int x, y;
+    int radius;
+    int maxRadius;
+    bool actived;
+}t_ultimate;
+
 typedef struct position{
     int x,y;
     int hp, fullHp;
@@ -62,6 +69,7 @@ typedef struct position{
     int invulnerable;
     int armor, shurikenItem;
     typeShur shuriken;
+    t_ultimate ultimate;
 }t_player;
 
 typedef struct{
