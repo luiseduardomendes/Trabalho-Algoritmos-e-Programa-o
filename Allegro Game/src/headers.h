@@ -55,6 +55,7 @@ typedef struct {
     int x, y;
     int radius;
     int maxRadius;
+    bool in;
     bool actived;
 }t_ultimate;
 
